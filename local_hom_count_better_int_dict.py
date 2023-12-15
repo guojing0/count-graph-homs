@@ -8,7 +8,7 @@ from local_tree_decomp import *
 # { node_index: [1, 2, 3, 4, 5],
 #   second_node_index: [10, 20, 30, 40, 50], ...}
 
-def count_homomorphisms_int_pre(graph, target_graph):
+def count_homomorphisms_int_dict(graph, target_graph):
     r"""
     Return the number of homomorphisms from the graph `G` to the graph `H`.
 
@@ -37,7 +37,7 @@ def count_homomorphisms_int_pre(graph, target_graph):
         sage: graph = graphs.CompleteBipartiteGraph(1, 4)
         sage: target_graph = graphs.CompleteGraph(4)
         sage: from sage.graphs.hom_count_int_pre import count_homomorphisms_int_pre
-        sage: count_homomorphisms_int_pre(graph, target_graph)
+        sage: count_homomorphisms_int_dict(graph, target_graph)
         324
     """
     if not isinstance(graph, Graph):
@@ -88,14 +88,14 @@ def count_homomorphisms_int_pre(graph, target_graph):
 
         match node_type:
             case 'intro':
-                _add_intro_node_int_pre(DP_table, node, dir_labelled_TD, graph, target_graph, node_changes_dict)
+                _add_intro_node_int_dict(DP_table, node, dir_labelled_TD, graph, target_graph, node_changes_dict)
             case 'forget':
-                _add_forget_node_int_pre(DP_table, node, dir_labelled_TD, graph, target_graph, node_changes_dict)
+                _add_forget_node_int_dict(DP_table, node, dir_labelled_TD, graph, target_graph, node_changes_dict)
             case 'join':
-                _add_join_node_int_pre(DP_table, node, dir_labelled_TD)
+                _add_join_node_int_dict(DP_table, node, dir_labelled_TD)
 
             case _: 
-                _add_leaf_node_int_pre(DP_table, node)
+                _add_leaf_node_int_dict(DP_table, node)
 
     return DP_table[0][0]
 
@@ -133,11 +133,11 @@ def add_vertex_into_mapping(new_vertex, mapping, index, graph_size):
 
 ### Main adding functions
 
-def _add_leaf_node_int_pre(DP_table, node):
+def _add_leaf_node_int_dict(DP_table, node):
     node_index = get_node_index(node)
     DP_table[node_index] = [1]
 
-def _add_intro_node_int_pre(DP_table, node, graph_TD, graph, target_graph, node_changes_dict):
+def _add_intro_node_int_dict(DP_table, node, graph_TD, graph, target_graph, node_changes_dict):
     node_index, node_vertices = node
     node_vtx_tuple = tuple(node_vertices)
 
@@ -156,7 +156,9 @@ def _add_intro_node_int_pre(DP_table, node, graph_TD, graph, target_graph, node_
 
     mapped_nbhs_in_target = [0 for _ in node_nbhs_in_bag]
 
-    for mapped in range(len(DP_table[child_node_index])):
+    child_DP_entry = DP_table[child_node_index]
+
+    for mapped in range(len(child_DP_entry)):
         for i in range(len(node_nbhs_in_bag)):
             mapped_nbhs_in_target[i] = extract_bag_vertex(mapped, node_nbhs_in_bag[i], target_graph_size)
 
@@ -164,13 +166,15 @@ def _add_intro_node_int_pre(DP_table, node, graph_TD, graph, target_graph, node_
 
         for target_vtx in target_graph:
             if is_valid_mapping(target_vtx, mapped_nbhs_in_target, target_graph):
-                mappings_count[mapping] = DP_table[child_node_index][mapped]
+                mappings_count[mapping] = child_DP_entry[mapped]
 
             mapping += target_graph_size ** intro_vtx_index
 
     DP_table[node_index] = mappings_count
 
-def _add_forget_node_int_pre(DP_table, node, graph_TD, graph, target_graph, node_changes_dict):
+    DP_table.remove(child_DP_entry)
+
+def _add_forget_node_int_dict(DP_table, node, graph_TD, graph, target_graph, node_changes_dict):
     node_index, node_vertices = node
     node_vtx_tuple = tuple(node_vertices)
 
@@ -184,26 +188,36 @@ def _add_forget_node_int_pre(DP_table, node, graph_TD, graph, target_graph, node
     forgotten_vtx = node_changes_dict[node_index]
     forgotten_vtx_index = child_node_vtx_tuple.index(forgotten_vtx)
 
+    child_DP_entry = DP_table[child_node_index]
+
     for mapping in mappings_length_range:
         sum = 0
         extended_mapping = add_vertex_into_mapping(0, mapping, forgotten_vtx_index, target_graph_size)
 
         for target_vtx in target_graph:
-            sum += DP_table[child_node_index][extended_mapping]
+            sum += child_DP_entry[extended_mapping]
             extended_mapping += target_graph_size ** forgotten_vtx_index
 
         mappings_count[mapping] = sum
 
     DP_table[node_index] = mappings_count
 
-def _add_join_node_int_pre(DP_table, node, graph_TD):
+    DP_table.remove(child_DP_entry)
+
+def _add_join_node_int_dict(DP_table, node, graph_TD):
     node_index, node_vertices = node
     left_child, right_child  = [vtx for vtx in graph_TD.neighbors_out(node)
                                     if get_node_content(vtx) == node_vertices]
     left_child_index, left_child_content = left_child
     right_child_index, right_child_content = right_child
 
+    left_child_DP_entry = DP_table[left_child_index]
+    right_child_DP_entry = DP_table[right_child_index]
+
     mappings_count = [left_count * right_count for left_count, right_count
-                        in zip(DP_table[left_child_index], DP_table[right_child_index])]
+                        in zip(left_child_DP_entry, right_child_DP_entry)]
 
     DP_table[node_index] = mappings_count
+
+    DP_table.remove(left_child_DP_entry)
+    DP_table.remove(right_child_DP_entry)
