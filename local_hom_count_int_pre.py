@@ -109,6 +109,22 @@ def extract_bag_vertex(mapping, index, graph_size):
     return mapping // (graph_size ** index) % graph_size
 
 def is_valid_mapping(mapped_intro_vtx, mapped_nbhrs, target_graph):
+    r"""
+    Checks if a mapping is valid in the target graph.
+
+    This function takes a vertex and its mapped neighbors, and checks if all the edges between the
+    vertex and its neighbors exist in the target graph. If any edge does not exist, the mapping
+    is considered invalid.
+
+    Parameters:
+    mapped_intro_vtx (int): The vertex for which the mapping is being checked.
+    mapped_nbhrs (list): A list of neighbors of the vertex in the mapping.
+    target_graph (networkx.Graph): The target graph where the mapping is being checked.
+
+    Returns:
+    bool: True if all edges between the vertex and its neighbors exist in the
+    target graph, False otherwise.
+    """
     for vtx in mapped_nbhrs:
         if not target_graph.has_edge(mapped_intro_vtx, vtx):
             return False
@@ -125,6 +141,9 @@ def remove_vertex_from_mapping(mapping, index, graph_size):
     return left_digits // graph_size + right_digits
 
 def add_vertex_into_mapping(new_vertex, mapping, index, graph_size):
+    r"""
+    Insert `new_vertex` at `index` into `mapping`
+    """
     temp = graph_size ** index
     right_digits = mapping % temp
     left_digits = mapping - right_digits
@@ -134,43 +153,50 @@ def add_vertex_into_mapping(new_vertex, mapping, index, graph_size):
 ### Main adding functions
 
 def _add_leaf_node_int_pre(DP_table, node):
+    r"""
+    Add the leaf node to the DP table and update it accordingly.
+    """
     node_index = get_node_index(node)
     DP_table[node_index] = [1]
 
 def _add_intro_node_int_pre(DP_table, node, graph_TD, graph, target_graph, node_changes_dict):
+    # Basic setup
     node_index, node_vertices = node
     node_vtx_tuple = tuple(node_vertices)
 
     child_node_index, child_node_vtx = graph_TD.neighbors_out(node)[0]
     child_node_vtx_tuple = tuple(child_node_vtx)
 
-    intro_vertex = node_changes_dict[node_index]
-    intro_vtx_index = node_vtx_tuple.index(intro_vertex)
-
-    node_nbhs_in_bag = [child_node_vtx_tuple.index(vtx) for vtx in child_node_vtx_tuple
-                            if graph.has_edge(intro_vertex, vtx)]
-
     target_graph_size = len(target_graph)
     mappings_length_range = range(target_graph_size ** len(node_vtx_tuple))
     mappings_count = [0 for _ in mappings_length_range]
 
-    mapped_nbhs_in_target = [0 for _ in node_nbhs_in_bag]
+    # Intro node specifically
+    intro_vertex = node_changes_dict[node_index]
+    intro_vtx_index = node_vtx_tuple.index(intro_vertex)
 
-    for mapped in range(len(DP_table[child_node_index])):
-        for i in range(len(node_nbhs_in_bag)):
-            mapped_nbhs_in_target[i] = extract_bag_vertex(mapped, node_nbhs_in_bag[i], target_graph_size)
+    # Neighborhood of the intro vertex in the graph
+    node_nbhs_in_bag = [child_node_vtx_tuple.index(vtx) for vtx in child_node_vtx_tuple
+                            if graph.has_edge(intro_vertex, vtx)]
+
+    child_DP_entry = DP_table[child_node_index]
+
+    for mapped in range(len(child_DP_entry)):
+        # Neighborhood of the mapped vertex of intro vertex in the target graph
+        mapped_nbhs_in_target = [extract_bag_vertex(mapped, nbh, target_graph_size) for nbh in node_nbhs_in_bag]
 
         mapping = add_vertex_into_mapping(0, mapped, intro_vtx_index, target_graph_size)
 
         for target_vtx in target_graph:
             if is_valid_mapping(target_vtx, mapped_nbhs_in_target, target_graph):
-                mappings_count[mapping] = DP_table[child_node_index][mapped]
+                mappings_count[mapping] = child_DP_entry[mapped]
 
             mapping += target_graph_size ** intro_vtx_index
 
     DP_table[node_index] = mappings_count
 
 def _add_forget_node_int_pre(DP_table, node, graph_TD, graph, target_graph, node_changes_dict):
+    # Basic setup
     node_index, node_vertices = node
     node_vtx_tuple = tuple(node_vertices)
 
@@ -181,15 +207,18 @@ def _add_forget_node_int_pre(DP_table, node, graph_TD, graph, target_graph, node
     mappings_length_range = range(target_graph_size ** len(node_vtx_tuple))
     mappings_count = [0 for _ in mappings_length_range]
 
+    # Forget node specifically
     forgotten_vtx = node_changes_dict[node_index]
     forgotten_vtx_index = child_node_vtx_tuple.index(forgotten_vtx)
+
+    child_DP_entry = DP_table[child_node_index]
 
     for mapping in mappings_length_range:
         sum = 0
         extended_mapping = add_vertex_into_mapping(0, mapping, forgotten_vtx_index, target_graph_size)
 
         for target_vtx in target_graph:
-            sum += DP_table[child_node_index][extended_mapping]
+            sum += child_DP_entry[extended_mapping]
             extended_mapping += target_graph_size ** forgotten_vtx_index
 
         mappings_count[mapping] = sum
@@ -200,8 +229,8 @@ def _add_join_node_int_pre(DP_table, node, graph_TD):
     node_index, node_vertices = node
     left_child, right_child  = [vtx for vtx in graph_TD.neighbors_out(node)
                                     if get_node_content(vtx) == node_vertices]
-    left_child_index, left_child_content = left_child
-    right_child_index, right_child_content = right_child
+    left_child_index = get_node_index(left_child)
+    right_child_index = get_node_index(right_child)
 
     mappings_count = [left_count * right_count for left_count, right_count
                         in zip(DP_table[left_child_index], DP_table[right_child_index])]
