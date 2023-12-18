@@ -16,10 +16,11 @@ REFERENCES:
 
 from sage.graphs.graph import Graph
 
-from local_tree_decomp import *
-
 from collections import deque
 from itertools import combinations, product
+
+from local_tree_decomp import *
+from helper_functions import *
 
 
 def count_homomorphisms(graph, target_graph):
@@ -80,7 +81,6 @@ def count_homomorphisms(graph, target_graph):
     # `node_changes_dict` is responsible for recording introduced and
     # forgotten vertices in a nice tree decomposition
     node_changes_dict = node_changes(dir_labelled_TD)
-    # print("node changes", node_changes_dict)
 
     # `DP_table` is a vector/list of dictionaries
     # Each element (dict) corresponds to the (induced) hom's of a tree node.
@@ -123,8 +123,6 @@ def count_homomorphisms(graph, target_graph):
 
 def is_homomorphism(G, H, mapping):
     for edge in G.edges(labels=False):
-        # print("edge", edge)
-        # print("pair", mapping[edge[0]], mapping[edge[1]])
         if not H.has_edge(mapping[edge[0]], mapping[edge[1]]):
             return False
     return True
@@ -146,64 +144,6 @@ def enumerate_homomorphisms(graph, target_graph, as_tuples=False):
                     for hom in homomorphisms]
     return homomorphisms
 
-
-### For tree decomp file
-
-
-def node_changes(labelled_TD):
-    r"""
-    Record introduced and forgotten nodes in a directed labelled nice tree decomposition.
-
-    INPUT:
-
-    - ``labelled_TD`` -- a directed labelled nice tree decomposition,
-      with the root as source of the dirgraph
-
-    OUTPUT:
-
-    - A dictionary of recorded nodes, where the `key` is node index, and
-      the `value` is the introduced/forgotten node
-
-    EXAMPLES::
-
-        sage: from sage.graphs.graph_decompositions.tree_decomposition import label_nice_tree_decomposition
-        sage: from sage.graphs.hom_count import node_changes
-        sage: bip_one_four = graphs.CompleteBipartiteGraph(1, 4)
-        sage: nice_tree_decomp = bip_one_four.treewidth(certificate=True, nice=True)
-        sage: root = sorted(nice_tree_decomp)[0]
-        sage: dir_labelled_TD = label_nice_tree_decomposition(nice_tree_decomp, root, directed=True)
-        sage: node_changes(dir_labelled_TD)
-        {1: 1, 2: 1, 3: 4, 5: 4, 6: 4, 7: 3, 8: 2, 9: 0, 10: 0, 11: 3, 12: 2}
-    """
-    node_changes_dict = {}
-
-    for node in sorted(labelled_TD):
-        node_index, node_vertex_set = node
-
-        node_type = labelled_TD.get_vertex(node)
-        match node_type:
-            case 'intro':
-                child_vertex_set = labelled_TD.neighbors_out(node)[0][1]
-                # Get one element from the one-element set
-                (extra_vertex,) = node_vertex_set.symmetric_difference(child_vertex_set)
-                node_changes_dict[node_index] = extra_vertex
-            case 'forget':
-                child_vertex_set = labelled_TD.neighbors_out(node)[0][1]
-                # Get one element from the one-element set
-                (extra_vertex,) = node_vertex_set.symmetric_difference(child_vertex_set)
-                node_changes_dict[node_index] = extra_vertex
-
-    return node_changes_dict
-
-
-### Private helper functions
-
-def get_node_index(node):
-    return node[0]
-
-def get_node_content(node):
-    return node[1]
-
 def _add_leaf_node(DP_table, node):
     """
     Process the leaf node `node` and update the homomorphism count in the dynamic programming table accordingly.
@@ -221,18 +161,13 @@ def _add_intro_node(DP_table, node, graph_TD, graph, target_graph, node_changes_
                                        target_graph,
                                        as_tuples=True)
 
-    # print("intro enum", enum_homs)
-
     for hom in enum_homs:
         child_hom = tuple((k, v) for k, v in hom if k != node_changes_dict[node_index])
 
         # I_{v} (h) = I_{w} (h'), `w` is child of `v`
         child_node_index = graph_TD.neighbors_out(node)[0][0]
 
-        # print("child node index: {}, child hom: {}".format(child_node_index, child_hom))
-
         DP_table[node_index][hom] = DP_table[child_node_index][child_hom]
-    # print("DP_table at this node", DP_table[node_index])
 
 def _add_forget_node(DP_table, node, graph_TD, graph, target_graph, node_changes_dict):
     """
@@ -244,8 +179,6 @@ def _add_forget_node(DP_table, node, graph_TD, graph, target_graph, node_changes
     enum_homs = enumerate_homomorphisms(graph.subgraph(node_vertices),
                                        target_graph,
                                        as_tuples=True)
-    
-    # print("forget enum", enum_homs)
 
     for hom in enum_homs:
         sum = 0
@@ -253,17 +186,11 @@ def _add_forget_node(DP_table, node, graph_TD, graph, target_graph, node_changes
         for target_vtx in target_graph:
             extended_hom = tuple(sorted(hom + ((forgotten_vtx, target_vtx),),
                                                 key=lambda x: x[0]))
-            # print("ext hom", extended_hom)
-#             ext_hom_dict = dict(extended_hom)
-#             print("ext hom", ext_hom_dict)
             if is_valid_mapping(graph, target_graph, extended_hom):
-                # print("yay")
                 child_node_index = graph_TD.neighbors_out(node)[0][0]
-                # print("DP_table at child", DP_table[child_node_index])
                 sum += DP_table[child_node_index][extended_hom]
 
         DP_table[node_index][hom] = sum
-        # print("DP_table at this node", DP_table[node_index])
 
 def _add_join_node(DP_table, node, graph_TD, graph, target_graph):
     """
@@ -282,6 +209,7 @@ def _add_join_node(DP_table, node, graph_TD, graph, target_graph):
     for hom in enum_homs:
         DP_table[node_index][hom] = DP_table[left_child_index][hom] * DP_table[right_child_index][hom]
 
+# Helper functions
 
 def is_valid_mapping(G, H, mapping):
     for (G_fst_vtx, H_fst_vtx), (G_snd_vtx, H_snd_vtx) in combinations(mapping, 2):

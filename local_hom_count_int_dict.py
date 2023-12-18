@@ -1,8 +1,7 @@
 from sage.graphs.graph import Graph
 
-from local_hom_count import *
-
 from local_tree_decomp import *
+from helper_functions import *
 
 # In integer rep, the DP table is of the following form:
 # { node_index: [1, 2, 3, 4, 5],
@@ -99,57 +98,6 @@ def count_homomorphisms_int_dict(graph, target_graph):
 
     return DP_table[0][0]
 
-### Helper functions
-
-def extract_bag_vertex(mapping, index, graph_size):
-    r"""
-    Extract the bag vertex of `index` from `mapping`
-    """
-    # Equivalent to taking the floor
-    return mapping // (graph_size ** index) % graph_size
-
-def is_valid_mapping(mapped_intro_vtx, mapped_nbhrs, target_graph):
-    r"""
-    Checks if a mapping is valid in the target graph.
-
-    This function takes a vertex and its mapped neighbors, and checks if all the edges between the
-    vertex and its neighbors exist in the target graph. If any edge does not exist, the mapping
-    is considered invalid.
-
-    Parameters:
-    mapped_intro_vtx (int): The vertex for which the mapping is being checked.
-    mapped_nbhrs (list): A list of neighbors of the vertex in the mapping.
-    target_graph (networkx.Graph): The target graph where the mapping is being checked.
-
-    Returns:
-    bool: True if all edges between the vertex and its neighbors exist in the
-    target graph, False otherwise.
-    """
-    for vtx in mapped_nbhrs:
-        if not target_graph.has_edge(mapped_intro_vtx, vtx):
-            return False
-
-    return True
-
-def remove_vertex_from_mapping(mapping, index, graph_size):
-    r"""
-    Return a new mapping from removing vertex of `index` from `mapping`
-    """
-    left_digits = mapping - (mapping % (graph_size ** (index + 1)))
-    right_digits = mapping % (graph_size ** index)
-
-    return left_digits // graph_size + right_digits
-
-def add_vertex_into_mapping(new_vertex, mapping, index, graph_size):
-    r"""
-    Insert `new_vertex` at `index` into `mapping`
-    """
-    temp = graph_size ** index
-    right_digits = mapping % temp
-    left_digits = mapping - right_digits
-
-    return graph_size * left_digits + temp * new_vertex + right_digits
-
 ### Main adding functions
 
 def _add_leaf_node_int_dict(DP_table, node):
@@ -241,3 +189,12 @@ def _add_join_node_int_dict(DP_table, node, graph_TD):
     right_child_DP_entry = DP_table[right_child_index]
 
     DP_table[node_index] = {key: left_child_DP_entry[key] * right_child_DP_entry[key] for key in left_child_DP_entry}
+
+### Helper functions
+
+def is_valid_mapping(mapped_intro_vtx, mapped_nbhrs, target_graph):
+    for vtx in mapped_nbhrs:
+        if not target_graph.has_edge(mapped_intro_vtx, vtx):
+            return False
+
+    return True

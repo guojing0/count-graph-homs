@@ -1,8 +1,8 @@
 from sage.graphs.graph import Graph
 
-from local_hom_count import *
-
 from local_tree_decomp import *
+from helper_functions import *
+
 
 # In integer rep, the DP table is of the following form:
 # { node_index: [1, 2, 3, 4, 5],
@@ -88,8 +88,6 @@ def count_homomorphisms_int(graph, target_graph):
     # computed first, so we can safely go bottom-up.
     for node in reversed(dir_labelled_TD.vertices()):
         node_type = dir_labelled_TD.get_vertex(node)
-        # print(node, node_type)
-        # print()
 
         match node_type:
             case 'intro':
@@ -107,52 +105,6 @@ def count_homomorphisms_int(graph, target_graph):
 
     return DP_table[0][0]
 
-### Helper functions
-
-def extract_bag_vertex(mapping, index, graph_size):
-    r"""
-    Extract the bag vertex of `index` from `mapping`
-    """
-    # Equivalent to taking the floor
-    return mapping // (graph_size ** index) % graph_size
-
-def is_valid_mapping(mapping, intro_vtx, node, graph, target_graph):
-    node_index, node_vertices = node
-    node_vtx_tuple = tuple(node_vertices) # since its type is `set` is a node
-
-    target_graph_size = len(target_graph)
-
-    intro_vtx_index = node_vtx_tuple.index(intro_vtx)
-    mapped_intro_vtx = extract_bag_vertex(mapping, intro_vtx_index, target_graph_size)
-    # print("valid mapping: node vtx tuple", node_vtx_tuple)
-    for bag_vtx in node_vtx_tuple:
-        bag_vtx_index = node_vtx_tuple.index(bag_vtx)
-        mapped_bag_vtx = extract_bag_vertex(mapping, bag_vtx_index, target_graph_size)
-        # print("in valid mapping", mapped_intro_vtx, mapped_bag_vtx)
-        if graph.has_edge(intro_vtx, bag_vtx) and (not target_graph.has_edge(mapped_intro_vtx, mapped_bag_vtx)):
-            return False
-
-    return True
-
-def remove_vertex_from_mapping(mapping, index, graph_size):
-    r"""
-    Return a new mapping from removing vertex of `index` from `mapping`
-    """
-    left_digits = mapping - (mapping % (graph_size ** (index + 1)))
-    right_digits = mapping % (graph_size ** index)
-
-    # print("remove_vertex_from_mapping args:", mapping, index, graph_size)
-    # print("left and right digits:", left_digits, right_digits)
-
-    return left_digits // graph_size + right_digits
-
-def add_vertex_into_mapping(new_vertex, mapping, index, graph_size):
-    temp = graph_size ** index
-    right_digits = mapping % temp
-    left_digits = mapping - right_digits
-
-    return graph_size * left_digits + temp * new_vertex + right_digits
-
 ### Main adding functions
 
 def _add_leaf_node_int(DP_table, node):
@@ -163,10 +115,8 @@ def _add_leaf_node_int(DP_table, node):
 def _add_intro_node_int(DP_table, node, graph_TD, graph, target_graph, node_changes_dict):
     node_index, node_vertices = node
     node_vtx_tuple = tuple(node_vertices)
-    # print("node vtx tuple", node_vtx_tuple)
 
     child_node_index = get_node_index(graph_TD.neighbors_out(node)[0])
-    # print("child_node_index", child_node_index)
 
     target_graph_size = len(target_graph)
     mappings_length_range = range(target_graph_size ** len(node_vtx_tuple))
@@ -174,15 +124,10 @@ def _add_intro_node_int(DP_table, node, graph_TD, graph, target_graph, node_chan
 
     intro_vertex = node_changes_dict[node_index]
     intro_vtx_index = node_vtx_tuple.index(intro_vertex)
-    # print("intro vtx index", intro_vtx_index)
 
     for mapping in mappings_length_range:
         if is_valid_mapping(mapping, intro_vertex, node, graph, target_graph):
             child_mapping = remove_vertex_from_mapping(mapping, intro_vtx_index, target_graph_size)
-            # print("mapping", mapping)
-            # print("child_mapping", child_mapping)
-            # print("mappings count {}".format(mappings_count))
-            # print("DP table at child node {}\n".format(DP_table[child_node_index]))
             mappings_count[mapping] = DP_table[child_node_index][child_mapping]
 
     DP_table[node_index] = mappings_count
@@ -190,11 +135,9 @@ def _add_intro_node_int(DP_table, node, graph_TD, graph, target_graph, node_chan
 def _add_forget_node_int(DP_table, node, graph_TD, graph, target_graph, node_changes_dict):
     node_index, node_vertices = node
     node_vtx_tuple = tuple(node_vertices)
-    # print("node_vtx_tuple", node_vtx_tuple)
 
     child_node_index, child_node_vtx = graph_TD.neighbors_out(node)[0]
     child_node_vtx_tuple = tuple(child_node_vtx)
-    # print("child_node", child_node_index, child_node_vtx_tuple)
 
     target_graph_size = len(target_graph)
     mappings_length_range = range(target_graph_size ** len(node_vtx_tuple))
@@ -202,14 +145,12 @@ def _add_forget_node_int(DP_table, node, graph_TD, graph, target_graph, node_cha
 
     forgotten_vtx = node_changes_dict[node_index]
     forgotten_vtx_index = child_node_vtx_tuple.index(forgotten_vtx)
-    # print("forget vtx {} at index {}".format(forgotten_vtx, forgotten_vtx_index))
 
     for mapping in mappings_length_range:
         sum = 0
 
         for target_vtx in target_graph:
             extended_mapping = add_vertex_into_mapping(target_vtx, mapping, forgotten_vtx_index, target_graph_size)
-            # print("ext mapping", extended_mapping)
             sum += DP_table[child_node_index][extended_mapping]
 
         mappings_count[mapping] = sum
@@ -227,3 +168,22 @@ def _add_join_node_int(DP_table, node, graph_TD):
                         in zip(DP_table[left_child_index], DP_table[right_child_index])]
 
     DP_table[node_index] = mappings_count
+
+
+### Helper functions
+
+def is_valid_mapping(mapping, intro_vtx, node, graph, target_graph):
+    node_index, node_vertices = node
+    node_vtx_tuple = tuple(node_vertices) # since its type is `set` is a node
+
+    target_graph_size = len(target_graph)
+
+    intro_vtx_index = node_vtx_tuple.index(intro_vtx)
+    mapped_intro_vtx = extract_bag_vertex(mapping, intro_vtx_index, target_graph_size)
+    for bag_vtx in node_vtx_tuple:
+        bag_vtx_index = node_vtx_tuple.index(bag_vtx)
+        mapped_bag_vtx = extract_bag_vertex(mapping, bag_vtx_index, target_graph_size)
+        if graph.has_edge(intro_vtx, bag_vtx) and (not target_graph.has_edge(mapped_intro_vtx, mapped_bag_vtx)):
+            return False
+
+    return True
