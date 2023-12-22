@@ -37,23 +37,23 @@ def return_nice_TD(graph):
     dir_labelled_TD = label_nice_tree_decomposition(nice_tree_decomp, root, directed=True)
     return dir_labelled_TD
 
-# def timeit_magic(N, graph):
-#     int_time_list = []
-#     int_dict_time_list = []
+def timeit_magic(N, graph):
+    int_time_list = []
+    int_dict_time_list = []
 
-#     for i in range(1, 21):
-#         density = 0.05 * i
-#         print('density = {}\n'.format(density))
+    for i in range(1, 21):
+        density = 0.05 * i
+        print('density = {}\n'.format(density))
     
-#         target_graph = graphs.RandomGNP(N, density, seed=42)
+        target_graph = graphs.RandomGNP(N, density, seed=42)
     
-#         int_time = %timeit -r 5 -o count_homomorphisms_int_pre(graph, target_graph)
-#         int_dict_time = %timeit -r 5 -o count_homomorphisms_int_dict(graph, target_graph)
+        int_time = %timeit -r 5 -o count_homomorphisms_int_pre(graph, target_graph)
+        int_dict_time = %timeit -r 5 -o count_homomorphisms_int_dict(graph, target_graph)
 
-#         int_time_list.append(int_time.average)
-#         int_dict_time_list.append(int_dict_time.average)
+        int_time_list.append(int_time.average)
+        int_dict_time_list.append(int_dict_time.average)
     
-#     return int_time_list, int_dict_time_list
+    return int_time_list, int_dict_time_list
 
 def plot_result(fst_time, snd_time, title, filename):
     densities = [
