@@ -216,8 +216,3 @@ def is_valid_mapping(G, H, mapping):
         if G.has_edge(G_fst_vtx, G_snd_vtx) and (not H.has_edge(H_fst_vtx, H_snd_vtx)):
             return False
     return True
-
-### Bounded-degree homomorphism count
-
-def count_homomorphisms_bounded_degree(graph, target_graph):
-    pass
