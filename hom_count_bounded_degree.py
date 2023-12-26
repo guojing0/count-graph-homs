@@ -3,16 +3,9 @@ from itertools import chain
 
 def count_homomorphisms_bounded_degree(graph, target_graph):
     graph_traversal = list(graph.breadth_first_search(sorted(graph)[0]))
-    return count_homomorphisms_helper(graph, target_graph, graph_traversal, [], {})
+    return count_homomorphisms_helper(graph, target_graph, graph_traversal)
 
-def count_homomorphisms_helper(graph, target_graph, graph_traversal, target_traversal, memo):
-    traversal_tuple = tuple(target_traversal)
-    if traversal_tuple in memo:
-        return memo[traversal_tuple]
-
-    if len(traversal_tuple) > 3:
-        print(traversal_tuple)
-
+def count_homomorphisms_helper(graph, target_graph, graph_traversal, target_traversal):
     # If `target_traversal` is empty
     if not target_traversal:
         choices = target_graph.vertices()
@@ -22,21 +15,32 @@ def count_homomorphisms_helper(graph, target_graph, graph_traversal, target_trav
 
     hom_count = 0
     for choice in choices:
-        new_traversal = target_traversal + [choice]
+        new_target_traversal = target_traversal + [choice]
+
+        # Bounding condition: if the current partial traversal cannot lead to a homomorphism, skip it
+        # if not is_partial_traversal_valid(graph, target_graph, graph_traversal, new_target_traversal):
+        #     continue
 
         if len(target_traversal) == graph.order() - 1:
-            if is_traversal_homomorphism(graph, target_graph, graph_traversal, new_traversal):
+            mapping = dict(zip(graph_traversal, new_target_traversal))
+
+            if is_homomorphism(graph, target_graph, mapping):
                 hom_count += 1
         else:
-            hom_count += count_homomorphisms_helper(graph, target_graph, graph_traversal, new_traversal, memo)
+            hom_count += count_homomorphisms_helper(graph, target_graph, graph_traversal, new_target_traversal)
 
-    memo[traversal_tuple] = hom_count
     return hom_count
 
-def is_traversal_homomorphism(graph, target_graph, graph_traversal, target_traversal):
-    mapping = dict(zip(graph_traversal, target_traversal))
-    for vtx in graph:
-        for vtx_nbhr in graph.neighbor_iterator(vtx):
-            if not target_graph.has_edge(mapping[vtx], mapping[vtx_nbhr]):
-                return False
+def is_partial_traversal_valid(graph, target_graph, graph_traversal, target_traversal):
+    induced_traversal = graph_traversal[:len(target_traversal)]
+    induced_subgraph = graph.subgraph(induced_traversal)
+
+    mapping = dict(zip(induced_traversal, target_traversal))
+
+    return is_homomorphism(induced_subgraph, target_graph, mapping)
+
+def is_homomorphism(G, H, mapping):
+    for edge in G.edges(labels=False):
+        if not H.has_edge(mapping[edge[0]], mapping[edge[1]]):
+            return False
     return True
