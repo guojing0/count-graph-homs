@@ -1,11 +1,11 @@
 from local_tree_decomp import *
-from helper_functions cimport *
+from help_functions import *
 
 # In integer rep, the DP table is of the following form:
 # { node_index: [1, 2, 3, 4, 5],
 #   second_node_index: [10, 20, 30, 40, 50], ...}
 
-cpdef int count_homomorphisms_pyx(graph, target_graph):
+cpdef unsigned long long count_homomorphisms_pyx(graph, target_graph):
     r"""
     Return the number of homomorphisms from the graph `G` to the graph `H`.
 
@@ -44,11 +44,11 @@ cpdef int count_homomorphisms_pyx(graph, target_graph):
     if not isinstance(target_graph, Graph):
         raise ValueError("the second argument must be a sage Graph")
 
-    cdef int root
+    # cdef int root
     cdef list DP_table
     cdef dict node_changes_dict
     cdef str node_type
-    cdef list tree_decomp, nice_tree_decomp
+    # cdef Graph tree_decomp, nice_tree_decomp
     cdef tuple node
 
     graph._scream_if_not_simple()
@@ -105,7 +105,7 @@ cpdef int count_homomorphisms_pyx(graph, target_graph):
 
 ### Main adding functions
 
-cdef void _add_leaf_node_pyx(list DP_table, int node):
+cdef void _add_leaf_node_pyx(list DP_table, tuple node):
     r"""
     Add the leaf node to the DP table and update it accordingly.
     """
@@ -154,10 +154,11 @@ cdef void _add_intro_node_pyx(list DP_table, tuple node, graph_TD, graph, target
     DP_table[node_index] = mappings_count
 
 cdef void _add_forget_node_pyx(list DP_table, tuple node, graph_TD, graph, target_graph, dict node_changes_dict):
-    cdef int node_index, child_node_index, target_graph_size, forgotten_vtx_index, mapping, extended_mapping, target_vtx, sum
+    cdef int node_index, child_node_index, target_graph_size, forgotten_vtx_index, mapping, extended_mapping, target_vtx
+    cdef int sum
     cdef tuple node_vtx_tuple, child_node_vtx_tuple
     cdef list mappings_count
-    cdef dict child_DP_entry
+    cdef list child_DP_entry
 
     # Basic setup
     node_index, node_vertices = node
@@ -190,7 +191,7 @@ cdef void _add_forget_node_pyx(list DP_table, tuple node, graph_TD, graph, targe
 
 cdef void _add_join_node_pyx(list DP_table, tuple node, graph_TD):
     cdef int node_index, left_child_index, right_child_index
-    cdef set node_vertices
+    # cdef set node_vertices
     cdef list mappings_count
 
     node_index, node_vertices = node
