@@ -1,5 +1,4 @@
 # cython: binding=True
-# cython: language_level=3
 
 ### General helper functions
 
