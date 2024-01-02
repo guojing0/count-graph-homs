@@ -3,12 +3,12 @@
 /* BEGIN: Cython Metadata
 {
     "distutils": {
-        "name": "helper_functions",
+        "name": "helper_functions_pyx",
         "sources": [
-            "helper_functions.pyx"
+            "helper_functions_pyx.pyx"
         ]
     },
-    "module_name": "helper_functions"
+    "module_name": "helper_functions_pyx"
 }
 END: Cython Metadata */
 
@@ -702,8 +702,8 @@ static CYTHON_INLINE float __PYX_NAN() {
   #endif
 #endif
 
-#define __PYX_HAVE__helper_functions
-#define __PYX_HAVE_API__helper_functions
+#define __PYX_HAVE__helper_functions_pyx
+#define __PYX_HAVE_API__helper_functions_pyx
 /* Early includes */
 #ifdef _OPENMP
 #include <omp.h>
@@ -914,7 +914,7 @@ static const char *__pyx_filename;
 
 
 static const char *__pyx_f[] = {
-  "helper_functions.pyx",
+  "helper_functions_pyx.pyx",
 };
 
 /*--- Type declarations ---*/
@@ -1370,16 +1370,16 @@ static int __Pyx_check_binary_version(void);
 static int __Pyx_InitStrings(__Pyx_StringTabEntry *t);
 
 
-/* Module declarations from 'helper_functions' */
-static PyObject *__pyx_f_16helper_functions_node_changes(PyObject *, int __pyx_skip_dispatch); /*proto*/
-static int __pyx_f_16helper_functions_extract_bag_vertex(int, int, int, int __pyx_skip_dispatch); /*proto*/
-static int __pyx_f_16helper_functions_add_vertex_into_mapping(int, int, int, int, int __pyx_skip_dispatch); /*proto*/
-static int __pyx_f_16helper_functions_remove_vertex_from_mapping(int, int, int, int __pyx_skip_dispatch); /*proto*/
-#define __Pyx_MODULE_NAME "helper_functions"
-extern int __pyx_module_is_main_helper_functions;
-int __pyx_module_is_main_helper_functions = 0;
+/* Module declarations from 'helper_functions_pyx' */
+static PyObject *__pyx_f_20helper_functions_pyx_node_changes(PyObject *, int __pyx_skip_dispatch); /*proto*/
+static int __pyx_f_20helper_functions_pyx_extract_bag_vertex(int, int, int, int __pyx_skip_dispatch); /*proto*/
+static int __pyx_f_20helper_functions_pyx_add_vertex_into_mapping(int, int, int, int, int __pyx_skip_dispatch); /*proto*/
+static int __pyx_f_20helper_functions_pyx_remove_vertex_from_mapping(int, int, int, int __pyx_skip_dispatch); /*proto*/
+#define __Pyx_MODULE_NAME "helper_functions_pyx"
+extern int __pyx_module_is_main_helper_functions_pyx;
+int __pyx_module_is_main_helper_functions_pyx = 0;
 
-/* Implementation of 'helper_functions' */
+/* Implementation of 'helper_functions_pyx' */
 static const char __pyx_k_pop[] = "pop";
 static const char __pyx_k_main[] = "__main__";
 static const char __pyx_k_name[] = "__name__";
@@ -1397,12 +1397,12 @@ static const char __pyx_k_node_changes[] = "node_changes";
 static const char __pyx_k_neighbors_out[] = "neighbors_out";
 static const char __pyx_k_get_node_index[] = "get_node_index";
 static const char __pyx_k_get_node_content[] = "get_node_content";
-static const char __pyx_k_helper_functions[] = "helper_functions";
 static const char __pyx_k_cline_in_traceback[] = "cline_in_traceback";
 static const char __pyx_k_extract_bag_vertex[] = "extract_bag_vertex";
-static const char __pyx_k_helper_functions_pyx[] = "helper_functions.pyx";
+static const char __pyx_k_helper_functions_pyx[] = "helper_functions_pyx";
 static const char __pyx_k_symmetric_difference[] = "symmetric_difference";
 static const char __pyx_k_add_vertex_into_mapping[] = "add_vertex_into_mapping";
+static const char __pyx_k_helper_functions_pyx_pyx[] = "helper_functions_pyx.pyx";
 static const char __pyx_k_remove_vertex_from_mapping[] = "remove_vertex_from_mapping";
 static PyObject *__pyx_n_s_add_vertex_into_mapping;
 static PyObject *__pyx_n_s_cline_in_traceback;
@@ -1412,8 +1412,8 @@ static PyObject *__pyx_n_s_get_node_content;
 static PyObject *__pyx_n_s_get_node_index;
 static PyObject *__pyx_n_s_get_vertex;
 static PyObject *__pyx_n_s_graph_size;
-static PyObject *__pyx_n_s_helper_functions;
-static PyObject *__pyx_kp_s_helper_functions_pyx;
+static PyObject *__pyx_n_s_helper_functions_pyx;
+static PyObject *__pyx_kp_s_helper_functions_pyx_pyx;
 static PyObject *__pyx_n_s_index;
 static PyObject *__pyx_n_s_intro;
 static PyObject *__pyx_n_s_labelled_TD;
@@ -1428,12 +1428,12 @@ static PyObject *__pyx_n_s_pop;
 static PyObject *__pyx_n_s_remove_vertex_from_mapping;
 static PyObject *__pyx_n_s_symmetric_difference;
 static PyObject *__pyx_n_s_test;
-static PyObject *__pyx_pf_16helper_functions_get_node_index(CYTHON_UNUSED PyObject *__pyx_self, PyObject *__pyx_v_node); /* proto */
-static PyObject *__pyx_pf_16helper_functions_2get_node_content(CYTHON_UNUSED PyObject *__pyx_self, PyObject *__pyx_v_node); /* proto */
-static PyObject *__pyx_pf_16helper_functions_4node_changes(CYTHON_UNUSED PyObject *__pyx_self, PyObject *__pyx_v_labelled_TD); /* proto */
-static PyObject *__pyx_pf_16helper_functions_6extract_bag_vertex(CYTHON_UNUSED PyObject *__pyx_self, int __pyx_v_mapping, int __pyx_v_index, int __pyx_v_graph_size); /* proto */
-static PyObject *__pyx_pf_16helper_functions_8add_vertex_into_mapping(CYTHON_UNUSED PyObject *__pyx_self, int __pyx_v_new_vertex, int __pyx_v_mapping, int __pyx_v_index, int __pyx_v_graph_size); /* proto */
-static PyObject *__pyx_pf_16helper_functions_10remove_vertex_from_mapping(CYTHON_UNUSED PyObject *__pyx_self, int __pyx_v_mapping, int __pyx_v_index, int __pyx_v_graph_size); /* proto */
+static PyObject *__pyx_pf_20helper_functions_pyx_get_node_index(CYTHON_UNUSED PyObject *__pyx_self, PyObject *__pyx_v_node); /* proto */
+static PyObject *__pyx_pf_20helper_functions_pyx_2get_node_content(CYTHON_UNUSED PyObject *__pyx_self, PyObject *__pyx_v_node); /* proto */
+static PyObject *__pyx_pf_20helper_functions_pyx_4node_changes(CYTHON_UNUSED PyObject *__pyx_self, PyObject *__pyx_v_labelled_TD); /* proto */
+static PyObject *__pyx_pf_20helper_functions_pyx_6extract_bag_vertex(CYTHON_UNUSED PyObject *__pyx_self, int __pyx_v_mapping, int __pyx_v_index, int __pyx_v_graph_size); /* proto */
+static PyObject *__pyx_pf_20helper_functions_pyx_8add_vertex_into_mapping(CYTHON_UNUSED PyObject *__pyx_self, int __pyx_v_new_vertex, int __pyx_v_mapping, int __pyx_v_index, int __pyx_v_graph_size); /* proto */
+static PyObject *__pyx_pf_20helper_functions_pyx_10remove_vertex_from_mapping(CYTHON_UNUSED PyObject *__pyx_self, int __pyx_v_mapping, int __pyx_v_index, int __pyx_v_graph_size); /* proto */
 static __Pyx_CachedCFunction __pyx_umethod_PyList_Type_pop = {0, &__pyx_n_s_pop, 0, 0, 0};
 static PyObject *__pyx_tuple_;
 static PyObject *__pyx_tuple__3;
@@ -1449,7 +1449,7 @@ static PyObject *__pyx_codeobj__10;
 static PyObject *__pyx_codeobj__12;
 /* Late includes */
 
-/* "helper_functions.pyx":5
+/* "helper_functions_pyx.pyx":5
  * ### General helper functions
  * 
  * def get_node_index(node):             # <<<<<<<<<<<<<<
@@ -1458,20 +1458,20 @@ static PyObject *__pyx_codeobj__12;
  */
 
 /* Python wrapper */
-static PyObject *__pyx_pw_16helper_functions_1get_node_index(PyObject *__pyx_self, PyObject *__pyx_v_node); /*proto*/
-static PyMethodDef __pyx_mdef_16helper_functions_1get_node_index = {"get_node_index", (PyCFunction)__pyx_pw_16helper_functions_1get_node_index, METH_O, 0};
-static PyObject *__pyx_pw_16helper_functions_1get_node_index(PyObject *__pyx_self, PyObject *__pyx_v_node) {
+static PyObject *__pyx_pw_20helper_functions_pyx_1get_node_index(PyObject *__pyx_self, PyObject *__pyx_v_node); /*proto*/
+static PyMethodDef __pyx_mdef_20helper_functions_pyx_1get_node_index = {"get_node_index", (PyCFunction)__pyx_pw_20helper_functions_pyx_1get_node_index, METH_O, 0};
+static PyObject *__pyx_pw_20helper_functions_pyx_1get_node_index(PyObject *__pyx_self, PyObject *__pyx_v_node) {
   PyObject *__pyx_r = 0;
   __Pyx_RefNannyDeclarations
   __Pyx_RefNannySetupContext("get_node_index (wrapper)", 0);
-  __pyx_r = __pyx_pf_16helper_functions_get_node_index(__pyx_self, ((PyObject *)__pyx_v_node));
+  __pyx_r = __pyx_pf_20helper_functions_pyx_get_node_index(__pyx_self, ((PyObject *)__pyx_v_node));
 
   /* function exit code */
   __Pyx_RefNannyFinishContext();
   return __pyx_r;
 }
 
-static PyObject *__pyx_pf_16helper_functions_get_node_index(CYTHON_UNUSED PyObject *__pyx_self, PyObject *__pyx_v_node) {
+static PyObject *__pyx_pf_20helper_functions_pyx_get_node_index(CYTHON_UNUSED PyObject *__pyx_self, PyObject *__pyx_v_node) {
   PyObject *__pyx_r = NULL;
   __Pyx_RefNannyDeclarations
   PyObject *__pyx_t_1 = NULL;
@@ -1480,7 +1480,7 @@ static PyObject *__pyx_pf_16helper_functions_get_node_index(CYTHON_UNUSED PyObje
   int __pyx_clineno = 0;
   __Pyx_RefNannySetupContext("get_node_index", 0);
 
-  /* "helper_functions.pyx":6
+  /* "helper_functions_pyx.pyx":6
  * 
  * def get_node_index(node):
  *     return node[0]             # <<<<<<<<<<<<<<
@@ -1494,7 +1494,7 @@ static PyObject *__pyx_pf_16helper_functions_get_node_index(CYTHON_UNUSED PyObje
   __pyx_t_1 = 0;
   goto __pyx_L0;
 
-  /* "helper_functions.pyx":5
+  /* "helper_functions_pyx.pyx":5
  * ### General helper functions
  * 
  * def get_node_index(node):             # <<<<<<<<<<<<<<
@@ -1505,7 +1505,7 @@ static PyObject *__pyx_pf_16helper_functions_get_node_index(CYTHON_UNUSED PyObje
   /* function exit code */
   __pyx_L1_error:;
   __Pyx_XDECREF(__pyx_t_1);
-  __Pyx_AddTraceback("helper_functions.get_node_index", __pyx_clineno, __pyx_lineno, __pyx_filename);
+  __Pyx_AddTraceback("helper_functions_pyx.get_node_index", __pyx_clineno, __pyx_lineno, __pyx_filename);
   __pyx_r = NULL;
   __pyx_L0:;
   __Pyx_XGIVEREF(__pyx_r);
@@ -1513,7 +1513,7 @@ static PyObject *__pyx_pf_16helper_functions_get_node_index(CYTHON_UNUSED PyObje
   return __pyx_r;
 }
 
-/* "helper_functions.pyx":8
+/* "helper_functions_pyx.pyx":8
  *     return node[0]
  * 
  * def get_node_content(node):             # <<<<<<<<<<<<<<
@@ -1522,20 +1522,20 @@ static PyObject *__pyx_pf_16helper_functions_get_node_index(CYTHON_UNUSED PyObje
  */
 
 /* Python wrapper */
-static PyObject *__pyx_pw_16helper_functions_3get_node_content(PyObject *__pyx_self, PyObject *__pyx_v_node); /*proto*/
-static PyMethodDef __pyx_mdef_16helper_functions_3get_node_content = {"get_node_content", (PyCFunction)__pyx_pw_16helper_functions_3get_node_content, METH_O, 0};
-static PyObject *__pyx_pw_16helper_functions_3get_node_content(PyObject *__pyx_self, PyObject *__pyx_v_node) {
+static PyObject *__pyx_pw_20helper_functions_pyx_3get_node_content(PyObject *__pyx_self, PyObject *__pyx_v_node); /*proto*/
+static PyMethodDef __pyx_mdef_20helper_functions_pyx_3get_node_content = {"get_node_content", (PyCFunction)__pyx_pw_20helper_functions_pyx_3get_node_content, METH_O, 0};
+static PyObject *__pyx_pw_20helper_functions_pyx_3get_node_content(PyObject *__pyx_self, PyObject *__pyx_v_node) {
   PyObject *__pyx_r = 0;
   __Pyx_RefNannyDeclarations
   __Pyx_RefNannySetupContext("get_node_content (wrapper)", 0);
-  __pyx_r = __pyx_pf_16helper_functions_2get_node_content(__pyx_self, ((PyObject *)__pyx_v_node));
+  __pyx_r = __pyx_pf_20helper_functions_pyx_2get_node_content(__pyx_self, ((PyObject *)__pyx_v_node));
 
   /* function exit code */
   __Pyx_RefNannyFinishContext();
   return __pyx_r;
 }
 
-static PyObject *__pyx_pf_16helper_functions_2get_node_content(CYTHON_UNUSED PyObject *__pyx_self, PyObject *__pyx_v_node) {
+static PyObject *__pyx_pf_20helper_functions_pyx_2get_node_content(CYTHON_UNUSED PyObject *__pyx_self, PyObject *__pyx_v_node) {
   PyObject *__pyx_r = NULL;
   __Pyx_RefNannyDeclarations
   PyObject *__pyx_t_1 = NULL;
@@ -1544,7 +1544,7 @@ static PyObject *__pyx_pf_16helper_functions_2get_node_content(CYTHON_UNUSED PyO
   int __pyx_clineno = 0;
   __Pyx_RefNannySetupContext("get_node_content", 0);
 
-  /* "helper_functions.pyx":9
+  /* "helper_functions_pyx.pyx":9
  * 
  * def get_node_content(node):
  *     return node[1]             # <<<<<<<<<<<<<<
@@ -1558,7 +1558,7 @@ static PyObject *__pyx_pf_16helper_functions_2get_node_content(CYTHON_UNUSED PyO
   __pyx_t_1 = 0;
   goto __pyx_L0;
 
-  /* "helper_functions.pyx":8
+  /* "helper_functions_pyx.pyx":8
  *     return node[0]
  * 
  * def get_node_content(node):             # <<<<<<<<<<<<<<
@@ -1569,7 +1569,7 @@ static PyObject *__pyx_pf_16helper_functions_2get_node_content(CYTHON_UNUSED PyO
   /* function exit code */
   __pyx_L1_error:;
   __Pyx_XDECREF(__pyx_t_1);
-  __Pyx_AddTraceback("helper_functions.get_node_content", __pyx_clineno, __pyx_lineno, __pyx_filename);
+  __Pyx_AddTraceback("helper_functions_pyx.get_node_content", __pyx_clineno, __pyx_lineno, __pyx_filename);
   __pyx_r = NULL;
   __pyx_L0:;
   __Pyx_XGIVEREF(__pyx_r);
@@ -1577,7 +1577,7 @@ static PyObject *__pyx_pf_16helper_functions_2get_node_content(CYTHON_UNUSED PyO
   return __pyx_r;
 }
 
-/* "helper_functions.pyx":11
+/* "helper_functions_pyx.pyx":11
  *     return node[1]
  * 
  * cpdef dict node_changes(labelled_TD):             # <<<<<<<<<<<<<<
@@ -1585,8 +1585,8 @@ static PyObject *__pyx_pf_16helper_functions_2get_node_content(CYTHON_UNUSED PyO
  *     Record introduced and forgotten nodes in a directed labelled nice tree decomposition.
  */
 
-static PyObject *__pyx_pw_16helper_functions_5node_changes(PyObject *__pyx_self, PyObject *__pyx_v_labelled_TD); /*proto*/
-static PyObject *__pyx_f_16helper_functions_node_changes(PyObject *__pyx_v_labelled_TD, CYTHON_UNUSED int __pyx_skip_dispatch) {
+static PyObject *__pyx_pw_20helper_functions_pyx_5node_changes(PyObject *__pyx_self, PyObject *__pyx_v_labelled_TD); /*proto*/
+static PyObject *__pyx_f_20helper_functions_pyx_node_changes(PyObject *__pyx_v_labelled_TD, CYTHON_UNUSED int __pyx_skip_dispatch) {
   PyObject *__pyx_v_node_changes_dict = 0;
   int __pyx_v_node_index;
   PyObject *__pyx_v_node_vertex_set = 0;
@@ -1613,7 +1613,7 @@ static PyObject *__pyx_f_16helper_functions_node_changes(PyObject *__pyx_v_label
   int __pyx_clineno = 0;
   __Pyx_RefNannySetupContext("node_changes", 0);
 
-  /* "helper_functions.pyx":36
+  /* "helper_functions_pyx.pyx":36
  *         {1: 1, 2: 1, 3: 4, 5: 4, 6: 4, 7: 3, 8: 2, 9: 0, 10: 0, 11: 3, 12: 2}
  *     """
  *     cdef dict node_changes_dict = {}             # <<<<<<<<<<<<<<
@@ -1625,7 +1625,7 @@ static PyObject *__pyx_f_16helper_functions_node_changes(PyObject *__pyx_v_label
   __pyx_v_node_changes_dict = ((PyObject*)__pyx_t_1);
   __pyx_t_1 = 0;
 
-  /* "helper_functions.pyx":41
+  /* "helper_functions_pyx.pyx":41
  *     cdef str node_type
  * 
  *     for node in sorted(labelled_TD):             # <<<<<<<<<<<<<<
@@ -1654,7 +1654,7 @@ static PyObject *__pyx_f_16helper_functions_node_changes(PyObject *__pyx_v_label
     __Pyx_XDECREF_SET(__pyx_v_node, __pyx_t_1);
     __pyx_t_1 = 0;
 
-    /* "helper_functions.pyx":42
+    /* "helper_functions_pyx.pyx":42
  * 
  *     for node in sorted(labelled_TD):
  *         node_index, node_vertex_set = node             # <<<<<<<<<<<<<<
@@ -1711,7 +1711,7 @@ static PyObject *__pyx_f_16helper_functions_node_changes(PyObject *__pyx_v_label
     __Pyx_XDECREF_SET(__pyx_v_node_vertex_set, __pyx_t_5);
     __pyx_t_5 = 0;
 
-    /* "helper_functions.pyx":44
+    /* "helper_functions_pyx.pyx":44
  *         node_index, node_vertex_set = node
  * 
  *         node_type = labelled_TD.get_vertex(node)             # <<<<<<<<<<<<<<
@@ -1739,7 +1739,7 @@ static PyObject *__pyx_f_16helper_functions_node_changes(PyObject *__pyx_v_label
     __Pyx_XDECREF_SET(__pyx_v_node_type, ((PyObject*)__pyx_t_5));
     __pyx_t_5 = 0;
 
-    /* "helper_functions.pyx":46
+    /* "helper_functions_pyx.pyx":46
  *         node_type = labelled_TD.get_vertex(node)
  * 
  *         if node_type in ['intro', 'forget']:             # <<<<<<<<<<<<<<
@@ -1763,7 +1763,7 @@ static PyObject *__pyx_f_16helper_functions_node_changes(PyObject *__pyx_v_label
     __pyx_t_11 = (__pyx_t_10 != 0);
     if (__pyx_t_11) {
 
-      /* "helper_functions.pyx":47
+      /* "helper_functions_pyx.pyx":47
  * 
  *         if node_type in ['intro', 'forget']:
  *             child_vertex_set = labelled_TD.neighbors_out(node)[0][1]             # <<<<<<<<<<<<<<
@@ -1796,7 +1796,7 @@ static PyObject *__pyx_f_16helper_functions_node_changes(PyObject *__pyx_v_label
       __Pyx_XDECREF_SET(__pyx_v_child_vertex_set, __pyx_t_5);
       __pyx_t_5 = 0;
 
-      /* "helper_functions.pyx":48
+      /* "helper_functions_pyx.pyx":48
  *         if node_type in ['intro', 'forget']:
  *             child_vertex_set = labelled_TD.neighbors_out(node)[0][1]
  *             extra_vertex = (node_vertex_set.symmetric_difference(child_vertex_set)).pop()             # <<<<<<<<<<<<<<
@@ -1826,7 +1826,7 @@ static PyObject *__pyx_f_16helper_functions_node_changes(PyObject *__pyx_v_label
       __Pyx_XDECREF_SET(__pyx_v_extra_vertex, __pyx_t_1);
       __pyx_t_1 = 0;
 
-      /* "helper_functions.pyx":49
+      /* "helper_functions_pyx.pyx":49
  *             child_vertex_set = labelled_TD.neighbors_out(node)[0][1]
  *             extra_vertex = (node_vertex_set.symmetric_difference(child_vertex_set)).pop()
  *             node_changes_dict[node_index] = extra_vertex             # <<<<<<<<<<<<<<
@@ -1838,7 +1838,7 @@ static PyObject *__pyx_f_16helper_functions_node_changes(PyObject *__pyx_v_label
       if (unlikely(PyDict_SetItem(__pyx_v_node_changes_dict, __pyx_t_1, __pyx_v_extra_vertex) < 0)) __PYX_ERR(0, 49, __pyx_L1_error)
       __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
 
-      /* "helper_functions.pyx":46
+      /* "helper_functions_pyx.pyx":46
  *         node_type = labelled_TD.get_vertex(node)
  * 
  *         if node_type in ['intro', 'forget']:             # <<<<<<<<<<<<<<
@@ -1847,7 +1847,7 @@ static PyObject *__pyx_f_16helper_functions_node_changes(PyObject *__pyx_v_label
  */
     }
 
-    /* "helper_functions.pyx":41
+    /* "helper_functions_pyx.pyx":41
  *     cdef str node_type
  * 
  *     for node in sorted(labelled_TD):             # <<<<<<<<<<<<<<
@@ -1857,7 +1857,7 @@ static PyObject *__pyx_f_16helper_functions_node_changes(PyObject *__pyx_v_label
   }
   __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
 
-  /* "helper_functions.pyx":63
+  /* "helper_functions_pyx.pyx":63
  *         #         node_changes_dict[node_index] = extra_vertex
  * 
  *     return node_changes_dict             # <<<<<<<<<<<<<<
@@ -1869,7 +1869,7 @@ static PyObject *__pyx_f_16helper_functions_node_changes(PyObject *__pyx_v_label
   __pyx_r = __pyx_v_node_changes_dict;
   goto __pyx_L0;
 
-  /* "helper_functions.pyx":11
+  /* "helper_functions_pyx.pyx":11
  *     return node[1]
  * 
  * cpdef dict node_changes(labelled_TD):             # <<<<<<<<<<<<<<
@@ -1884,7 +1884,7 @@ static PyObject *__pyx_f_16helper_functions_node_changes(PyObject *__pyx_v_label
   __Pyx_XDECREF(__pyx_t_5);
   __Pyx_XDECREF(__pyx_t_6);
   __Pyx_XDECREF(__pyx_t_9);
-  __Pyx_AddTraceback("helper_functions.node_changes", __pyx_clineno, __pyx_lineno, __pyx_filename);
+  __Pyx_AddTraceback("helper_functions_pyx.node_changes", __pyx_clineno, __pyx_lineno, __pyx_filename);
   __pyx_r = 0;
   __pyx_L0:;
   __Pyx_XDECREF(__pyx_v_node_changes_dict);
@@ -1899,21 +1899,21 @@ static PyObject *__pyx_f_16helper_functions_node_changes(PyObject *__pyx_v_label
 }
 
 /* Python wrapper */
-static PyObject *__pyx_pw_16helper_functions_5node_changes(PyObject *__pyx_self, PyObject *__pyx_v_labelled_TD); /*proto*/
-static char __pyx_doc_16helper_functions_4node_changes[] = "\n    Record introduced and forgotten nodes in a directed labelled nice tree decomposition.\n\n    INPUT:\n\n    - ``labelled_TD`` -- a directed labelled nice tree decomposition,\n      with the root as source of the dirgraph\n\n    OUTPUT:\n\n    - A dictionary of recorded nodes, where the `key` is node index, and\n      the `value` is the introduced/forgotten node\n\n    EXAMPLES::\n\n        sage: from sage.graphs.graph_decompositions.tree_decomposition import label_nice_tree_decomposition\n        sage: from sage.graphs.hom_count import node_changes\n        sage: bip_one_four = graphs.CompleteBipartiteGraph(1, 4)\n        sage: nice_tree_decomp = bip_one_four.treewidth(certificate=True, nice=True)\n        sage: root = sorted(nice_tree_decomp)[0]\n        sage: dir_labelled_TD = label_nice_tree_decomposition(nice_tree_decomp, root, directed=True)\n        sage: node_changes(dir_labelled_TD)\n        {1: 1, 2: 1, 3: 4, 5: 4, 6: 4, 7: 3, 8: 2, 9: 0, 10: 0, 11: 3, 12: 2}\n    ";
-static PyMethodDef __pyx_mdef_16helper_functions_5node_changes = {"node_changes", (PyCFunction)__pyx_pw_16helper_functions_5node_changes, METH_O, __pyx_doc_16helper_functions_4node_changes};
-static PyObject *__pyx_pw_16helper_functions_5node_changes(PyObject *__pyx_self, PyObject *__pyx_v_labelled_TD) {
+static PyObject *__pyx_pw_20helper_functions_pyx_5node_changes(PyObject *__pyx_self, PyObject *__pyx_v_labelled_TD); /*proto*/
+static char __pyx_doc_20helper_functions_pyx_4node_changes[] = "\n    Record introduced and forgotten nodes in a directed labelled nice tree decomposition.\n\n    INPUT:\n\n    - ``labelled_TD`` -- a directed labelled nice tree decomposition,\n      with the root as source of the dirgraph\n\n    OUTPUT:\n\n    - A dictionary of recorded nodes, where the `key` is node index, and\n      the `value` is the introduced/forgotten node\n\n    EXAMPLES::\n\n        sage: from sage.graphs.graph_decompositions.tree_decomposition import label_nice_tree_decomposition\n        sage: from sage.graphs.hom_count import node_changes\n        sage: bip_one_four = graphs.CompleteBipartiteGraph(1, 4)\n        sage: nice_tree_decomp = bip_one_four.treewidth(certificate=True, nice=True)\n        sage: root = sorted(nice_tree_decomp)[0]\n        sage: dir_labelled_TD = label_nice_tree_decomposition(nice_tree_decomp, root, directed=True)\n        sage: node_changes(dir_labelled_TD)\n        {1: 1, 2: 1, 3: 4, 5: 4, 6: 4, 7: 3, 8: 2, 9: 0, 10: 0, 11: 3, 12: 2}\n    ";
+static PyMethodDef __pyx_mdef_20helper_functions_pyx_5node_changes = {"node_changes", (PyCFunction)__pyx_pw_20helper_functions_pyx_5node_changes, METH_O, __pyx_doc_20helper_functions_pyx_4node_changes};
+static PyObject *__pyx_pw_20helper_functions_pyx_5node_changes(PyObject *__pyx_self, PyObject *__pyx_v_labelled_TD) {
   PyObject *__pyx_r = 0;
   __Pyx_RefNannyDeclarations
   __Pyx_RefNannySetupContext("node_changes (wrapper)", 0);
-  __pyx_r = __pyx_pf_16helper_functions_4node_changes(__pyx_self, ((PyObject *)__pyx_v_labelled_TD));
+  __pyx_r = __pyx_pf_20helper_functions_pyx_4node_changes(__pyx_self, ((PyObject *)__pyx_v_labelled_TD));
 
   /* function exit code */
   __Pyx_RefNannyFinishContext();
   return __pyx_r;
 }
 
-static PyObject *__pyx_pf_16helper_functions_4node_changes(CYTHON_UNUSED PyObject *__pyx_self, PyObject *__pyx_v_labelled_TD) {
+static PyObject *__pyx_pf_20helper_functions_pyx_4node_changes(CYTHON_UNUSED PyObject *__pyx_self, PyObject *__pyx_v_labelled_TD) {
   PyObject *__pyx_r = NULL;
   __Pyx_RefNannyDeclarations
   PyObject *__pyx_t_1 = NULL;
@@ -1922,7 +1922,7 @@ static PyObject *__pyx_pf_16helper_functions_4node_changes(CYTHON_UNUSED PyObjec
   int __pyx_clineno = 0;
   __Pyx_RefNannySetupContext("node_changes", 0);
   __Pyx_XDECREF(__pyx_r);
-  __pyx_t_1 = __pyx_f_16helper_functions_node_changes(__pyx_v_labelled_TD, 0); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 11, __pyx_L1_error)
+  __pyx_t_1 = __pyx_f_20helper_functions_pyx_node_changes(__pyx_v_labelled_TD, 0); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 11, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
   __pyx_r = __pyx_t_1;
   __pyx_t_1 = 0;
@@ -1931,7 +1931,7 @@ static PyObject *__pyx_pf_16helper_functions_4node_changes(CYTHON_UNUSED PyObjec
   /* function exit code */
   __pyx_L1_error:;
   __Pyx_XDECREF(__pyx_t_1);
-  __Pyx_AddTraceback("helper_functions.node_changes", __pyx_clineno, __pyx_lineno, __pyx_filename);
+  __Pyx_AddTraceback("helper_functions_pyx.node_changes", __pyx_clineno, __pyx_lineno, __pyx_filename);
   __pyx_r = NULL;
   __pyx_L0:;
   __Pyx_XGIVEREF(__pyx_r);
@@ -1939,7 +1939,7 @@ static PyObject *__pyx_pf_16helper_functions_4node_changes(CYTHON_UNUSED PyObjec
   return __pyx_r;
 }
 
-/* "helper_functions.pyx":68
+/* "helper_functions_pyx.pyx":68
  * ### For integer representation
  * 
  * cpdef int extract_bag_vertex(int mapping, int index, int graph_size):             # <<<<<<<<<<<<<<
@@ -1947,8 +1947,8 @@ static PyObject *__pyx_pf_16helper_functions_4node_changes(CYTHON_UNUSED PyObjec
  *     Extract the bag vertex of `index` from `mapping`
  */
 
-static PyObject *__pyx_pw_16helper_functions_7extract_bag_vertex(PyObject *__pyx_self, PyObject *__pyx_args, PyObject *__pyx_kwds); /*proto*/
-static int __pyx_f_16helper_functions_extract_bag_vertex(int __pyx_v_mapping, int __pyx_v_index, int __pyx_v_graph_size, CYTHON_UNUSED int __pyx_skip_dispatch) {
+static PyObject *__pyx_pw_20helper_functions_pyx_7extract_bag_vertex(PyObject *__pyx_self, PyObject *__pyx_args, PyObject *__pyx_kwds); /*proto*/
+static int __pyx_f_20helper_functions_pyx_extract_bag_vertex(int __pyx_v_mapping, int __pyx_v_index, int __pyx_v_graph_size, CYTHON_UNUSED int __pyx_skip_dispatch) {
   int __pyx_r;
   __Pyx_RefNannyDeclarations
   PyObject *__pyx_t_1 = NULL;
@@ -1960,7 +1960,7 @@ static int __pyx_f_16helper_functions_extract_bag_vertex(int __pyx_v_mapping, in
   int __pyx_clineno = 0;
   __Pyx_RefNannySetupContext("extract_bag_vertex", 0);
 
-  /* "helper_functions.pyx":73
+  /* "helper_functions_pyx.pyx":73
  *     """
  *     # Equivalent to taking the floor
  *     return mapping // int(graph_size ** index) % graph_size             # <<<<<<<<<<<<<<
@@ -1989,7 +1989,7 @@ static int __pyx_f_16helper_functions_extract_bag_vertex(int __pyx_v_mapping, in
   __pyx_r = __pyx_t_4;
   goto __pyx_L0;
 
-  /* "helper_functions.pyx":68
+  /* "helper_functions_pyx.pyx":68
  * ### For integer representation
  * 
  * cpdef int extract_bag_vertex(int mapping, int index, int graph_size):             # <<<<<<<<<<<<<<
@@ -2002,7 +2002,7 @@ static int __pyx_f_16helper_functions_extract_bag_vertex(int __pyx_v_mapping, in
   __Pyx_XDECREF(__pyx_t_1);
   __Pyx_XDECREF(__pyx_t_2);
   __Pyx_XDECREF(__pyx_t_3);
-  __Pyx_WriteUnraisable("helper_functions.extract_bag_vertex", __pyx_clineno, __pyx_lineno, __pyx_filename, 1, 0);
+  __Pyx_WriteUnraisable("helper_functions_pyx.extract_bag_vertex", __pyx_clineno, __pyx_lineno, __pyx_filename, 1, 0);
   __pyx_r = 0;
   __pyx_L0:;
   __Pyx_RefNannyFinishContext();
@@ -2010,10 +2010,10 @@ static int __pyx_f_16helper_functions_extract_bag_vertex(int __pyx_v_mapping, in
 }
 
 /* Python wrapper */
-static PyObject *__pyx_pw_16helper_functions_7extract_bag_vertex(PyObject *__pyx_self, PyObject *__pyx_args, PyObject *__pyx_kwds); /*proto*/
-static char __pyx_doc_16helper_functions_6extract_bag_vertex[] = "\n    Extract the bag vertex of `index` from `mapping`\n    ";
-static PyMethodDef __pyx_mdef_16helper_functions_7extract_bag_vertex = {"extract_bag_vertex", (PyCFunction)(void*)(PyCFunctionWithKeywords)__pyx_pw_16helper_functions_7extract_bag_vertex, METH_VARARGS|METH_KEYWORDS, __pyx_doc_16helper_functions_6extract_bag_vertex};
-static PyObject *__pyx_pw_16helper_functions_7extract_bag_vertex(PyObject *__pyx_self, PyObject *__pyx_args, PyObject *__pyx_kwds) {
+static PyObject *__pyx_pw_20helper_functions_pyx_7extract_bag_vertex(PyObject *__pyx_self, PyObject *__pyx_args, PyObject *__pyx_kwds); /*proto*/
+static char __pyx_doc_20helper_functions_pyx_6extract_bag_vertex[] = "\n    Extract the bag vertex of `index` from `mapping`\n    ";
+static PyMethodDef __pyx_mdef_20helper_functions_pyx_7extract_bag_vertex = {"extract_bag_vertex", (PyCFunction)(void*)(PyCFunctionWithKeywords)__pyx_pw_20helper_functions_pyx_7extract_bag_vertex, METH_VARARGS|METH_KEYWORDS, __pyx_doc_20helper_functions_pyx_6extract_bag_vertex};
+static PyObject *__pyx_pw_20helper_functions_pyx_7extract_bag_vertex(PyObject *__pyx_self, PyObject *__pyx_args, PyObject *__pyx_kwds) {
   int __pyx_v_mapping;
   int __pyx_v_index;
   int __pyx_v_graph_size;
@@ -2075,18 +2075,18 @@ static PyObject *__pyx_pw_16helper_functions_7extract_bag_vertex(PyObject *__pyx
   __pyx_L5_argtuple_error:;
   __Pyx_RaiseArgtupleInvalid("extract_bag_vertex", 1, 3, 3, PyTuple_GET_SIZE(__pyx_args)); __PYX_ERR(0, 68, __pyx_L3_error)
   __pyx_L3_error:;
-  __Pyx_AddTraceback("helper_functions.extract_bag_vertex", __pyx_clineno, __pyx_lineno, __pyx_filename);
+  __Pyx_AddTraceback("helper_functions_pyx.extract_bag_vertex", __pyx_clineno, __pyx_lineno, __pyx_filename);
   __Pyx_RefNannyFinishContext();
   return NULL;
   __pyx_L4_argument_unpacking_done:;
-  __pyx_r = __pyx_pf_16helper_functions_6extract_bag_vertex(__pyx_self, __pyx_v_mapping, __pyx_v_index, __pyx_v_graph_size);
+  __pyx_r = __pyx_pf_20helper_functions_pyx_6extract_bag_vertex(__pyx_self, __pyx_v_mapping, __pyx_v_index, __pyx_v_graph_size);
 
   /* function exit code */
   __Pyx_RefNannyFinishContext();
   return __pyx_r;
 }
 
-static PyObject *__pyx_pf_16helper_functions_6extract_bag_vertex(CYTHON_UNUSED PyObject *__pyx_self, int __pyx_v_mapping, int __pyx_v_index, int __pyx_v_graph_size) {
+static PyObject *__pyx_pf_20helper_functions_pyx_6extract_bag_vertex(CYTHON_UNUSED PyObject *__pyx_self, int __pyx_v_mapping, int __pyx_v_index, int __pyx_v_graph_size) {
   PyObject *__pyx_r = NULL;
   __Pyx_RefNannyDeclarations
   PyObject *__pyx_t_1 = NULL;
@@ -2095,7 +2095,7 @@ static PyObject *__pyx_pf_16helper_functions_6extract_bag_vertex(CYTHON_UNUSED P
   int __pyx_clineno = 0;
   __Pyx_RefNannySetupContext("extract_bag_vertex", 0);
   __Pyx_XDECREF(__pyx_r);
-  __pyx_t_1 = __Pyx_PyInt_From_int(__pyx_f_16helper_functions_extract_bag_vertex(__pyx_v_mapping, __pyx_v_index, __pyx_v_graph_size, 0)); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 68, __pyx_L1_error)
+  __pyx_t_1 = __Pyx_PyInt_From_int(__pyx_f_20helper_functions_pyx_extract_bag_vertex(__pyx_v_mapping, __pyx_v_index, __pyx_v_graph_size, 0)); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 68, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
   __pyx_r = __pyx_t_1;
   __pyx_t_1 = 0;
@@ -2104,7 +2104,7 @@ static PyObject *__pyx_pf_16helper_functions_6extract_bag_vertex(CYTHON_UNUSED P
   /* function exit code */
   __pyx_L1_error:;
   __Pyx_XDECREF(__pyx_t_1);
-  __Pyx_AddTraceback("helper_functions.extract_bag_vertex", __pyx_clineno, __pyx_lineno, __pyx_filename);
+  __Pyx_AddTraceback("helper_functions_pyx.extract_bag_vertex", __pyx_clineno, __pyx_lineno, __pyx_filename);
   __pyx_r = NULL;
   __pyx_L0:;
   __Pyx_XGIVEREF(__pyx_r);
@@ -2112,7 +2112,7 @@ static PyObject *__pyx_pf_16helper_functions_6extract_bag_vertex(CYTHON_UNUSED P
   return __pyx_r;
 }
 
-/* "helper_functions.pyx":75
+/* "helper_functions_pyx.pyx":75
  *     return mapping // int(graph_size ** index) % graph_size
  * 
  * cpdef int add_vertex_into_mapping(int new_vertex, int mapping, int index, int graph_size):             # <<<<<<<<<<<<<<
@@ -2120,8 +2120,8 @@ static PyObject *__pyx_pf_16helper_functions_6extract_bag_vertex(CYTHON_UNUSED P
  *     Insert `new_vertex` at `index` into `mapping`
  */
 
-static PyObject *__pyx_pw_16helper_functions_9add_vertex_into_mapping(PyObject *__pyx_self, PyObject *__pyx_args, PyObject *__pyx_kwds); /*proto*/
-static int __pyx_f_16helper_functions_add_vertex_into_mapping(int __pyx_v_new_vertex, int __pyx_v_mapping, int __pyx_v_index, int __pyx_v_graph_size, CYTHON_UNUSED int __pyx_skip_dispatch) {
+static PyObject *__pyx_pw_20helper_functions_pyx_9add_vertex_into_mapping(PyObject *__pyx_self, PyObject *__pyx_args, PyObject *__pyx_kwds); /*proto*/
+static int __pyx_f_20helper_functions_pyx_add_vertex_into_mapping(int __pyx_v_new_vertex, int __pyx_v_mapping, int __pyx_v_index, int __pyx_v_graph_size, CYTHON_UNUSED int __pyx_skip_dispatch) {
   int __pyx_v_temp;
   int __pyx_v_right_digits;
   int __pyx_v_left_digits;
@@ -2132,7 +2132,7 @@ static int __pyx_f_16helper_functions_add_vertex_into_mapping(int __pyx_v_new_ve
   int __pyx_clineno = 0;
   __Pyx_RefNannySetupContext("add_vertex_into_mapping", 0);
 
-  /* "helper_functions.pyx":79
+  /* "helper_functions_pyx.pyx":79
  *     Insert `new_vertex` at `index` into `mapping`
  *     """
  *     cdef int temp = graph_size ** index             # <<<<<<<<<<<<<<
@@ -2141,7 +2141,7 @@ static int __pyx_f_16helper_functions_add_vertex_into_mapping(int __pyx_v_new_ve
  */
   __pyx_v_temp = __Pyx_pow_int(__pyx_v_graph_size, __pyx_v_index);
 
-  /* "helper_functions.pyx":80
+  /* "helper_functions_pyx.pyx":80
  *     """
  *     cdef int temp = graph_size ** index
  *     cdef int right_digits = mapping % temp             # <<<<<<<<<<<<<<
@@ -2154,7 +2154,7 @@ static int __pyx_f_16helper_functions_add_vertex_into_mapping(int __pyx_v_new_ve
   }
   __pyx_v_right_digits = __Pyx_mod_int(__pyx_v_mapping, __pyx_v_temp);
 
-  /* "helper_functions.pyx":81
+  /* "helper_functions_pyx.pyx":81
  *     cdef int temp = graph_size ** index
  *     cdef int right_digits = mapping % temp
  *     cdef int left_digits = mapping - right_digits             # <<<<<<<<<<<<<<
@@ -2163,7 +2163,7 @@ static int __pyx_f_16helper_functions_add_vertex_into_mapping(int __pyx_v_new_ve
  */
   __pyx_v_left_digits = (__pyx_v_mapping - __pyx_v_right_digits);
 
-  /* "helper_functions.pyx":83
+  /* "helper_functions_pyx.pyx":83
  *     cdef int left_digits = mapping - right_digits
  * 
  *     return graph_size * left_digits + temp * new_vertex + right_digits             # <<<<<<<<<<<<<<
@@ -2173,7 +2173,7 @@ static int __pyx_f_16helper_functions_add_vertex_into_mapping(int __pyx_v_new_ve
   __pyx_r = (((__pyx_v_graph_size * __pyx_v_left_digits) + (__pyx_v_temp * __pyx_v_new_vertex)) + __pyx_v_right_digits);
   goto __pyx_L0;
 
-  /* "helper_functions.pyx":75
+  /* "helper_functions_pyx.pyx":75
  *     return mapping // int(graph_size ** index) % graph_size
  * 
  * cpdef int add_vertex_into_mapping(int new_vertex, int mapping, int index, int graph_size):             # <<<<<<<<<<<<<<
@@ -2183,7 +2183,7 @@ static int __pyx_f_16helper_functions_add_vertex_into_mapping(int __pyx_v_new_ve
 
   /* function exit code */
   __pyx_L1_error:;
-  __Pyx_WriteUnraisable("helper_functions.add_vertex_into_mapping", __pyx_clineno, __pyx_lineno, __pyx_filename, 1, 0);
+  __Pyx_WriteUnraisable("helper_functions_pyx.add_vertex_into_mapping", __pyx_clineno, __pyx_lineno, __pyx_filename, 1, 0);
   __pyx_r = 0;
   __pyx_L0:;
   __Pyx_RefNannyFinishContext();
@@ -2191,10 +2191,10 @@ static int __pyx_f_16helper_functions_add_vertex_into_mapping(int __pyx_v_new_ve
 }
 
 /* Python wrapper */
-static PyObject *__pyx_pw_16helper_functions_9add_vertex_into_mapping(PyObject *__pyx_self, PyObject *__pyx_args, PyObject *__pyx_kwds); /*proto*/
-static char __pyx_doc_16helper_functions_8add_vertex_into_mapping[] = "\n    Insert `new_vertex` at `index` into `mapping`\n    ";
-static PyMethodDef __pyx_mdef_16helper_functions_9add_vertex_into_mapping = {"add_vertex_into_mapping", (PyCFunction)(void*)(PyCFunctionWithKeywords)__pyx_pw_16helper_functions_9add_vertex_into_mapping, METH_VARARGS|METH_KEYWORDS, __pyx_doc_16helper_functions_8add_vertex_into_mapping};
-static PyObject *__pyx_pw_16helper_functions_9add_vertex_into_mapping(PyObject *__pyx_self, PyObject *__pyx_args, PyObject *__pyx_kwds) {
+static PyObject *__pyx_pw_20helper_functions_pyx_9add_vertex_into_mapping(PyObject *__pyx_self, PyObject *__pyx_args, PyObject *__pyx_kwds); /*proto*/
+static char __pyx_doc_20helper_functions_pyx_8add_vertex_into_mapping[] = "\n    Insert `new_vertex` at `index` into `mapping`\n    ";
+static PyMethodDef __pyx_mdef_20helper_functions_pyx_9add_vertex_into_mapping = {"add_vertex_into_mapping", (PyCFunction)(void*)(PyCFunctionWithKeywords)__pyx_pw_20helper_functions_pyx_9add_vertex_into_mapping, METH_VARARGS|METH_KEYWORDS, __pyx_doc_20helper_functions_pyx_8add_vertex_into_mapping};
+static PyObject *__pyx_pw_20helper_functions_pyx_9add_vertex_into_mapping(PyObject *__pyx_self, PyObject *__pyx_args, PyObject *__pyx_kwds) {
   int __pyx_v_new_vertex;
   int __pyx_v_mapping;
   int __pyx_v_index;
@@ -2267,18 +2267,18 @@ static PyObject *__pyx_pw_16helper_functions_9add_vertex_into_mapping(PyObject *
   __pyx_L5_argtuple_error:;
   __Pyx_RaiseArgtupleInvalid("add_vertex_into_mapping", 1, 4, 4, PyTuple_GET_SIZE(__pyx_args)); __PYX_ERR(0, 75, __pyx_L3_error)
   __pyx_L3_error:;
-  __Pyx_AddTraceback("helper_functions.add_vertex_into_mapping", __pyx_clineno, __pyx_lineno, __pyx_filename);
+  __Pyx_AddTraceback("helper_functions_pyx.add_vertex_into_mapping", __pyx_clineno, __pyx_lineno, __pyx_filename);
   __Pyx_RefNannyFinishContext();
   return NULL;
   __pyx_L4_argument_unpacking_done:;
-  __pyx_r = __pyx_pf_16helper_functions_8add_vertex_into_mapping(__pyx_self, __pyx_v_new_vertex, __pyx_v_mapping, __pyx_v_index, __pyx_v_graph_size);
+  __pyx_r = __pyx_pf_20helper_functions_pyx_8add_vertex_into_mapping(__pyx_self, __pyx_v_new_vertex, __pyx_v_mapping, __pyx_v_index, __pyx_v_graph_size);
 
   /* function exit code */
   __Pyx_RefNannyFinishContext();
   return __pyx_r;
 }
 
-static PyObject *__pyx_pf_16helper_functions_8add_vertex_into_mapping(CYTHON_UNUSED PyObject *__pyx_self, int __pyx_v_new_vertex, int __pyx_v_mapping, int __pyx_v_index, int __pyx_v_graph_size) {
+static PyObject *__pyx_pf_20helper_functions_pyx_8add_vertex_into_mapping(CYTHON_UNUSED PyObject *__pyx_self, int __pyx_v_new_vertex, int __pyx_v_mapping, int __pyx_v_index, int __pyx_v_graph_size) {
   PyObject *__pyx_r = NULL;
   __Pyx_RefNannyDeclarations
   PyObject *__pyx_t_1 = NULL;
@@ -2287,7 +2287,7 @@ static PyObject *__pyx_pf_16helper_functions_8add_vertex_into_mapping(CYTHON_UNU
   int __pyx_clineno = 0;
   __Pyx_RefNannySetupContext("add_vertex_into_mapping", 0);
   __Pyx_XDECREF(__pyx_r);
-  __pyx_t_1 = __Pyx_PyInt_From_int(__pyx_f_16helper_functions_add_vertex_into_mapping(__pyx_v_new_vertex, __pyx_v_mapping, __pyx_v_index, __pyx_v_graph_size, 0)); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 75, __pyx_L1_error)
+  __pyx_t_1 = __Pyx_PyInt_From_int(__pyx_f_20helper_functions_pyx_add_vertex_into_mapping(__pyx_v_new_vertex, __pyx_v_mapping, __pyx_v_index, __pyx_v_graph_size, 0)); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 75, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
   __pyx_r = __pyx_t_1;
   __pyx_t_1 = 0;
@@ -2296,7 +2296,7 @@ static PyObject *__pyx_pf_16helper_functions_8add_vertex_into_mapping(CYTHON_UNU
   /* function exit code */
   __pyx_L1_error:;
   __Pyx_XDECREF(__pyx_t_1);
-  __Pyx_AddTraceback("helper_functions.add_vertex_into_mapping", __pyx_clineno, __pyx_lineno, __pyx_filename);
+  __Pyx_AddTraceback("helper_functions_pyx.add_vertex_into_mapping", __pyx_clineno, __pyx_lineno, __pyx_filename);
   __pyx_r = NULL;
   __pyx_L0:;
   __Pyx_XGIVEREF(__pyx_r);
@@ -2304,7 +2304,7 @@ static PyObject *__pyx_pf_16helper_functions_8add_vertex_into_mapping(CYTHON_UNU
   return __pyx_r;
 }
 
-/* "helper_functions.pyx":85
+/* "helper_functions_pyx.pyx":85
  *     return graph_size * left_digits + temp * new_vertex + right_digits
  * 
  * cpdef int remove_vertex_from_mapping(int mapping, int index, int graph_size):             # <<<<<<<<<<<<<<
@@ -2312,8 +2312,8 @@ static PyObject *__pyx_pf_16helper_functions_8add_vertex_into_mapping(CYTHON_UNU
  *     Return a new mapping from removing vertex of `index` from `mapping`
  */
 
-static PyObject *__pyx_pw_16helper_functions_11remove_vertex_from_mapping(PyObject *__pyx_self, PyObject *__pyx_args, PyObject *__pyx_kwds); /*proto*/
-static int __pyx_f_16helper_functions_remove_vertex_from_mapping(int __pyx_v_mapping, int __pyx_v_index, int __pyx_v_graph_size, CYTHON_UNUSED int __pyx_skip_dispatch) {
+static PyObject *__pyx_pw_20helper_functions_pyx_11remove_vertex_from_mapping(PyObject *__pyx_self, PyObject *__pyx_args, PyObject *__pyx_kwds); /*proto*/
+static int __pyx_f_20helper_functions_pyx_remove_vertex_from_mapping(int __pyx_v_mapping, int __pyx_v_index, int __pyx_v_graph_size, CYTHON_UNUSED int __pyx_skip_dispatch) {
   int __pyx_v_left_digits;
   int __pyx_v_right_digits;
   int __pyx_r;
@@ -2328,7 +2328,7 @@ static int __pyx_f_16helper_functions_remove_vertex_from_mapping(int __pyx_v_map
   int __pyx_clineno = 0;
   __Pyx_RefNannySetupContext("remove_vertex_from_mapping", 0);
 
-  /* "helper_functions.pyx":89
+  /* "helper_functions_pyx.pyx":89
  *     Return a new mapping from removing vertex of `index` from `mapping`
  *     """
  *     cdef int left_digits = mapping - (mapping % int(graph_size ** (index + 1)))             # <<<<<<<<<<<<<<
@@ -2356,7 +2356,7 @@ static int __pyx_f_16helper_functions_remove_vertex_from_mapping(int __pyx_v_map
   __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
   __pyx_v_left_digits = __pyx_t_5;
 
-  /* "helper_functions.pyx":90
+  /* "helper_functions_pyx.pyx":90
  *     """
  *     cdef int left_digits = mapping - (mapping % int(graph_size ** (index + 1)))
  *     cdef int right_digits = mapping % int(graph_size ** index)             # <<<<<<<<<<<<<<
@@ -2378,7 +2378,7 @@ static int __pyx_f_16helper_functions_remove_vertex_from_mapping(int __pyx_v_map
   __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
   __pyx_v_right_digits = __pyx_t_5;
 
-  /* "helper_functions.pyx":92
+  /* "helper_functions_pyx.pyx":92
  *     cdef int right_digits = mapping % int(graph_size ** index)
  * 
  *     return left_digits // graph_size + right_digits             # <<<<<<<<<<<<<<
@@ -2394,7 +2394,7 @@ static int __pyx_f_16helper_functions_remove_vertex_from_mapping(int __pyx_v_map
   __pyx_r = (__Pyx_div_int(__pyx_v_left_digits, __pyx_v_graph_size) + __pyx_v_right_digits);
   goto __pyx_L0;
 
-  /* "helper_functions.pyx":85
+  /* "helper_functions_pyx.pyx":85
  *     return graph_size * left_digits + temp * new_vertex + right_digits
  * 
  * cpdef int remove_vertex_from_mapping(int mapping, int index, int graph_size):             # <<<<<<<<<<<<<<
@@ -2408,7 +2408,7 @@ static int __pyx_f_16helper_functions_remove_vertex_from_mapping(int __pyx_v_map
   __Pyx_XDECREF(__pyx_t_2);
   __Pyx_XDECREF(__pyx_t_3);
   __Pyx_XDECREF(__pyx_t_4);
-  __Pyx_WriteUnraisable("helper_functions.remove_vertex_from_mapping", __pyx_clineno, __pyx_lineno, __pyx_filename, 1, 0);
+  __Pyx_WriteUnraisable("helper_functions_pyx.remove_vertex_from_mapping", __pyx_clineno, __pyx_lineno, __pyx_filename, 1, 0);
   __pyx_r = 0;
   __pyx_L0:;
   __Pyx_RefNannyFinishContext();
@@ -2416,10 +2416,10 @@ static int __pyx_f_16helper_functions_remove_vertex_from_mapping(int __pyx_v_map
 }
 
 /* Python wrapper */
-static PyObject *__pyx_pw_16helper_functions_11remove_vertex_from_mapping(PyObject *__pyx_self, PyObject *__pyx_args, PyObject *__pyx_kwds); /*proto*/
-static char __pyx_doc_16helper_functions_10remove_vertex_from_mapping[] = "\n    Return a new mapping from removing vertex of `index` from `mapping`\n    ";
-static PyMethodDef __pyx_mdef_16helper_functions_11remove_vertex_from_mapping = {"remove_vertex_from_mapping", (PyCFunction)(void*)(PyCFunctionWithKeywords)__pyx_pw_16helper_functions_11remove_vertex_from_mapping, METH_VARARGS|METH_KEYWORDS, __pyx_doc_16helper_functions_10remove_vertex_from_mapping};
-static PyObject *__pyx_pw_16helper_functions_11remove_vertex_from_mapping(PyObject *__pyx_self, PyObject *__pyx_args, PyObject *__pyx_kwds) {
+static PyObject *__pyx_pw_20helper_functions_pyx_11remove_vertex_from_mapping(PyObject *__pyx_self, PyObject *__pyx_args, PyObject *__pyx_kwds); /*proto*/
+static char __pyx_doc_20helper_functions_pyx_10remove_vertex_from_mapping[] = "\n    Return a new mapping from removing vertex of `index` from `mapping`\n    ";
+static PyMethodDef __pyx_mdef_20helper_functions_pyx_11remove_vertex_from_mapping = {"remove_vertex_from_mapping", (PyCFunction)(void*)(PyCFunctionWithKeywords)__pyx_pw_20helper_functions_pyx_11remove_vertex_from_mapping, METH_VARARGS|METH_KEYWORDS, __pyx_doc_20helper_functions_pyx_10remove_vertex_from_mapping};
+static PyObject *__pyx_pw_20helper_functions_pyx_11remove_vertex_from_mapping(PyObject *__pyx_self, PyObject *__pyx_args, PyObject *__pyx_kwds) {
   int __pyx_v_mapping;
   int __pyx_v_index;
   int __pyx_v_graph_size;
@@ -2481,18 +2481,18 @@ static PyObject *__pyx_pw_16helper_functions_11remove_vertex_from_mapping(PyObje
   __pyx_L5_argtuple_error:;
   __Pyx_RaiseArgtupleInvalid("remove_vertex_from_mapping", 1, 3, 3, PyTuple_GET_SIZE(__pyx_args)); __PYX_ERR(0, 85, __pyx_L3_error)
   __pyx_L3_error:;
-  __Pyx_AddTraceback("helper_functions.remove_vertex_from_mapping", __pyx_clineno, __pyx_lineno, __pyx_filename);
+  __Pyx_AddTraceback("helper_functions_pyx.remove_vertex_from_mapping", __pyx_clineno, __pyx_lineno, __pyx_filename);
   __Pyx_RefNannyFinishContext();
   return NULL;
   __pyx_L4_argument_unpacking_done:;
-  __pyx_r = __pyx_pf_16helper_functions_10remove_vertex_from_mapping(__pyx_self, __pyx_v_mapping, __pyx_v_index, __pyx_v_graph_size);
+  __pyx_r = __pyx_pf_20helper_functions_pyx_10remove_vertex_from_mapping(__pyx_self, __pyx_v_mapping, __pyx_v_index, __pyx_v_graph_size);
 
   /* function exit code */
   __Pyx_RefNannyFinishContext();
   return __pyx_r;
 }
 
-static PyObject *__pyx_pf_16helper_functions_10remove_vertex_from_mapping(CYTHON_UNUSED PyObject *__pyx_self, int __pyx_v_mapping, int __pyx_v_index, int __pyx_v_graph_size) {
+static PyObject *__pyx_pf_20helper_functions_pyx_10remove_vertex_from_mapping(CYTHON_UNUSED PyObject *__pyx_self, int __pyx_v_mapping, int __pyx_v_index, int __pyx_v_graph_size) {
   PyObject *__pyx_r = NULL;
   __Pyx_RefNannyDeclarations
   PyObject *__pyx_t_1 = NULL;
@@ -2501,7 +2501,7 @@ static PyObject *__pyx_pf_16helper_functions_10remove_vertex_from_mapping(CYTHON
   int __pyx_clineno = 0;
   __Pyx_RefNannySetupContext("remove_vertex_from_mapping", 0);
   __Pyx_XDECREF(__pyx_r);
-  __pyx_t_1 = __Pyx_PyInt_From_int(__pyx_f_16helper_functions_remove_vertex_from_mapping(__pyx_v_mapping, __pyx_v_index, __pyx_v_graph_size, 0)); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 85, __pyx_L1_error)
+  __pyx_t_1 = __Pyx_PyInt_From_int(__pyx_f_20helper_functions_pyx_remove_vertex_from_mapping(__pyx_v_mapping, __pyx_v_index, __pyx_v_graph_size, 0)); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 85, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
   __pyx_r = __pyx_t_1;
   __pyx_t_1 = 0;
@@ -2510,7 +2510,7 @@ static PyObject *__pyx_pf_16helper_functions_10remove_vertex_from_mapping(CYTHON
   /* function exit code */
   __pyx_L1_error:;
   __Pyx_XDECREF(__pyx_t_1);
-  __Pyx_AddTraceback("helper_functions.remove_vertex_from_mapping", __pyx_clineno, __pyx_lineno, __pyx_filename);
+  __Pyx_AddTraceback("helper_functions_pyx.remove_vertex_from_mapping", __pyx_clineno, __pyx_lineno, __pyx_filename);
   __pyx_r = NULL;
   __pyx_L0:;
   __Pyx_XGIVEREF(__pyx_r);
@@ -2525,17 +2525,17 @@ static PyMethodDef __pyx_methods[] = {
 #if PY_MAJOR_VERSION >= 3
 #if CYTHON_PEP489_MULTI_PHASE_INIT
 static PyObject* __pyx_pymod_create(PyObject *spec, PyModuleDef *def); /*proto*/
-static int __pyx_pymod_exec_helper_functions(PyObject* module); /*proto*/
+static int __pyx_pymod_exec_helper_functions_pyx(PyObject* module); /*proto*/
 static PyModuleDef_Slot __pyx_moduledef_slots[] = {
   {Py_mod_create, (void*)__pyx_pymod_create},
-  {Py_mod_exec, (void*)__pyx_pymod_exec_helper_functions},
+  {Py_mod_exec, (void*)__pyx_pymod_exec_helper_functions_pyx},
   {0, NULL}
 };
 #endif
 
 static struct PyModuleDef __pyx_moduledef = {
     PyModuleDef_HEAD_INIT,
-    "helper_functions",
+    "helper_functions_pyx",
     0, /* m_doc */
   #if CYTHON_PEP489_MULTI_PHASE_INIT
     0, /* m_size */
@@ -2572,8 +2572,8 @@ static __Pyx_StringTabEntry __pyx_string_tab[] = {
   {&__pyx_n_s_get_node_index, __pyx_k_get_node_index, sizeof(__pyx_k_get_node_index), 0, 0, 1, 1},
   {&__pyx_n_s_get_vertex, __pyx_k_get_vertex, sizeof(__pyx_k_get_vertex), 0, 0, 1, 1},
   {&__pyx_n_s_graph_size, __pyx_k_graph_size, sizeof(__pyx_k_graph_size), 0, 0, 1, 1},
-  {&__pyx_n_s_helper_functions, __pyx_k_helper_functions, sizeof(__pyx_k_helper_functions), 0, 0, 1, 1},
-  {&__pyx_kp_s_helper_functions_pyx, __pyx_k_helper_functions_pyx, sizeof(__pyx_k_helper_functions_pyx), 0, 0, 1, 0},
+  {&__pyx_n_s_helper_functions_pyx, __pyx_k_helper_functions_pyx, sizeof(__pyx_k_helper_functions_pyx), 0, 0, 1, 1},
+  {&__pyx_kp_s_helper_functions_pyx_pyx, __pyx_k_helper_functions_pyx_pyx, sizeof(__pyx_k_helper_functions_pyx_pyx), 0, 0, 1, 0},
   {&__pyx_n_s_index, __pyx_k_index, sizeof(__pyx_k_index), 0, 0, 1, 1},
   {&__pyx_n_s_intro, __pyx_k_intro, sizeof(__pyx_k_intro), 0, 0, 1, 1},
   {&__pyx_n_s_labelled_TD, __pyx_k_labelled_TD, sizeof(__pyx_k_labelled_TD), 0, 0, 1, 1},
@@ -2598,7 +2598,7 @@ static CYTHON_SMALL_CODE int __Pyx_InitCachedConstants(void) {
   __Pyx_RefNannyDeclarations
   __Pyx_RefNannySetupContext("__Pyx_InitCachedConstants", 0);
 
-  /* "helper_functions.pyx":5
+  /* "helper_functions_pyx.pyx":5
  * ### General helper functions
  * 
  * def get_node_index(node):             # <<<<<<<<<<<<<<
@@ -2608,9 +2608,9 @@ static CYTHON_SMALL_CODE int __Pyx_InitCachedConstants(void) {
   __pyx_tuple_ = PyTuple_Pack(1, __pyx_n_s_node); if (unlikely(!__pyx_tuple_)) __PYX_ERR(0, 5, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_tuple_);
   __Pyx_GIVEREF(__pyx_tuple_);
-  __pyx_codeobj__2 = (PyObject*)__Pyx_PyCode_New(1, 0, 1, 0, CO_OPTIMIZED|CO_NEWLOCALS, __pyx_empty_bytes, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_tuple_, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_kp_s_helper_functions_pyx, __pyx_n_s_get_node_index, 5, __pyx_empty_bytes); if (unlikely(!__pyx_codeobj__2)) __PYX_ERR(0, 5, __pyx_L1_error)
+  __pyx_codeobj__2 = (PyObject*)__Pyx_PyCode_New(1, 0, 1, 0, CO_OPTIMIZED|CO_NEWLOCALS, __pyx_empty_bytes, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_tuple_, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_kp_s_helper_functions_pyx_pyx, __pyx_n_s_get_node_index, 5, __pyx_empty_bytes); if (unlikely(!__pyx_codeobj__2)) __PYX_ERR(0, 5, __pyx_L1_error)
 
-  /* "helper_functions.pyx":8
+  /* "helper_functions_pyx.pyx":8
  *     return node[0]
  * 
  * def get_node_content(node):             # <<<<<<<<<<<<<<
@@ -2620,9 +2620,9 @@ static CYTHON_SMALL_CODE int __Pyx_InitCachedConstants(void) {
   __pyx_tuple__3 = PyTuple_Pack(1, __pyx_n_s_node); if (unlikely(!__pyx_tuple__3)) __PYX_ERR(0, 8, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_tuple__3);
   __Pyx_GIVEREF(__pyx_tuple__3);
-  __pyx_codeobj__4 = (PyObject*)__Pyx_PyCode_New(1, 0, 1, 0, CO_OPTIMIZED|CO_NEWLOCALS, __pyx_empty_bytes, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_tuple__3, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_kp_s_helper_functions_pyx, __pyx_n_s_get_node_content, 8, __pyx_empty_bytes); if (unlikely(!__pyx_codeobj__4)) __PYX_ERR(0, 8, __pyx_L1_error)
+  __pyx_codeobj__4 = (PyObject*)__Pyx_PyCode_New(1, 0, 1, 0, CO_OPTIMIZED|CO_NEWLOCALS, __pyx_empty_bytes, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_tuple__3, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_kp_s_helper_functions_pyx_pyx, __pyx_n_s_get_node_content, 8, __pyx_empty_bytes); if (unlikely(!__pyx_codeobj__4)) __PYX_ERR(0, 8, __pyx_L1_error)
 
-  /* "helper_functions.pyx":11
+  /* "helper_functions_pyx.pyx":11
  *     return node[1]
  * 
  * cpdef dict node_changes(labelled_TD):             # <<<<<<<<<<<<<<
@@ -2632,9 +2632,9 @@ static CYTHON_SMALL_CODE int __Pyx_InitCachedConstants(void) {
   __pyx_tuple__5 = PyTuple_Pack(1, __pyx_n_s_labelled_TD); if (unlikely(!__pyx_tuple__5)) __PYX_ERR(0, 11, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_tuple__5);
   __Pyx_GIVEREF(__pyx_tuple__5);
-  __pyx_codeobj__6 = (PyObject*)__Pyx_PyCode_New(1, 0, 1, 0, CO_OPTIMIZED|CO_NEWLOCALS, __pyx_empty_bytes, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_tuple__5, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_kp_s_helper_functions_pyx, __pyx_n_s_node_changes, 11, __pyx_empty_bytes); if (unlikely(!__pyx_codeobj__6)) __PYX_ERR(0, 11, __pyx_L1_error)
+  __pyx_codeobj__6 = (PyObject*)__Pyx_PyCode_New(1, 0, 1, 0, CO_OPTIMIZED|CO_NEWLOCALS, __pyx_empty_bytes, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_tuple__5, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_kp_s_helper_functions_pyx_pyx, __pyx_n_s_node_changes, 11, __pyx_empty_bytes); if (unlikely(!__pyx_codeobj__6)) __PYX_ERR(0, 11, __pyx_L1_error)
 
-  /* "helper_functions.pyx":68
+  /* "helper_functions_pyx.pyx":68
  * ### For integer representation
  * 
  * cpdef int extract_bag_vertex(int mapping, int index, int graph_size):             # <<<<<<<<<<<<<<
@@ -2644,9 +2644,9 @@ static CYTHON_SMALL_CODE int __Pyx_InitCachedConstants(void) {
   __pyx_tuple__7 = PyTuple_Pack(3, __pyx_n_s_mapping, __pyx_n_s_index, __pyx_n_s_graph_size); if (unlikely(!__pyx_tuple__7)) __PYX_ERR(0, 68, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_tuple__7);
   __Pyx_GIVEREF(__pyx_tuple__7);
-  __pyx_codeobj__8 = (PyObject*)__Pyx_PyCode_New(3, 0, 3, 0, CO_OPTIMIZED|CO_NEWLOCALS, __pyx_empty_bytes, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_tuple__7, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_kp_s_helper_functions_pyx, __pyx_n_s_extract_bag_vertex, 68, __pyx_empty_bytes); if (unlikely(!__pyx_codeobj__8)) __PYX_ERR(0, 68, __pyx_L1_error)
+  __pyx_codeobj__8 = (PyObject*)__Pyx_PyCode_New(3, 0, 3, 0, CO_OPTIMIZED|CO_NEWLOCALS, __pyx_empty_bytes, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_tuple__7, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_kp_s_helper_functions_pyx_pyx, __pyx_n_s_extract_bag_vertex, 68, __pyx_empty_bytes); if (unlikely(!__pyx_codeobj__8)) __PYX_ERR(0, 68, __pyx_L1_error)
 
-  /* "helper_functions.pyx":75
+  /* "helper_functions_pyx.pyx":75
  *     return mapping // int(graph_size ** index) % graph_size
  * 
  * cpdef int add_vertex_into_mapping(int new_vertex, int mapping, int index, int graph_size):             # <<<<<<<<<<<<<<
@@ -2656,9 +2656,9 @@ static CYTHON_SMALL_CODE int __Pyx_InitCachedConstants(void) {
   __pyx_tuple__9 = PyTuple_Pack(4, __pyx_n_s_new_vertex, __pyx_n_s_mapping, __pyx_n_s_index, __pyx_n_s_graph_size); if (unlikely(!__pyx_tuple__9)) __PYX_ERR(0, 75, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_tuple__9);
   __Pyx_GIVEREF(__pyx_tuple__9);
-  __pyx_codeobj__10 = (PyObject*)__Pyx_PyCode_New(4, 0, 4, 0, CO_OPTIMIZED|CO_NEWLOCALS, __pyx_empty_bytes, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_tuple__9, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_kp_s_helper_functions_pyx, __pyx_n_s_add_vertex_into_mapping, 75, __pyx_empty_bytes); if (unlikely(!__pyx_codeobj__10)) __PYX_ERR(0, 75, __pyx_L1_error)
+  __pyx_codeobj__10 = (PyObject*)__Pyx_PyCode_New(4, 0, 4, 0, CO_OPTIMIZED|CO_NEWLOCALS, __pyx_empty_bytes, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_tuple__9, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_kp_s_helper_functions_pyx_pyx, __pyx_n_s_add_vertex_into_mapping, 75, __pyx_empty_bytes); if (unlikely(!__pyx_codeobj__10)) __PYX_ERR(0, 75, __pyx_L1_error)
 
-  /* "helper_functions.pyx":85
+  /* "helper_functions_pyx.pyx":85
  *     return graph_size * left_digits + temp * new_vertex + right_digits
  * 
  * cpdef int remove_vertex_from_mapping(int mapping, int index, int graph_size):             # <<<<<<<<<<<<<<
@@ -2668,7 +2668,7 @@ static CYTHON_SMALL_CODE int __Pyx_InitCachedConstants(void) {
   __pyx_tuple__11 = PyTuple_Pack(3, __pyx_n_s_mapping, __pyx_n_s_index, __pyx_n_s_graph_size); if (unlikely(!__pyx_tuple__11)) __PYX_ERR(0, 85, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_tuple__11);
   __Pyx_GIVEREF(__pyx_tuple__11);
-  __pyx_codeobj__12 = (PyObject*)__Pyx_PyCode_New(3, 0, 3, 0, CO_OPTIMIZED|CO_NEWLOCALS, __pyx_empty_bytes, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_tuple__11, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_kp_s_helper_functions_pyx, __pyx_n_s_remove_vertex_from_mapping, 85, __pyx_empty_bytes); if (unlikely(!__pyx_codeobj__12)) __PYX_ERR(0, 85, __pyx_L1_error)
+  __pyx_codeobj__12 = (PyObject*)__Pyx_PyCode_New(3, 0, 3, 0, CO_OPTIMIZED|CO_NEWLOCALS, __pyx_empty_bytes, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_tuple__11, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_kp_s_helper_functions_pyx_pyx, __pyx_n_s_remove_vertex_from_mapping, 85, __pyx_empty_bytes); if (unlikely(!__pyx_codeobj__12)) __PYX_ERR(0, 85, __pyx_L1_error)
   __Pyx_RefNannyFinishContext();
   return 0;
   __pyx_L1_error:;
@@ -2767,11 +2767,11 @@ static int __Pyx_modinit_function_import_code(void) {
 
 
 #if PY_MAJOR_VERSION < 3
-__Pyx_PyMODINIT_FUNC inithelper_functions(void) CYTHON_SMALL_CODE; /*proto*/
-__Pyx_PyMODINIT_FUNC inithelper_functions(void)
+__Pyx_PyMODINIT_FUNC inithelper_functions_pyx(void) CYTHON_SMALL_CODE; /*proto*/
+__Pyx_PyMODINIT_FUNC inithelper_functions_pyx(void)
 #else
-__Pyx_PyMODINIT_FUNC PyInit_helper_functions(void) CYTHON_SMALL_CODE; /*proto*/
-__Pyx_PyMODINIT_FUNC PyInit_helper_functions(void)
+__Pyx_PyMODINIT_FUNC PyInit_helper_functions_pyx(void) CYTHON_SMALL_CODE; /*proto*/
+__Pyx_PyMODINIT_FUNC PyInit_helper_functions_pyx(void)
 #if CYTHON_PEP489_MULTI_PHASE_INIT
 {
   return PyModuleDef_Init(&__pyx_moduledef);
@@ -2838,7 +2838,7 @@ bad:
 }
 
 
-static CYTHON_SMALL_CODE int __pyx_pymod_exec_helper_functions(PyObject *__pyx_pyinit_module)
+static CYTHON_SMALL_CODE int __pyx_pymod_exec_helper_functions_pyx(PyObject *__pyx_pyinit_module)
 #endif
 #endif
 {
@@ -2850,7 +2850,7 @@ static CYTHON_SMALL_CODE int __pyx_pymod_exec_helper_functions(PyObject *__pyx_p
   #if CYTHON_PEP489_MULTI_PHASE_INIT
   if (__pyx_m) {
     if (__pyx_m == __pyx_pyinit_module) return 0;
-    PyErr_SetString(PyExc_RuntimeError, "Module 'helper_functions' has already been imported. Re-initialisation is not supported.");
+    PyErr_SetString(PyExc_RuntimeError, "Module 'helper_functions_pyx' has already been imported. Re-initialisation is not supported.");
     return -1;
   }
   #elif PY_MAJOR_VERSION >= 3
@@ -2865,7 +2865,7 @@ if (!__Pyx_RefNanny) {
       Py_FatalError("failed to import 'refnanny' module");
 }
 #endif
-  __Pyx_RefNannySetupContext("__Pyx_PyMODINIT_FUNC PyInit_helper_functions(void)", 0);
+  __Pyx_RefNannySetupContext("__Pyx_PyMODINIT_FUNC PyInit_helper_functions_pyx(void)", 0);
   if (__Pyx_check_binary_version() < 0) __PYX_ERR(0, 1, __pyx_L1_error)
   #ifdef __Pxy_PyFrame_Initialize_Offsets
   __Pxy_PyFrame_Initialize_Offsets();
@@ -2902,7 +2902,7 @@ if (!__Pyx_RefNanny) {
   Py_INCREF(__pyx_m);
   #else
   #if PY_MAJOR_VERSION < 3
-  __pyx_m = Py_InitModule4("helper_functions", __pyx_methods, 0, 0, PYTHON_API_VERSION); Py_XINCREF(__pyx_m);
+  __pyx_m = Py_InitModule4("helper_functions_pyx", __pyx_methods, 0, 0, PYTHON_API_VERSION); Py_XINCREF(__pyx_m);
   #else
   __pyx_m = PyModule_Create(&__pyx_moduledef);
   #endif
@@ -2920,14 +2920,14 @@ if (!__Pyx_RefNanny) {
   #if PY_MAJOR_VERSION < 3 && (__PYX_DEFAULT_STRING_ENCODING_IS_ASCII || __PYX_DEFAULT_STRING_ENCODING_IS_DEFAULT)
   if (__Pyx_init_sys_getdefaultencoding_params() < 0) __PYX_ERR(0, 1, __pyx_L1_error)
   #endif
-  if (__pyx_module_is_main_helper_functions) {
+  if (__pyx_module_is_main_helper_functions_pyx) {
     if (PyObject_SetAttr(__pyx_m, __pyx_n_s_name, __pyx_n_s_main) < 0) __PYX_ERR(0, 1, __pyx_L1_error)
   }
   #if PY_MAJOR_VERSION >= 3
   {
     PyObject *modules = PyImport_GetModuleDict(); if (unlikely(!modules)) __PYX_ERR(0, 1, __pyx_L1_error)
-    if (!PyDict_GetItemString(modules, "helper_functions")) {
-      if (unlikely(PyDict_SetItemString(modules, "helper_functions", __pyx_m) < 0)) __PYX_ERR(0, 1, __pyx_L1_error)
+    if (!PyDict_GetItemString(modules, "helper_functions_pyx")) {
+      if (unlikely(PyDict_SetItemString(modules, "helper_functions_pyx", __pyx_m) < 0)) __PYX_ERR(0, 1, __pyx_L1_error)
     }
   }
   #endif
@@ -2948,79 +2948,79 @@ if (!__Pyx_RefNanny) {
   if (__Pyx_patch_abc() < 0) __PYX_ERR(0, 1, __pyx_L1_error)
   #endif
 
-  /* "helper_functions.pyx":5
+  /* "helper_functions_pyx.pyx":5
  * ### General helper functions
  * 
  * def get_node_index(node):             # <<<<<<<<<<<<<<
  *     return node[0]
  * 
  */
-  __pyx_t_1 = __Pyx_CyFunction_New(&__pyx_mdef_16helper_functions_1get_node_index, 0, __pyx_n_s_get_node_index, NULL, __pyx_n_s_helper_functions, __pyx_d, ((PyObject *)__pyx_codeobj__2)); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 5, __pyx_L1_error)
+  __pyx_t_1 = __Pyx_CyFunction_New(&__pyx_mdef_20helper_functions_pyx_1get_node_index, 0, __pyx_n_s_get_node_index, NULL, __pyx_n_s_helper_functions_pyx, __pyx_d, ((PyObject *)__pyx_codeobj__2)); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 5, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
   if (PyDict_SetItem(__pyx_d, __pyx_n_s_get_node_index, __pyx_t_1) < 0) __PYX_ERR(0, 5, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
 
-  /* "helper_functions.pyx":8
+  /* "helper_functions_pyx.pyx":8
  *     return node[0]
  * 
  * def get_node_content(node):             # <<<<<<<<<<<<<<
  *     return node[1]
  * 
  */
-  __pyx_t_1 = __Pyx_CyFunction_New(&__pyx_mdef_16helper_functions_3get_node_content, 0, __pyx_n_s_get_node_content, NULL, __pyx_n_s_helper_functions, __pyx_d, ((PyObject *)__pyx_codeobj__4)); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 8, __pyx_L1_error)
+  __pyx_t_1 = __Pyx_CyFunction_New(&__pyx_mdef_20helper_functions_pyx_3get_node_content, 0, __pyx_n_s_get_node_content, NULL, __pyx_n_s_helper_functions_pyx, __pyx_d, ((PyObject *)__pyx_codeobj__4)); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 8, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
   if (PyDict_SetItem(__pyx_d, __pyx_n_s_get_node_content, __pyx_t_1) < 0) __PYX_ERR(0, 8, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
 
-  /* "helper_functions.pyx":11
+  /* "helper_functions_pyx.pyx":11
  *     return node[1]
  * 
  * cpdef dict node_changes(labelled_TD):             # <<<<<<<<<<<<<<
  *     r"""
  *     Record introduced and forgotten nodes in a directed labelled nice tree decomposition.
  */
-  __pyx_t_1 = __Pyx_CyFunction_New(&__pyx_mdef_16helper_functions_5node_changes, 0, __pyx_n_s_node_changes, NULL, __pyx_n_s_helper_functions, __pyx_d, ((PyObject *)__pyx_codeobj__6)); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 11, __pyx_L1_error)
+  __pyx_t_1 = __Pyx_CyFunction_New(&__pyx_mdef_20helper_functions_pyx_5node_changes, 0, __pyx_n_s_node_changes, NULL, __pyx_n_s_helper_functions_pyx, __pyx_d, ((PyObject *)__pyx_codeobj__6)); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 11, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
   if (PyDict_SetItem(__pyx_d, __pyx_n_s_node_changes, __pyx_t_1) < 0) __PYX_ERR(0, 11, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
 
-  /* "helper_functions.pyx":68
+  /* "helper_functions_pyx.pyx":68
  * ### For integer representation
  * 
  * cpdef int extract_bag_vertex(int mapping, int index, int graph_size):             # <<<<<<<<<<<<<<
  *     r"""
  *     Extract the bag vertex of `index` from `mapping`
  */
-  __pyx_t_1 = __Pyx_CyFunction_New(&__pyx_mdef_16helper_functions_7extract_bag_vertex, 0, __pyx_n_s_extract_bag_vertex, NULL, __pyx_n_s_helper_functions, __pyx_d, ((PyObject *)__pyx_codeobj__8)); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 68, __pyx_L1_error)
+  __pyx_t_1 = __Pyx_CyFunction_New(&__pyx_mdef_20helper_functions_pyx_7extract_bag_vertex, 0, __pyx_n_s_extract_bag_vertex, NULL, __pyx_n_s_helper_functions_pyx, __pyx_d, ((PyObject *)__pyx_codeobj__8)); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 68, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
   if (PyDict_SetItem(__pyx_d, __pyx_n_s_extract_bag_vertex, __pyx_t_1) < 0) __PYX_ERR(0, 68, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
 
-  /* "helper_functions.pyx":75
+  /* "helper_functions_pyx.pyx":75
  *     return mapping // int(graph_size ** index) % graph_size
  * 
  * cpdef int add_vertex_into_mapping(int new_vertex, int mapping, int index, int graph_size):             # <<<<<<<<<<<<<<
  *     r"""
  *     Insert `new_vertex` at `index` into `mapping`
  */
-  __pyx_t_1 = __Pyx_CyFunction_New(&__pyx_mdef_16helper_functions_9add_vertex_into_mapping, 0, __pyx_n_s_add_vertex_into_mapping, NULL, __pyx_n_s_helper_functions, __pyx_d, ((PyObject *)__pyx_codeobj__10)); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 75, __pyx_L1_error)
+  __pyx_t_1 = __Pyx_CyFunction_New(&__pyx_mdef_20helper_functions_pyx_9add_vertex_into_mapping, 0, __pyx_n_s_add_vertex_into_mapping, NULL, __pyx_n_s_helper_functions_pyx, __pyx_d, ((PyObject *)__pyx_codeobj__10)); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 75, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
   if (PyDict_SetItem(__pyx_d, __pyx_n_s_add_vertex_into_mapping, __pyx_t_1) < 0) __PYX_ERR(0, 75, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
 
-  /* "helper_functions.pyx":85
+  /* "helper_functions_pyx.pyx":85
  *     return graph_size * left_digits + temp * new_vertex + right_digits
  * 
  * cpdef int remove_vertex_from_mapping(int mapping, int index, int graph_size):             # <<<<<<<<<<<<<<
  *     r"""
  *     Return a new mapping from removing vertex of `index` from `mapping`
  */
-  __pyx_t_1 = __Pyx_CyFunction_New(&__pyx_mdef_16helper_functions_11remove_vertex_from_mapping, 0, __pyx_n_s_remove_vertex_from_mapping, NULL, __pyx_n_s_helper_functions, __pyx_d, ((PyObject *)__pyx_codeobj__12)); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 85, __pyx_L1_error)
+  __pyx_t_1 = __Pyx_CyFunction_New(&__pyx_mdef_20helper_functions_pyx_11remove_vertex_from_mapping, 0, __pyx_n_s_remove_vertex_from_mapping, NULL, __pyx_n_s_helper_functions_pyx, __pyx_d, ((PyObject *)__pyx_codeobj__12)); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 85, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
   if (PyDict_SetItem(__pyx_d, __pyx_n_s_remove_vertex_from_mapping, __pyx_t_1) < 0) __PYX_ERR(0, 85, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
 
-  /* "helper_functions.pyx":1
+  /* "helper_functions_pyx.pyx":1
  * # cython: binding=True             # <<<<<<<<<<<<<<
  * 
  * ### General helper functions
@@ -3037,11 +3037,11 @@ if (!__Pyx_RefNanny) {
   __Pyx_XDECREF(__pyx_t_1);
   if (__pyx_m) {
     if (__pyx_d) {
-      __Pyx_AddTraceback("init helper_functions", __pyx_clineno, __pyx_lineno, __pyx_filename);
+      __Pyx_AddTraceback("init helper_functions_pyx", __pyx_clineno, __pyx_lineno, __pyx_filename);
     }
     Py_CLEAR(__pyx_m);
   } else if (!PyErr_Occurred()) {
-    PyErr_SetString(PyExc_ImportError, "init helper_functions");
+    PyErr_SetString(PyExc_ImportError, "init helper_functions_pyx");
   }
   __pyx_L0:;
   __Pyx_RefNannyFinishContext();

@@ -1,13 +1,11 @@
-from sage.graphs.graph import Graph
-
 from local_tree_decomp import *
-from helper_functions import *
+from helper_functions cimport *
 
 # In integer rep, the DP table is of the following form:
 # { node_index: [1, 2, 3, 4, 5],
 #   second_node_index: [10, 20, 30, 40, 50], ...}
 
-cpdef int count_homomorphisms_pyx(Graph graph, Graph target_graph):
+cpdef int count_homomorphisms_pyx(graph, target_graph):
     r"""
     Return the number of homomorphisms from the graph `G` to the graph `H`.
 
@@ -39,13 +37,14 @@ cpdef int count_homomorphisms_pyx(Graph graph, Graph target_graph):
         sage: count_homomorphisms_pyx(graph, target_graph)
         324
     """
+    from sage.graphs.graph import Graph
+
     if not isinstance(graph, Graph):
         raise ValueError("the first argument must be a sage Graph")
     if not isinstance(target_graph, Graph):
         raise ValueError("the second argument must be a sage Graph")
 
     cdef int root
-    cdef Graph dir_labelled_TD
     cdef list DP_table
     cdef dict node_changes_dict
     cdef str node_type
@@ -114,7 +113,7 @@ cdef void _add_leaf_node_pyx(list DP_table, int node):
     node_index = get_node_index(node)
     DP_table[node_index] = [1]
 
-cdef void _add_intro_node_pyx(list DP_table, tuple node, Graph graph_TD, Graph graph, Graph target_graph, dict node_changes_dict):
+cdef void _add_intro_node_pyx(list DP_table, tuple node, graph_TD, graph, target_graph, dict node_changes_dict):
     cdef int node_index, child_node_index, intro_vtx_index, target_graph_size, mapped, mapping, target_vtx
     cdef tuple node_vtx_tuple, child_node_vtx_tuple
     cdef list node_nbhs_in_bag, mapped_nbhs_in_target, mappings_count, child_DP_entry
@@ -127,7 +126,7 @@ cdef void _add_intro_node_pyx(list DP_table, tuple node, Graph graph_TD, Graph g
     child_node_vtx_tuple = tuple(child_node_vtx)
 
     target_graph_size = len(target_graph)
-    mappings_length_range = range(target_graph_size ** len(node_vtx_tuple))
+    mappings_length_range = range(int(target_graph_size ** len(node_vtx_tuple)))
     mappings_count = [0 for _ in mappings_length_range]
 
     # Intro node specifically
@@ -150,11 +149,11 @@ cdef void _add_intro_node_pyx(list DP_table, tuple node, Graph graph_TD, Graph g
             if is_valid_mapping(target_vtx, mapped_nbhs_in_target, target_graph):
                 mappings_count[mapping] = child_DP_entry[mapped]
 
-            mapping += target_graph_size ** intro_vtx_index
+            mapping += int(target_graph_size ** intro_vtx_index)
 
     DP_table[node_index] = mappings_count
 
-cdef void _add_forget_node_pyx(list DP_table, tuple node, Graph graph_TD, Graph graph, Grpah target_graph, dict node_changes_dict):
+cdef void _add_forget_node_pyx(list DP_table, tuple node, graph_TD, graph, target_graph, dict node_changes_dict):
     cdef int node_index, child_node_index, target_graph_size, forgotten_vtx_index, mapping, extended_mapping, target_vtx, sum
     cdef tuple node_vtx_tuple, child_node_vtx_tuple
     cdef list mappings_count
@@ -168,7 +167,7 @@ cdef void _add_forget_node_pyx(list DP_table, tuple node, Graph graph_TD, Graph 
     child_node_vtx_tuple = tuple(child_node_vtx)
 
     target_graph_size = len(target_graph)
-    mappings_length_range = range(target_graph_size ** len(node_vtx_tuple))
+    mappings_length_range = range(int(target_graph_size ** len(node_vtx_tuple)))
     mappings_count = [0 for _ in mappings_length_range]
 
     # Forget node specifically
@@ -183,13 +182,13 @@ cdef void _add_forget_node_pyx(list DP_table, tuple node, Graph graph_TD, Graph 
 
         for target_vtx in target_graph:
             sum += child_DP_entry[extended_mapping]
-            extended_mapping += target_graph_size ** forgotten_vtx_index
+            extended_mapping += int(target_graph_size ** forgotten_vtx_index)
 
         mappings_count[mapping] = sum
 
     DP_table[node_index] = mappings_count
 
-cdef void _add_join_node_pyx(list DP_table, tuple node, Graph graph_TD):
+cdef void _add_join_node_pyx(list DP_table, tuple node, graph_TD):
     cdef int node_index, left_child_index, right_child_index
     cdef set node_vertices
     cdef list mappings_count
@@ -207,7 +206,7 @@ cdef void _add_join_node_pyx(list DP_table, tuple node, Graph graph_TD):
 
 ### Helper functions
 
-cpdef bool is_valid_mapping(int mapped_intro_vtx, list[int] mapped_nbhrs, Graph target_graph):
+cpdef bint is_valid_mapping(int mapped_intro_vtx, list[int] mapped_nbhrs, target_graph):
     cdef int vtx
     for vtx in mapped_nbhrs:
         if not target_graph.has_edge(mapped_intro_vtx, vtx):
