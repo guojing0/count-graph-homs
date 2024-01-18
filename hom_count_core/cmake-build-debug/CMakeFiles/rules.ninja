@@ -42,7 +42,7 @@ rule CUSTOM_COMMAND
 # Rule for re-running cmake.
 
 rule RERUN_CMAKE
-  command = "/Users/Latisp/Library/Application Support/JetBrains/Toolbox/apps/CLion/ch-1/232.9921.42/CLion.app/Contents/bin/cmake/mac/bin/cmake" --regenerate-during-build -S/Users/Latisp/CLionProjects/hom_count_core -B/Users/Latisp/CLionProjects/hom_count_core/cmake-build-debug
+  command = "/Users/Latisp/Library/Application Support/JetBrains/Toolbox/apps/CLion/ch-1/232.9921.42/CLion.app/Contents/bin/cmake/mac/bin/cmake" --regenerate-during-build -S/Users/Latisp/github/local-hom-count/hom_count_core -B/Users/Latisp/github/local-hom-count/hom_count_core/cmake-build-debug
   description = Re-running CMake...
   generator = 1
 

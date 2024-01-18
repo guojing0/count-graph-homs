@@ -87,7 +87,7 @@
 				}
 			],
 			"type" : "INTERNAL",
-			"value" : "/Users/Latisp/CLionProjects/hom_count_core/cmake-build-debug"
+			"value" : "/Users/Latisp/github/local-hom-count/hom_count_core/cmake-build-debug"
 		},
 		{
 			"name" : "CMAKE_CACHE_MAJOR_VERSION",
@@ -511,7 +511,7 @@
 				}
 			],
 			"type" : "STATIC",
-			"value" : "/Users/Latisp/CLionProjects/hom_count_core/cmake-build-debug/CMakeFiles/pkgRedirects"
+			"value" : "/Users/Latisp/github/local-hom-count/hom_count_core/cmake-build-debug/CMakeFiles/pkgRedirects"
 		},
 		{
 			"name" : "CMAKE_GENERATOR",
@@ -571,7 +571,7 @@
 				}
 			],
 			"type" : "INTERNAL",
-			"value" : "/Users/Latisp/CLionProjects/hom_count_core"
+			"value" : "/Users/Latisp/github/local-hom-count/hom_count_core"
 		},
 		{
 			"name" : "CMAKE_INSTALL_NAME_TOOL",
@@ -1203,7 +1203,7 @@
 				}
 			],
 			"type" : "STATIC",
-			"value" : "/Users/Latisp/CLionProjects/hom_count_core/cmake-build-debug"
+			"value" : "/Users/Latisp/github/local-hom-count/hom_count_core/cmake-build-debug"
 		},
 		{
 			"name" : "hom_count_core_IS_TOP_LEVEL",
@@ -1227,7 +1227,7 @@
 				}
 			],
 			"type" : "STATIC",
-			"value" : "/Users/Latisp/CLionProjects/hom_count_core"
+			"value" : "/Users/Latisp/github/local-hom-count/hom_count_core"
 		}
 	],
 	"kind" : "cache",

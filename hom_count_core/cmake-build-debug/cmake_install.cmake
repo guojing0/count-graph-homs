@@ -1,4 +1,4 @@
-# Install script for directory: /Users/Latisp/CLionProjects/hom_count_core
+# Install script for directory: /Users/Latisp/github/local-hom-count/hom_count_core
 
 # Set the install prefix
 if(NOT DEFINED CMAKE_INSTALL_PREFIX)
@@ -45,5 +45,5 @@ endif()
 
 string(REPLACE ";" "\n" CMAKE_INSTALL_MANIFEST_CONTENT
        "${CMAKE_INSTALL_MANIFEST_FILES}")
-file(WRITE "/Users/Latisp/CLionProjects/hom_count_core/cmake-build-debug/${CMAKE_INSTALL_MANIFEST}"
+file(WRITE "/Users/Latisp/github/local-hom-count/hom_count_core/cmake-build-debug/${CMAKE_INSTALL_MANIFEST}"
      "${CMAKE_INSTALL_MANIFEST_CONTENT}")

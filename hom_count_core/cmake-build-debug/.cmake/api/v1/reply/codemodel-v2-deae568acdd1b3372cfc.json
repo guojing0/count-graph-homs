@@ -49,8 +49,8 @@
 	"kind" : "codemodel",
 	"paths" : 
 	{
-		"build" : "/Users/Latisp/CLionProjects/hom_count_core/cmake-build-debug",
-		"source" : "/Users/Latisp/CLionProjects/hom_count_core"
+		"build" : "/Users/Latisp/github/local-hom-count/hom_count_core/cmake-build-debug",
+		"source" : "/Users/Latisp/github/local-hom-count/hom_count_core"
 	},
 	"version" : 
 	{
