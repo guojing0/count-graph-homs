@@ -3,8 +3,10 @@
 #include "graph_utils.h"
 
 typedef boost::adjacency_list<boost::vecS, boost::vecS, boost::directedS> TreeDecompDigraph;
-typedef std::vector<unsigned int> TableEntry;
+typedef std::vector<unsigned long> TableEntry;
 typedef std::vector<TableEntry> Table;
+
+typedef boost::graph_traits<Graph>::vertex_descriptor Vertex;
 
 /*
  * Add the leaf node to the DP table and update it accordingly.
@@ -110,7 +112,7 @@ void add_forget_node(Table& DP_table, const Node& node,
 /*
  *
  */
-void add_join_node(Table &DP_table, const Node &node, const TreeDecompDigraph &graph_TD) {
+void add_join_node(Table &DP_table, const Node& node, const TreeDecompDigraph& graph_TD) {
     int node_index = node.first;
     auto edges = boost::out_edges(node_index, graph_TD);
 
@@ -128,8 +130,40 @@ void add_join_node(Table &DP_table, const Node &node, const TreeDecompDigraph &g
     DP_table[node_index] = std::move(mappings_count);
 }
 
-unsigned int count_homomorphisms() {
-    return 0;
+struct bfs_visitor : public boost::default_bfs_visitor {
+    std::vector<Vertex> vertices;
+
+    template <typename Vertex, typename Graph>
+    void discover_vertex(Vertex u, const Graph& g) {
+        vertices.push_back(u);
+    }
+};
+
+unsigned long count_homomorphisms(const TreeDecompDigraph& dir_labelled_TD,
+                                  const Graph& graph, const Graph& target_graph,
+                                  const std::unordered_map<int, int>& node_changes_dict) {
+    Table DP_table(boost::num_vertices(dir_labelled_TD));
+    bfs_visitor visitor;
+
+    Vertex start_vertex = *vertices(dir_labelled_TD).first;
+    boost::breadth_first_search(dir_labelled_TD, start_vertex, boost::visitor(visitor));
+
+    for (auto vi = visitor.vertices.rbegin(); vi != visitor.vertices.rend(); ++vi) {
+        auto node = *vi;
+        auto node_type = dir_labelled_TD.get_vertex(node); // Assuming this function exists
+
+        if (node_type == "intro") {
+            add_intro_node(DP_table, node, dir_labelled_TD, graph, target_graph, node_changes_dict);
+        } else if (node_type == "forget") {
+            add_forget_node(DP_table, node, dir_labelled_TD, graph, target_graph, node_changes_dict);
+        } else if (node_type == "join") {
+            add_join_node(DP_table, node, dir_labelled_TD);
+        } else {
+            add_leaf_node(DP_table, node);
+        }
+    }
+
+    return DP_table[0][0];
 }
 
 // Some helper functions for testing and debugging
