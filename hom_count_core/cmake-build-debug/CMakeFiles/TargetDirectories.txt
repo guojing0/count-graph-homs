@@ -1,3 +1,0 @@
-/Users/Latisp/github/local-hom-count/hom_count_core/cmake-build-debug/CMakeFiles/hom_count_core.dir
-/Users/Latisp/github/local-hom-count/hom_count_core/cmake-build-debug/CMakeFiles/edit_cache.dir
-/Users/Latisp/github/local-hom-count/hom_count_core/cmake-build-debug/CMakeFiles/rebuild_cache.dir
