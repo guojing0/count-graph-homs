@@ -1,52 +1,26 @@
-#include <boost/graph/adjacency_list.hpp>
-#include <vector>
 #include <iostream>
 
 #include "graph_utils.h"
 
-typedef boost::adjacency_list<boost::vecS, boost::vecS, boost::undirectedS> Graph;
 typedef boost::adjacency_list<boost::vecS, boost::vecS, boost::directedS> TreeDecompDigraph;
-typedef std::pair<int, std::vector<int>> Node;
 typedef std::vector<std::vector<unsigned int>> Table;
-
-
-// Helper functions
-
-
-/*
- * Get the index of `node`
- */
-inline int get_node_index(const Node& node) {
-    return node.first;
-}
-
-/*
- * Get the content/vertices of `node`
- */
-inline const std::vector<int>& get_node_content(const Node& node) {
-    return node.second;
-}
-
-
-// Core functions
-
 
 /*
  * Add the leaf node to the DP table and update it accordingly.
  */
-void add_leaf_node(Table& DP_table, const Node& node) {
+void add_leaf_node(Table &DP_table, const Node &node) {
     DP_table[get_node_index(node)] = {1};
 }
 
-///////////////////////////
-
-
-void add_intro_node(Table& DP_table, const std::pair<int, std::vector<int>>& node,
-                            const Graph& graph_TD, const Graph& graph, const Graph& target_graph,
-                            const std::unordered_map<int, int>& node_changes_dict) {
+/*
+ *
+ */
+void add_intro_node(Table &DP_table, const Node &node,
+                    const TreeDecompDigraph &graph_TD, const Graph &graph, const Graph &target_graph,
+                    const std::unordered_map<int, int> &node_changes_dict) {
     // Basic setup
     int node_index = node.first;
-    const std::vector<int>& node_vertices = node.second;
+    const std::vector<int> &node_vertices = node.second;
 
     auto neighbors_out = boost::out_edges(node_index, graph_TD);
     int child_node_index = boost::target(*neighbors_out.first, graph_TD);
@@ -63,43 +37,39 @@ void add_intro_node(Table& DP_table, const std::pair<int, std::vector<int>>& nod
 
     // Neighborhood of the intro vertex in the graph
     std::vector<int> node_nbhs_in_bag;
-    for (int vtx : child_node_vtx) {
+    for (int vtx: child_node_vtx) {
         if (boost::edge(intro_vertex, vtx, graph).second) {
             auto it_child = std::find(child_node_vtx.begin(), child_node_vtx.end(), vtx);
             node_nbhs_in_bag.push_back(std::distance(child_node_vtx.begin(), it_child));
         }
     }
 
-    const std::vector<int>& child_DP_entry = DP_table[child_node_index];
+    const std::vector<int> &child_DP_entry = DP_table[child_node_index];
 
     for (int mapped = 0; mapped < child_DP_entry.size(); ++mapped) {
         std::vector<int> mapped_nbhs_in_target;
-        for (int nbh : node_nbhs_in_bag) {
+        for (int nbh: node_nbhs_in_bag) {
             mapped_nbhs_in_target.push_back(extract_bag_vertex(mapped, nbh, target_graph_size));
         }
 
         int mapping = add_vertex_into_mapping(0, mapped, intro_vtx_index, target_graph_size);
 
-        for (auto target_vtx : boost::make_iterator_range(vertices(target_graph))) {
+        for (auto target_vtx: boost::make_iterator_range(vertices(target_graph))) {
             if (is_valid_mapping(target_vtx, mapped_nbhs_in_target, target_graph)) {
                 mappings_count[mapping] = child_DP_entry[mapped];
             }
 
-            mapping += std::pow(target_graph_size, intro_vtx_index);
+            mapping += static_cast<int>(std::pow(target_graph_size, intro_vtx_index));
         }
     }
 
-    DP_table[node_index] = std::move(mappings_count);
+    DP_table[node_index] = mappings_count;
 }
-
-
-
-///////////////////////////
 
 /*
  *
  */
-void add_join_node(Table& DP_table, const Node& node, const TreeDecompDigraph& graph_TD) {
+void add_join_node(Table &DP_table, const Node &node, const TreeDecompDigraph &graph_TD) {
     int node_index = node.first;
     auto edges = boost::out_edges(node_index, graph_TD);
 
@@ -115,16 +85,6 @@ void add_join_node(Table& DP_table, const Node& node, const TreeDecompDigraph& g
     }
 
     DP_table[node_index] = mappings_count;
-}
-
-bool is_valid_mapping(int mapped_intro_vtx, const std::vector<int>& mapped_nbhrs, const Graph& target_graph) {
-    for (int vtx : mapped_nbhrs) {
-        if (!boost::edge(mapped_intro_vtx, vtx, target_graph).second) {
-            return false;
-        }
-    }
-
-    return true;
 }
 
 // Some helper functions for testing and debugging
