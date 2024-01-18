@@ -3,7 +3,8 @@
 #include "graph_utils.h"
 
 typedef boost::adjacency_list<boost::vecS, boost::vecS, boost::directedS> TreeDecompDigraph;
-typedef std::vector<std::vector<unsigned int>> Table;
+typedef std::vector<unsigned int> TableEntry;
+typedef std::vector<TableEntry> Table;
 
 /*
  * Add the leaf node to the DP table and update it accordingly.
@@ -19,42 +20,42 @@ void add_intro_node(Table &DP_table, const Node &node,
                     const TreeDecompDigraph &graph_TD, const Graph &graph, const Graph &target_graph,
                     const std::unordered_map<int, int> &node_changes_dict) {
     // Basic setup
-    int node_index = node.first;
-    const std::vector<int> &node_vertices = node.second;
+    int node_index = get_node_index(node);
+    const std::vector<int>& node_vertices = get_node_content(node);
 
     auto neighbors_out = boost::out_edges(node_index, graph_TD);
-    int child_node_index = boost::target(*neighbors_out.first, graph_TD);
-    // Assuming child_node_vtx is defined based on graph_TD structure
+    int child_node_index = static_cast<int>(boost::target(*neighbors_out.first, graph_TD));
+    const std::vector<int>& child_node_vtx = node_vertices; // TODO change
 
-    int target_graph_size = boost::num_vertices(target_graph);
-    int mappings_length = std::pow(target_graph_size, node_vertices.size());
-    std::vector<int> mappings_count(mappings_length, 0);
+    int target_graph_size = static_cast<int>(boost::num_vertices(target_graph));
+    int mappings_length = static_cast<int>(std::pow(target_graph_size, node_vertices.size()));
+    TableEntry mappings_count(mappings_length, 0);
 
     // Intro node specifically
     int intro_vertex = node_changes_dict.at(node_index);
-    auto it = std::find(node_vertices.begin(), node_vertices.end(), intro_vertex);
-    int intro_vtx_index = std::distance(node_vertices.begin(), it);
+    auto iter = std::find(node_vertices.begin(), node_vertices.end(), intro_vertex);
+    int intro_vtx_index = static_cast<int>(std::distance(node_vertices.begin(), iter));
 
     // Neighborhood of the intro vertex in the graph
     std::vector<int> node_nbhs_in_bag;
-    for (int vtx: child_node_vtx) {
+    for (int vtx : child_node_vtx) {
         if (boost::edge(intro_vertex, vtx, graph).second) {
-            auto it_child = std::find(child_node_vtx.begin(), child_node_vtx.end(), vtx);
-            node_nbhs_in_bag.push_back(std::distance(child_node_vtx.begin(), it_child));
+            auto iter_child = std::find(child_node_vtx.begin(), child_node_vtx.end(), vtx);
+            node_nbhs_in_bag.push_back(static_cast<int>(std::distance(child_node_vtx.begin(), iter_child)));
         }
     }
 
-    const std::vector<int> &child_DP_entry = DP_table[child_node_index];
+    const TableEntry& child_DP_entry = DP_table[child_node_index];
 
     for (int mapped = 0; mapped < child_DP_entry.size(); ++mapped) {
-        std::vector<int> mapped_nbhs_in_target;
+        std::vector<int> mapped_nbhs_in_target(node_nbhs_in_bag.size(), 0);
         for (int nbh: node_nbhs_in_bag) {
             mapped_nbhs_in_target.push_back(extract_bag_vertex(mapped, nbh, target_graph_size));
         }
 
         int mapping = add_vertex_into_mapping(0, mapped, intro_vtx_index, target_graph_size);
 
-        for (auto target_vtx: boost::make_iterator_range(vertices(target_graph))) {
+        for (auto target_vtx : boost::make_iterator_range(vertices(target_graph))) {
             if (is_valid_mapping(target_vtx, mapped_nbhs_in_target, target_graph)) {
                 mappings_count[mapping] = child_DP_entry[mapped];
             }
@@ -63,7 +64,47 @@ void add_intro_node(Table &DP_table, const Node &node,
         }
     }
 
-    DP_table[node_index] = mappings_count;
+    DP_table[node_index] = std::move(mappings_count);
+}
+
+/*
+ *
+ */
+void add_forget_node(Table& DP_table, const Node& node,
+                     const TreeDecompDigraph& graph_TD, const Graph& graph, const Graph& target_graph,
+                     const std::unordered_map<int, int>& node_changes_dict) {
+    // Basic setup
+    int node_index = get_node_index(node);
+    const std::vector<int>& node_vertices = get_node_content(node);
+
+    auto neighbors_out = boost::out_edges(node_index, graph_TD);
+    int child_node_index = boost::target(*neighbors_out.first, graph_TD);
+    const std::vector<int>& child_node_vtx = node_vertices; // TODO change
+
+    int target_graph_size = static_cast<int>(boost::num_vertices(target_graph));
+    int mappings_length = static_cast<int>(std::pow(target_graph_size, node_vertices.size()));
+    TableEntry mappings_count(mappings_length, 0);
+
+    // Forget node specifically
+    int forgotten_vtx = node_changes_dict.at(node_index);
+    auto iter = std::find(node_vertices.begin(), node_vertices.end(), forgotten_vtx);
+    int forgotten_vtx_index = static_cast<int>(std::distance(node_vertices.begin(), iter));
+
+    const TableEntry& child_DP_entry = DP_table[child_node_index];
+
+    for (int mapping = 0; mapping < mappings_length; ++mapping) {
+        unsigned int sum = 0;
+        int extended_mapping = add_vertex_into_mapping(0, mapping, forgotten_vtx_index, target_graph_size);
+
+        for (auto target_vtx : boost::make_iterator_range(vertices(target_graph))) {
+            sum += child_DP_entry[extended_mapping];
+            extended_mapping += static_cast<int>(std::pow(target_graph_size, forgotten_vtx_index));
+        }
+
+        mappings_count[mapping] = sum;
+    }
+
+    DP_table[node_index] = std::move(mappings_count);
 }
 
 /*
@@ -78,13 +119,17 @@ void add_join_node(Table &DP_table, const Node &node, const TreeDecompDigraph &g
     int right_child_index = target(*(++edges.first), graph_TD);
 
     // Compute mappings_count
-    std::vector<unsigned int> mappings_count;
-    mappings_count.reserve(DP_table[left_child_index].size());
-    for (size_t i = 0; i < DP_table[left_child_index].size(); ++i) {
+    int DP_table_entry_size = DP_table[left_child_index].size();
+    TableEntry mappings_count(DP_table_entry_size, 0);
+    for (size_t i = 0; i < DP_table_entry_size; ++i) {
         mappings_count.push_back(DP_table[left_child_index][i] * DP_table[right_child_index][i]);
     }
 
-    DP_table[node_index] = mappings_count;
+    DP_table[node_index] = std::move(mappings_count);
+}
+
+unsigned int count_homomorphisms() {
+    return 0;
 }
 
 // Some helper functions for testing and debugging
