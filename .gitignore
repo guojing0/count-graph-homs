@@ -192,3 +192,4 @@ cython_debug/
 *.out
 *.app
 
+cmake-build-debug/
