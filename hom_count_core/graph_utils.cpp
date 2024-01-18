@@ -5,14 +5,14 @@
 /*
  * Get the index of `node`
  */
-inline int get_node_index(const Node& node) {
+int get_node_index(const Node& node) {
     return node.first;
 }
 
 /*
  * Get the content/vertices of `node`
  */
-inline const std::vector<int> &get_node_content(const Node& node) {
+const std::vector<int>& get_node_content(const Node& node) {
     return node.second;
 }
 

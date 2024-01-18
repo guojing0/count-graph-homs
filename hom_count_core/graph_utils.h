@@ -3,12 +3,13 @@
 
 #include <boost/graph/adjacency_list.hpp>
 #include <vector>
+#include <unordered_map>
 
 typedef boost::adjacency_list<boost::vecS, boost::vecS, boost::undirectedS> Graph;
 typedef std::pair<int, std::vector<int>> Node;
 
-inline int get_node_index(const Node& node);
-inline const std::vector<int> &get_node_content(const Node& node);
+int get_node_index(const Node& node);
+const std::vector<int>& get_node_content(const Node& node);
 
 int extract_bag_vertex(int mapping, int index, int graph_size);
 int add_vertex_into_mapping(int new_vertex, int mapping, int index, int graph_size);
