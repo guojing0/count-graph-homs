@@ -1,17 +1,4 @@
 "/Users/Latisp/Library/Application Support/JetBrains/Toolbox/apps/CLion/ch-1/232.9921.42/CLion.app/Contents/bin/cmake/mac/bin/cmake" -DCMAKE_BUILD_TYPE=Debug "-DCMAKE_MAKE_PROGRAM=/Users/Latisp/Library/Application Support/JetBrains/Toolbox/apps/CLion/ch-1/232.9921.42/CLion.app/Contents/bin/ninja/mac/ninja" -G Ninja -S /Users/Latisp/github/local-hom-count/hom_count_core -B /Users/Latisp/github/local-hom-count/hom_count_core/cmake-build-debug
--- The C compiler identification is AppleClang 10.0.0.10001145
--- The CXX compiler identification is AppleClang 10.0.0.10001145
--- Detecting C compiler ABI info
--- Detecting C compiler ABI info - done
--- Check for working C compiler: /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/cc - skipped
--- Detecting C compile features
--- Detecting C compile features - done
--- Detecting CXX compiler ABI info
--- Detecting CXX compiler ABI info - done
--- Check for working CXX compiler: /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/c++ - skipped
--- Detecting CXX compile features
--- Detecting CXX compile features - done
--- Found Boost: /opt/local/include (found version "1.76.0")  
--- Configuring done (6.2s)
+-- Configuring done (0.5s)
 -- Generating done (0.0s)
 -- Build files have been written to: /Users/Latisp/github/local-hom-count/hom_count_core/cmake-build-debug
