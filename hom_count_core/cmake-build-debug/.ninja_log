@@ -1,3 +1,8 @@
 # ninja log v5
 18	5384	1705589680757685184	CMakeFiles/hom_count_core.dir/main.cpp.o	cc9a5578e8a1cb8e
 5385	5591	1705589680990538086	hom_count_core	3c533e9d5ec3fc2
+40	6184	1705615510002148954	CMakeFiles/hom_count_core.dir/graph_utils.cpp.o	80b672efe28aeb92
+36	7313	1705615511139165584	CMakeFiles/hom_count_core.dir/main.cpp.o	cc9a5578e8a1cb8e
+23	11888	1705615620427348919	CMakeFiles/hom_count_core.dir/graph_utils.cpp.o	80b672efe28aeb92
+21	13882	1705615622431856019	CMakeFiles/hom_count_core.dir/main.cpp.o	cc9a5578e8a1cb8e
+13883	13966	1705615622548329410	hom_count_core	d1767ac7489f9127
