@@ -1,0 +1,4 @@
+"/Users/Latisp/Library/Application Support/JetBrains/Toolbox/apps/CLion/ch-1/232.9921.42/CLion.app/Contents/bin/cmake/mac/bin/cmake" -DCMAKE_BUILD_TYPE=Debug "-DCMAKE_MAKE_PROGRAM=/Users/Latisp/Library/Application Support/JetBrains/Toolbox/apps/CLion/ch-1/232.9921.42/CLion.app/Contents/bin/ninja/mac/ninja" -G Ninja -S /Users/Latisp/CLionProjects/hom_count_core -B /Users/Latisp/CLionProjects/hom_count_core/cmake-build-debug
+-- Configuring done (0.4s)
+-- Generating done (0.0s)
+-- Build files have been written to: /Users/Latisp/CLionProjects/hom_count_core/cmake-build-debug
