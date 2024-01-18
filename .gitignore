@@ -192,4 +192,4 @@ cython_debug/
 *.out
 *.app
 
-cmake-build-debug/
+hom_count_core/cmake-build-debug/
