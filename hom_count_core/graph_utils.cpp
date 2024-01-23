@@ -3,20 +3,6 @@
 #include <cmath>
 
 /*
- * Get the index of `node`
- */
-int get_node_index(const Node& node) {
-    return node.first;
-}
-
-/*
- * Get the content/vertices of `node`
- */
-const std::vector<int>& get_node_content(const Node& node) {
-    return node.second;
-}
-
-/*
  * Extract the bag vertex of `index` from `mapping`
  */
 int extract_bag_vertex(int mapping, int index, int graph_size) {
