@@ -16,22 +16,25 @@
  */
 struct Node {
     int index, type;
-    std::vector<int> content;
+    std::set<int> content;
+
+    // Constructor to initialize fields
+    Node() : index(0), type(0) {}
+
+    // Constructor with parameters
+    Node(int idx, int tp, const std::set<int>& cnt)
+            : index(idx), type(tp), content(cnt) {}
 };
 
 typedef boost::adjacency_list<boost::vecS, boost::vecS, boost::directedS, Node> TreeDecompDigraph;
 typedef std::vector<unsigned long> TableEntry;
 typedef std::vector<TableEntry> Table;
+typedef std::unordered_map<int, int> NodeChanges;
 
 typedef boost::graph_traits<Graph>::vertex_descriptor Vertex;
 
 struct bfs_visitor : public boost::default_bfs_visitor {
     std::vector<Vertex> vertices;
-
-    template <typename Vertex, typename Graph>
-    void discover_vertex(Vertex u, const Graph& g) {
-        vertices.push_back(u);
-    }
 };
 
 /*
@@ -50,14 +53,14 @@ void add_leaf_node(Table &DP_table, const Node &node) {
  */
 void add_intro_node(Table &DP_table, const Node &node,
                     const TreeDecompDigraph &graph_TD, const Graph &graph, const Graph &target_graph,
-                    const std::unordered_map<int, int> &node_changes_dict) {
+                    const NodeChanges& node_changes_dict) {
     // Basic setup
     int node_index = node.index;
-    const std::vector<int>& node_vertices = node.content;
+    const std::set<int>& node_vertices = node.content;
 
     auto neighbors_out = boost::out_edges(node_index, graph_TD);
     int child_node_index = static_cast<int>(boost::target(*neighbors_out.first, graph_TD));
-    const std::vector<int>& child_node_vtx = node_vertices; // TODO change
+    const std::set<int>& child_node_vtx = node_vertices; // TODO change
 
     int target_graph_size = static_cast<int>(boost::num_vertices(target_graph));
     int mappings_length = static_cast<int>(std::pow(target_graph_size, node_vertices.size()));
@@ -65,14 +68,14 @@ void add_intro_node(Table &DP_table, const Node &node,
 
     // Intro node specifically
     int intro_vertex = node_changes_dict.at(node_index);
-    auto iter = std::find(node_vertices.begin(), node_vertices.end(), intro_vertex);
+    auto iter = node_vertices.find(intro_vertex);
     int intro_vtx_index = static_cast<int>(std::distance(node_vertices.begin(), iter));
 
     // Neighborhood of the intro vertex in the graph
     std::vector<int> node_nbhs_in_bag;
     for (int vtx : child_node_vtx) {
         if (boost::edge(intro_vertex, vtx, graph).second) {
-            auto iter_child = std::find(child_node_vtx.begin(), child_node_vtx.end(), vtx);
+            auto iter_child = child_node_vtx.find(vtx);
             node_nbhs_in_bag.push_back(static_cast<int>(std::distance(child_node_vtx.begin(), iter_child)));
         }
     }
@@ -104,14 +107,14 @@ void add_intro_node(Table &DP_table, const Node &node,
  */
 void add_forget_node(Table& DP_table, const Node& node,
                      const TreeDecompDigraph& graph_TD, const Graph& graph, const Graph& target_graph,
-                     const std::unordered_map<int, int>& node_changes_dict) {
+                     const NodeChanges& node_changes_dict) {
     // Basic setup
     int node_index = node.index;
-    const std::vector<int>& node_vertices = node.content;
+    const std::set<int>& node_vertices = node.content;
 
     auto neighbors_out = boost::out_edges(node_index, graph_TD);
     int child_node_index = boost::target(*neighbors_out.first, graph_TD);
-    const std::vector<int>& child_node_vtx = node_vertices; // TODO change
+    const std::set<int>& child_node_vtx = node_vertices; // TODO change
 
     int target_graph_size = static_cast<int>(boost::num_vertices(target_graph));
     int mappings_length = static_cast<int>(std::pow(target_graph_size, node_vertices.size()));
@@ -119,7 +122,7 @@ void add_forget_node(Table& DP_table, const Node& node,
 
     // Forget node specifically
     int forgotten_vtx = node_changes_dict.at(node_index);
-    auto iter = std::find(node_vertices.begin(), node_vertices.end(), forgotten_vtx);
+    auto iter = node_vertices.find(forgotten_vtx);
     int forgotten_vtx_index = static_cast<int>(std::distance(node_vertices.begin(), iter));
 
     const TableEntry& child_DP_entry = DP_table[child_node_index];
@@ -162,7 +165,7 @@ void add_join_node(Table &DP_table, const Node& node, const TreeDecompDigraph& g
 
 unsigned long count_homomorphisms(const TreeDecompDigraph& dir_labelled_TD,
                                   const Graph& graph, const Graph& target_graph,
-                                  const std::unordered_map<int, int>& node_changes_dict) {
+                                  const NodeChanges& node_changes_dict) {
     Table DP_table(boost::num_vertices(dir_labelled_TD));
     bfs_visitor visitor;
 
@@ -216,14 +219,76 @@ Graph five_clique() {
     return g;
 }
 
-int main() {
-    // Define the graph type
-    Graph g = five_clique();
+TreeDecompDigraph four_cycle_nice_tree_decomp() {
+    TreeDecompDigraph graph;
+    std::vector<TreeDecompDigraph::vertex_descriptor> vertices(9);
 
-    // Iterate over the vertices and print them
-    for (auto vp = vertices(g); vp.first != vp.second; ++vp.first) {
-        std::cout << *vp.first << std::endl;
+    std::set<int> nodeContents[] = {
+            {},
+            {0},
+            {0, 1},
+            {0, 1, 3},
+            {1, 3},
+            {1, 2, 3},
+            {2, 3},
+            {3},
+            {}
+    };
+
+    for (int i = 0; i < 9; ++i) {
+        Node node;
+        node.index = i;
+        node.content = nodeContents[i];
+
+        vertices[i] = add_vertex(node, graph);
     }
+
+    add_edge(vertices[0], vertices[1], graph);
+    add_edge(vertices[1], vertices[2], graph);
+    add_edge(vertices[2], vertices[3], graph);
+    add_edge(vertices[3], vertices[4], graph);
+    add_edge(vertices[4], vertices[5], graph);
+    add_edge(vertices[5], vertices[6], graph);
+    add_edge(vertices[6], vertices[7], graph);
+    add_edge(vertices[7], vertices[8], graph);
+
+    return graph;
+}
+
+NodeChanges four_cycle_node_changes() {
+    NodeChanges map = {
+            {0, 0},
+            {1, 1},
+            {2, 3},
+            {3, 0},
+            {4, 2},
+            {5, 1},
+            {6, 2},
+            {7, 3}
+    };
+
+    return map;
+}
+
+int main() {
+//    TreeDecompDigraph graph = four_cycle_nice_tree_decomp();
+//    TreeDecompDigraph::vertex_iterator vi, vend;
+//    for (boost::tie(vi, vend) = vertices(graph); vi != vend; ++vi) {
+//        Node& n = graph[*vi];
+//        std::cout << "Node " << n.index << ": {";
+//        for (int c : n.content) std::cout << c << " ";
+//        std::cout << "}" << std::endl;
+//    }
+
+//    TreeDecompDigraph C4_nice_tree_decomp = four_cycle_nice_tree_decomp();
+//    Graph C4 = four_cycle();
+//    Graph K5 = five_clique();
+//    NodeChanges map = four_cycle_node_changes();
+//    unsigned long count = count_homomorphisms(C4_nice_tree_decomp, C4, K5, map);
+
+    int n = 1;
+
+    std::cout << n << std::endl;
 
     return 0;
 }
