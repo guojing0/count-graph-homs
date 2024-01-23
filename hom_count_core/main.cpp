@@ -2,17 +2,47 @@
 
 #include "graph_utils.h"
 
-typedef boost::adjacency_list<boost::vecS, boost::vecS, boost::directedS> TreeDecompDigraph;
+/*
+ * Define a `Node` in a tree decomposition:
+ *
+ * index - index of the node in the tree decomposition graph
+ * content - the content in the bag of this node
+ * type - each node can have four types:
+ *
+ * 0 - Leaf node (usually not labelled)
+ * 1 - Introduce node
+ * 2 - Forget node
+ * 3 - Join node
+ */
+struct Node {
+    int index, type;
+    std::vector<int> content;
+};
+
+typedef boost::adjacency_list<boost::vecS, boost::vecS, boost::directedS, Node> TreeDecompDigraph;
 typedef std::vector<unsigned long> TableEntry;
 typedef std::vector<TableEntry> Table;
 
 typedef boost::graph_traits<Graph>::vertex_descriptor Vertex;
 
+struct bfs_visitor : public boost::default_bfs_visitor {
+    std::vector<Vertex> vertices;
+
+    template <typename Vertex, typename Graph>
+    void discover_vertex(Vertex u, const Graph& g) {
+        vertices.push_back(u);
+    }
+};
+
+/*
+ * Core functions for adding entries to the DP table
+ */
+
 /*
  * Add the leaf node to the DP table and update it accordingly.
  */
 void add_leaf_node(Table &DP_table, const Node &node) {
-    DP_table[get_node_index(node)] = {1};
+    DP_table[node.index] = {1};
 }
 
 /*
@@ -22,8 +52,8 @@ void add_intro_node(Table &DP_table, const Node &node,
                     const TreeDecompDigraph &graph_TD, const Graph &graph, const Graph &target_graph,
                     const std::unordered_map<int, int> &node_changes_dict) {
     // Basic setup
-    int node_index = get_node_index(node);
-    const std::vector<int>& node_vertices = get_node_content(node);
+    int node_index = node.index;
+    const std::vector<int>& node_vertices = node.content;
 
     auto neighbors_out = boost::out_edges(node_index, graph_TD);
     int child_node_index = static_cast<int>(boost::target(*neighbors_out.first, graph_TD));
@@ -76,8 +106,8 @@ void add_forget_node(Table& DP_table, const Node& node,
                      const TreeDecompDigraph& graph_TD, const Graph& graph, const Graph& target_graph,
                      const std::unordered_map<int, int>& node_changes_dict) {
     // Basic setup
-    int node_index = get_node_index(node);
-    const std::vector<int>& node_vertices = get_node_content(node);
+    int node_index = node.index;
+    const std::vector<int>& node_vertices = node.content;
 
     auto neighbors_out = boost::out_edges(node_index, graph_TD);
     int child_node_index = boost::target(*neighbors_out.first, graph_TD);
@@ -113,7 +143,7 @@ void add_forget_node(Table& DP_table, const Node& node,
  *
  */
 void add_join_node(Table &DP_table, const Node& node, const TreeDecompDigraph& graph_TD) {
-    int node_index = node.first;
+    int node_index = node.index;
     auto edges = boost::out_edges(node_index, graph_TD);
 
     // We assume that a join node only has two out-edges and they have same content
@@ -130,15 +160,6 @@ void add_join_node(Table &DP_table, const Node& node, const TreeDecompDigraph& g
     DP_table[node_index] = std::move(mappings_count);
 }
 
-struct bfs_visitor : public boost::default_bfs_visitor {
-    std::vector<Vertex> vertices;
-
-    template <typename Vertex, typename Graph>
-    void discover_vertex(Vertex u, const Graph& g) {
-        vertices.push_back(u);
-    }
-};
-
 unsigned long count_homomorphisms(const TreeDecompDigraph& dir_labelled_TD,
                                   const Graph& graph, const Graph& target_graph,
                                   const std::unordered_map<int, int>& node_changes_dict) {
@@ -149,17 +170,21 @@ unsigned long count_homomorphisms(const TreeDecompDigraph& dir_labelled_TD,
     boost::breadth_first_search(dir_labelled_TD, start_vertex, boost::visitor(visitor));
 
     for (auto vi = visitor.vertices.rbegin(); vi != visitor.vertices.rend(); ++vi) {
-        auto node = *vi;
-        auto node_type = dir_labelled_TD.get_vertex(node); // Assuming this function exists
+        auto node = dir_labelled_TD[*vi];
+        int node_type = node.type;
 
-        if (node_type == "intro") {
-            add_intro_node(DP_table, node, dir_labelled_TD, graph, target_graph, node_changes_dict);
-        } else if (node_type == "forget") {
-            add_forget_node(DP_table, node, dir_labelled_TD, graph, target_graph, node_changes_dict);
-        } else if (node_type == "join") {
-            add_join_node(DP_table, node, dir_labelled_TD);
-        } else {
-            add_leaf_node(DP_table, node);
+        switch (node_type) {
+            case 1:
+                add_intro_node(DP_table, node, dir_labelled_TD, graph, target_graph, node_changes_dict);
+                break;
+            case 2:
+                add_forget_node(DP_table, node, dir_labelled_TD, graph, target_graph, node_changes_dict);
+                break;
+            case 3:
+                add_join_node(DP_table, node, dir_labelled_TD);
+                break;
+            default:
+                add_leaf_node(DP_table, node);
         }
     }
 
