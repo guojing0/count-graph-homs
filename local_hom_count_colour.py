@@ -7,7 +7,7 @@ from help_functions import *
 # { node_index: [1, 2, 3, 4, 5],
 #   second_node_index: [10, 20, 30, 40, 50], ...}
 
-def count_homomorphisms_best_colour(graph, target_graph):
+def count_homomorphisms_best_colour(graph, target_graph, graph_clr, target_clr):
     r"""
     Return the number of homomorphisms from the graph `G` to the graph `H`.
 
@@ -87,9 +87,9 @@ def count_homomorphisms_best_colour(graph, target_graph):
 
         match node_type:
             case 'intro':
-                _add_intro_node_best_colour(DP_table, node, dir_labelled_TD, graph, target_graph, node_changes_dict)
+                _add_intro_node_best_colour(DP_table, node, dir_labelled_TD, graph, target_graph, node_changes_dict, graph_clr, target_clr)
             case 'forget':
-                _add_forget_node_best_colour(DP_table, node, dir_labelled_TD, graph, target_graph, node_changes_dict)
+                _add_forget_node_best_colour(DP_table, node, dir_labelled_TD, graph, target_graph, node_changes_dict, graph_clr, target_clr)
             case 'join':
                 _add_join_node_best_colour(DP_table, node, dir_labelled_TD)
 
@@ -107,7 +107,7 @@ def _add_leaf_node_best_colour(DP_table, node):
     node_index = get_node_index(node)
     DP_table[node_index] = [1]
 
-def _add_intro_node_best_colour(DP_table, node, graph_TD, graph, target_graph, node_changes_dict):
+def _add_intro_node_best_colour(DP_table, node, graph_TD, graph, target_graph, node_changes_dict, graph_clr, target_clr):
     # Basic setup
     node_index, node_vertices = node
     node_vtx_tuple = tuple(node_vertices)
@@ -122,6 +122,7 @@ def _add_intro_node_best_colour(DP_table, node, graph_TD, graph, target_graph, n
     # Intro node specifically
     intro_vertex = node_changes_dict[node_index]
     intro_vtx_index = node_vtx_tuple.index(intro_vertex)
+    intro_vtx_colour = graph_clr[intro_vertex]
 
     # Neighborhood of the intro vertex in the graph
     node_nbhs_in_bag = [child_node_vtx_tuple.index(vtx) for vtx in child_node_vtx_tuple
@@ -136,14 +137,16 @@ def _add_intro_node_best_colour(DP_table, node, graph_TD, graph, target_graph, n
         mapping = add_vertex_into_mapping(0, mapped, intro_vtx_index, target_graph_size)
 
         for target_vtx in target_graph:
-            if is_valid_mapping(target_vtx, mapped_nbhs_in_target, target_graph):
-                mappings_count[mapping] = child_DP_entry[mapped]
+            target_vtx_index = tuple(target_graph).index(target_vtx)
+            if intro_vtx_colour == target_clr[target_vtx_index]:
+                if is_valid_mapping(target_vtx, mapped_nbhs_in_target, target_graph):
+                    mappings_count[mapping] = child_DP_entry[mapped]
 
             mapping += target_graph_size ** intro_vtx_index
 
     DP_table[node_index] = mappings_count
 
-def _add_forget_node_best_colour(DP_table, node, graph_TD, graph, target_graph, node_changes_dict):
+def _add_forget_node_best_colour(DP_table, node, graph_TD, graph, target_graph, node_changes_dict, graph_clr, target_clr):
     # Basic setup
     node_index, node_vertices = node
     node_vtx_tuple = tuple(node_vertices)
@@ -158,6 +161,7 @@ def _add_forget_node_best_colour(DP_table, node, graph_TD, graph, target_graph, 
     # Forget node specifically
     forgotten_vtx = node_changes_dict[node_index]
     forgotten_vtx_index = child_node_vtx_tuple.index(forgotten_vtx)
+    forgotten_vtx_colour = graph_clr[forgotten_vtx]
 
     child_DP_entry = DP_table[child_node_index]
 
@@ -166,7 +170,10 @@ def _add_forget_node_best_colour(DP_table, node, graph_TD, graph, target_graph, 
         extended_mapping = add_vertex_into_mapping(0, mapping, forgotten_vtx_index, target_graph_size)
 
         for target_vtx in target_graph:
-            sum += child_DP_entry[extended_mapping]
+            # Obtain the mapped vertex of the forgotten vertex in the target graph
+            mapped_vtx = extract_bag_vertex(mapping, forgotten_vtx_index, target_graph_size)
+            if forgotten_vtx_colour == target_clr[mapped_vtx]:
+                sum += child_DP_entry[extended_mapping]
             extended_mapping += target_graph_size ** forgotten_vtx_index
 
         mappings_count[mapping] = sum
@@ -187,9 +194,9 @@ def _add_join_node_best_colour(DP_table, node, graph_TD):
 
 ### Helper functions
 
-def is_valid_mapping(mapped_intro_vtx, mapped_nbhrs, target_graph):
+def is_valid_mapping(mapped_vtx, mapped_nbhrs, target_graph):
     for vtx in mapped_nbhrs:
-        if not target_graph.has_edge(mapped_intro_vtx, vtx):
+        if not target_graph.has_edge(mapped_vtx, vtx):
             return False
 
     return True
