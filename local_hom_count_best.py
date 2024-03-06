@@ -7,7 +7,7 @@ from help_functions import *
 # { node_index: [1, 2, 3, 4, 5],
 #   second_node_index: [10, 20, 30, 40, 50], ...}
 
-def count_homomorphisms_int_pre(graph, target_graph):
+def count_homomorphisms_best(graph, target_graph):
     r"""
     Return the number of homomorphisms from the graph `G` to the graph `H`.
 
@@ -35,8 +35,8 @@ def count_homomorphisms_int_pre(graph, target_graph):
 
         sage: graph = graphs.CompleteBipartiteGraph(1, 4)
         sage: target_graph = graphs.CompleteGraph(4)
-        sage: from sage.graphs.hom_count_int_pre import count_homomorphisms_int_pre
-        sage: count_homomorphisms_int_pre(graph, target_graph)
+        sage: from sage.graphs.hom_count_best import count_homomorphisms_best
+        sage: count_homomorphisms_best(graph, target_graph)
         324
     """
     if not isinstance(graph, Graph):
@@ -87,27 +87,27 @@ def count_homomorphisms_int_pre(graph, target_graph):
 
         match node_type:
             case 'intro':
-                _add_intro_node_int_pre(DP_table, node, dir_labelled_TD, graph, target_graph, node_changes_dict)
+                _add_intro_node_best(DP_table, node, dir_labelled_TD, graph, target_graph, node_changes_dict)
             case 'forget':
-                _add_forget_node_int_pre(DP_table, node, dir_labelled_TD, graph, target_graph, node_changes_dict)
+                _add_forget_node_best(DP_table, node, dir_labelled_TD, graph, target_graph, node_changes_dict)
             case 'join':
-                _add_join_node_int_pre(DP_table, node, dir_labelled_TD)
+                _add_join_node_best(DP_table, node, dir_labelled_TD)
 
             case _: 
-                _add_leaf_node_int_pre(DP_table, node)
+                _add_leaf_node_best(DP_table, node)
 
     return DP_table[0][0]
 
 ### Main adding functions
 
-def _add_leaf_node_int_pre(DP_table, node):
+def _add_leaf_node_best(DP_table, node):
     r"""
     Add the leaf node to the DP table and update it accordingly.
     """
     node_index = get_node_index(node)
     DP_table[node_index] = [1]
 
-def _add_intro_node_int_pre(DP_table, node, graph_TD, graph, target_graph, node_changes_dict):
+def _add_intro_node_best(DP_table, node, graph_TD, graph, target_graph, node_changes_dict):
     # Basic setup
     node_index, node_vertices = node
     node_vtx_tuple = tuple(node_vertices)
@@ -143,7 +143,7 @@ def _add_intro_node_int_pre(DP_table, node, graph_TD, graph, target_graph, node_
 
     DP_table[node_index] = mappings_count
 
-def _add_forget_node_int_pre(DP_table, node, graph_TD, graph, target_graph, node_changes_dict):
+def _add_forget_node_best(DP_table, node, graph_TD, graph, target_graph, node_changes_dict):
     # Basic setup
     node_index, node_vertices = node
     node_vtx_tuple = tuple(node_vertices)
@@ -173,7 +173,7 @@ def _add_forget_node_int_pre(DP_table, node, graph_TD, graph, target_graph, node
 
     DP_table[node_index] = mappings_count
 
-def _add_join_node_int_pre(DP_table, node, graph_TD):
+def _add_join_node_best(DP_table, node, graph_TD):
     node_index, node_vertices = node
     left_child, right_child  = [vtx for vtx in graph_TD.neighbors_out(node)
                                     if get_node_content(vtx) == node_vertices]
