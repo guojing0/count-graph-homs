@@ -161,7 +161,6 @@ def _add_forget_node_best_colour(DP_table, node, graph_TD, graph, target_graph, 
     # Forget node specifically
     forgotten_vtx = node_changes_dict[node_index]
     forgotten_vtx_index = child_node_vtx_tuple.index(forgotten_vtx)
-    forgotten_vtx_colour = graph_clr[forgotten_vtx]
 
     child_DP_entry = DP_table[child_node_index]
 
@@ -171,9 +170,9 @@ def _add_forget_node_best_colour(DP_table, node, graph_TD, graph, target_graph, 
 
         for target_vtx in target_graph:
             # Obtain the mapped vertex of the forgotten vertex in the target graph
-            mapped_vtx = extract_bag_vertex(mapping, forgotten_vtx_index, target_graph_size)
-            if forgotten_vtx_colour == target_clr[mapped_vtx]:
-                sum += child_DP_entry[extended_mapping]
+            # mapped_vtx = extract_bag_vertex(mapping, forgotten_vtx_index, target_graph_size)
+            # if forgotten_vtx_colour == target_clr[mapped_vtx]:
+            sum += child_DP_entry[extended_mapping]
             extended_mapping += target_graph_size ** forgotten_vtx_index
 
         mappings_count[mapping] = sum
