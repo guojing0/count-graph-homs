@@ -7,7 +7,7 @@ from help_functions import *
 # { node_index: [1, 2, 3, 4, 5],
 #   second_node_index: [10, 20, 30, 40, 50], ...}
 
-def count_homomorphisms_best(graph, target_graph):
+def count_homomorphisms_best(graph, target_graph, graph_clr=None, target_clr=None, colourful=False):
     r"""
     Return the number of homomorphisms from the graph `G` to the graph `H`.
 
@@ -43,6 +43,9 @@ def count_homomorphisms_best(graph, target_graph):
         raise ValueError("the first argument must be a sage Graph")
     if not isinstance(target_graph, Graph):
         raise ValueError("the second argument must be a sage Graph")
+
+    if colourful and (graph_clr is None or target_clr is None):
+        raise ValueError("Both graph_clr and target_clr must be provided when colourful is True.")
 
     graph._scream_if_not_simple()
     target_graph._scream_if_not_simple()
@@ -87,7 +90,7 @@ def count_homomorphisms_best(graph, target_graph):
 
         match node_type:
             case 'intro':
-                _add_intro_node_best(DP_table, node, dir_labelled_TD, graph, target_graph, node_changes_dict)
+                _add_intro_node_best(DP_table, node, dir_labelled_TD, graph, target_graph, node_changes_dict, graph_clr, target_clr, colourful)
             case 'forget':
                 _add_forget_node_best(DP_table, node, dir_labelled_TD, graph, target_graph, node_changes_dict)
             case 'join':
@@ -107,7 +110,7 @@ def _add_leaf_node_best(DP_table, node):
     node_index = get_node_index(node)
     DP_table[node_index] = [1]
 
-def _add_intro_node_best(DP_table, node, graph_TD, graph, target_graph, node_changes_dict):
+def _add_intro_node_best(DP_table, node, graph_TD, graph, target_graph, node_changes_dict, graph_clr=None, target_clr=None, colourful=False):
     # Basic setup
     node_index, node_vertices = node
     node_vtx_tuple = tuple(node_vertices)
@@ -136,6 +139,13 @@ def _add_intro_node_best(DP_table, node, graph_TD, graph, target_graph, node_cha
         mapping = add_vertex_into_mapping(0, mapped, intro_vtx_index, target_graph_size)
 
         for target_vtx in target_graph:
+            if colourful:
+                target_vtx_index = tuple(target_graph).index(target_vtx)
+                # If the colours do not match, skip current iteration and
+                # move on to the next vertex.
+                if graph_clr[intro_vertex] != target_clr[target_vtx_index]:
+                    continue
+
             if is_valid_mapping(target_vtx, mapped_nbhs_in_target, target_graph):
                 mappings_count[mapping] = child_DP_entry[mapped]
 
@@ -187,9 +197,9 @@ def _add_join_node_best(DP_table, node, graph_TD):
 
 ### Helper functions
 
-def is_valid_mapping(mapped_intro_vtx, mapped_nbhrs, target_graph):
+def is_valid_mapping(mapped_vtx, mapped_nbhrs, target_graph):
     for vtx in mapped_nbhrs:
-        if not target_graph.has_edge(mapped_intro_vtx, vtx):
+        if not target_graph.has_edge(mapped_vtx, vtx):
             return False
 
     return True
