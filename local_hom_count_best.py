@@ -132,6 +132,15 @@ def _add_intro_node_best(DP_table, node, graph_TD, graph, target_graph, node_cha
 
     child_DP_entry = DP_table[child_node_index]
 
+    # Colourful processing
+    if colourful:
+        graph_clr_base = max(graph_clr) + 1
+        graph_clr_int = encode_clr_list(graph_clr, graph_clr_base)
+        intro_vtx_clr = decode_clr_int(graph_clr_int, graph_clr_base, intro_vertex)
+
+        target_clr_base = max(target_clr) + 1
+        target_clr_int = encode_clr_list(target_clr, target_clr_base)
+
     for mapped in range(len(child_DP_entry)):
         # Neighborhood of the mapped vertex of intro vertex in the target graph
         mapped_nbhs_in_target = [extract_bag_vertex(mapped, nbh, target_graph_size) for nbh in node_nbhs_in_bag]
@@ -143,7 +152,9 @@ def _add_intro_node_best(DP_table, node, graph_TD, graph, target_graph, node_cha
                 target_vtx_index = tuple(target_graph).index(target_vtx)
                 # If the colours do not match, skip current iteration and
                 # move on to the next vertex.
-                if graph_clr[intro_vertex] != target_clr[target_vtx_index]:
+                # if graph_clr[intro_vertex] != target_clr[target_vtx_index]:
+                target_vtx_clr = decode_clr_int(target_clr_int, target_clr_base, target_vtx_index)
+                if intro_vtx_clr != target_vtx_clr:
                     continue
 
             if is_valid_mapping(target_vtx, mapped_nbhs_in_target, target_graph):
@@ -203,3 +214,12 @@ def is_valid_mapping(mapped_vtx, mapped_nbhrs, target_graph):
             return False
 
     return True
+
+def encode_clr_list(clr_list, base):
+    """Converts a list of integers to an integer in base-k representation."""
+    return sum(val * base**idx for idx, val in enumerate(clr_list))
+
+def decode_clr_int(num, base, nth):
+    """Retrieve the nth element from the base-k representation."""
+    num //= base ** nth
+    return num % base
