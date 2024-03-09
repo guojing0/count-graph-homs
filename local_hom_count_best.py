@@ -90,7 +90,8 @@ def count_homomorphisms_best(graph, target_graph, graph_clr=None, target_clr=Non
 
         match node_type:
             case 'intro':
-                _add_intro_node_best(DP_table, node, dir_labelled_TD, graph, target_graph, node_changes_dict, graph_clr, target_clr, colourful)
+                density_threshold = 0.5
+                _add_intro_node_best(DP_table, node, dir_labelled_TD, graph, target_graph, node_changes_dict, density_threshold, graph_clr, target_clr, colourful)
             case 'forget':
                 _add_forget_node_best(DP_table, node, dir_labelled_TD, graph, target_graph, node_changes_dict)
             case 'join':
@@ -110,7 +111,7 @@ def _add_leaf_node_best(DP_table, node):
     node_index = get_node_index(node)
     DP_table[node_index] = [1]
 
-def _add_intro_node_best(DP_table, node, graph_TD, graph, target_graph, node_changes_dict, graph_clr=None, target_clr=None, colourful=False):
+def _add_intro_node_best(DP_table, node, graph_TD, graph, target_graph, node_changes_dict, density_threshold=0.5, graph_clr=None, target_clr=None, colourful=False):
     # Basic setup
     node_index, node_vertices = node
     node_vtx_tuple = tuple(node_vertices)
@@ -123,7 +124,7 @@ def _add_intro_node_best(DP_table, node, graph_TD, graph, target_graph, node_cha
     mappings_count = [0 for _ in mappings_length_range]
 
     target_density = target_graph.density()
-    target_is_dense = target_density >= 0.5
+    target_is_dense = target_density >= density_threshold
 
     if target_is_dense:
         target_adj_mat = target_graph.adjacency_matrix()
@@ -221,12 +222,3 @@ def is_valid_mapping(mapped_vtx, mapped_nbhrs, target_graph):
     else:
         # Assume that `target_graph` is the adjacency matrix
         return all(target_graph[mapped_vtx, vtx] for vtx in mapped_nbhrs)
-
-def encode_clr_list(clr_list, base):
-    """Converts a list of integers to an integer in base-k representation."""
-    return sum(val * base**idx for idx, val in enumerate(clr_list))
-
-def decode_clr_int(num, base, nth):
-    """Retrieve the nth element from the base-k representation."""
-    num //= base ** nth
-    return num % base

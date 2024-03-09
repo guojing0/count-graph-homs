@@ -79,3 +79,15 @@ def remove_vertex_from_mapping(mapping, index, graph_size):
     right_digits = mapping % (graph_size ** index)
 
     return left_digits // graph_size + right_digits
+
+
+### For integer representation in colourful case
+
+def encode_clr_list(clr_list, base):
+    """Converts a list of integers to an integer in base-k representation."""
+    return sum(val * base**idx for idx, val in enumerate(clr_list))
+
+def decode_clr_int(num, base, nth):
+    """Retrieve the nth element from the base-k representation."""
+    num //= base ** nth
+    return num % base
