@@ -128,6 +128,8 @@ def _add_intro_node_best(DP_table, node, graph_TD, graph, target_graph, node_cha
 
     if target_is_dense:
         target_adj_mat = target_graph.adjacency_matrix()
+
+    # For use in `is_valid_mapping` only
     target = target_adj_mat if target_is_dense else target_graph
 
     # Intro node specifically
