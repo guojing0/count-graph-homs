@@ -122,6 +122,13 @@ def _add_intro_node_best(DP_table, node, graph_TD, graph, target_graph, node_cha
     mappings_length_range = range(target_graph_size ** len(node_vtx_tuple))
     mappings_count = [0 for _ in mappings_length_range]
 
+    target_density = target_graph.density()
+    target_is_dense = target_density >= 0.5
+
+    if target_is_dense:
+        target_adj_mat = target_graph.adjacency_matrix()
+    target = target_adj_mat if target_is_dense else target_graph
+
     # Intro node specifically
     intro_vertex = node_changes_dict[node_index]
     intro_vtx_index = node_vtx_tuple.index(intro_vertex)
@@ -157,7 +164,7 @@ def _add_intro_node_best(DP_table, node, graph_TD, graph, target_graph, node_cha
                 if intro_vtx_clr != target_vtx_clr:
                     continue
 
-            if is_valid_mapping(target_vtx, mapped_nbhs_in_target, target_graph):
+            if is_valid_mapping(target_vtx, mapped_nbhs_in_target, target):
                 mappings_count[mapping] = child_DP_entry[mapped]
 
             mapping += target_graph_size ** intro_vtx_index
@@ -209,11 +216,11 @@ def _add_join_node_best(DP_table, node, graph_TD):
 ### Helper functions
 
 def is_valid_mapping(mapped_vtx, mapped_nbhrs, target_graph):
-    for vtx in mapped_nbhrs:
-        if not target_graph.has_edge(mapped_vtx, vtx):
-            return False
-
-    return True
+    if isinstance(target_graph, Graph):
+        return all(target_graph.has_edge(mapped_vtx, vtx) for vtx in mapped_nbhrs)
+    else:
+        # Assume that `target_graph` is the adjacency matrix
+        return all(target_graph[mapped_vtx, vtx] for vtx in mapped_nbhrs)
 
 def encode_clr_list(clr_list, base):
     """Converts a list of integers to an integer in base-k representation."""
