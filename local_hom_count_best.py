@@ -118,7 +118,7 @@ def _add_leaf_node_best(DP_table, node):
     node_index = get_node_index(node)
     DP_table[node_index] = [1]
 
-def _add_intro_node_best(DP_table, node, graph_TD, graph, target_graph, node_changes_dict, density_threshold=0.5, graph_clr=None, target_clr=None, colourful=False):
+def _add_intro_node_best(DP_table, node, graph_TD, graph, target_graph, node_changes_dict, density_threshold, graph_clr=None, target_clr=None, colourful=False):
     # Basic setup
     node_index, node_vertices = node
     node_vtx_tuple = tuple(node_vertices)
