@@ -7,7 +7,7 @@ from help_functions import *
 # { node_index: [1, 2, 3, 4, 5],
 #   second_node_index: [10, 20, 30, 40, 50], ...}
 
-def count_homomorphisms_best(graph, target_graph, graph_clr=None, target_clr=None, colourful=False):
+def count_homomorphisms_best(graph, target_graph, density_threshold=0.5, graph_clr=None, target_clr=None, colourful=False):
     r"""
     Return the number of homomorphisms from the graph `G` to the graph `H`.
 
@@ -25,7 +25,15 @@ def count_homomorphisms_best(graph, target_graph, graph_clr=None, target_clr=Non
 
     - ``graph`` -- a Sage graph
 
-    - ``target_graph`` -- the graph to which ``G`` is sent
+    - ``target_graph`` -- the graph to which ``graph`` is sent
+
+    - ``density_threshold`` (default: 0.5) -- the desnity threshold for `target_graph` representation
+
+    - ``graph_clr`` (default: None) -- a list of integers representing the colours of the vertices of `graph`
+
+    - ``target_clr`` (default: None) -- a list of integers representing the colours of the vertices of `target_graph`
+
+    - ``colourful`` (default: False) -- whether the graph homomorphism is colour-preserving
 
     OUTPUT:
 
@@ -90,7 +98,6 @@ def count_homomorphisms_best(graph, target_graph, graph_clr=None, target_clr=Non
 
         match node_type:
             case 'intro':
-                density_threshold = 0.5
                 _add_intro_node_best(DP_table, node, dir_labelled_TD, graph, target_graph, node_changes_dict, density_threshold, graph_clr, target_clr, colourful)
             case 'forget':
                 _add_forget_node_best(DP_table, node, dir_labelled_TD, graph, target_graph, node_changes_dict)
