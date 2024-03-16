@@ -1,3 +1,8 @@
+from sage.graphs.graph import Graph
+
+from collections import Counter
+
+
 ### General helper functions
 
 def get_node_index(node):
@@ -51,6 +56,28 @@ def node_changes(labelled_TD):
 
     return node_changes_dict
 
+def is_valid_mapping(mapped_vtx, mapped_nbhrs, target_graph):
+    r"""
+    Check if the mapping is valid.
+    """
+    if isinstance(target_graph, Graph):
+        return all(target_graph.has_edge(mapped_vtx, vtx) for vtx in mapped_nbhrs)
+    else:
+        # Assume that `target_graph` is the adjacency matrix
+        return all(target_graph[mapped_vtx, vtx] for vtx in mapped_nbhrs)
+
+def count_occurrences(lst):
+    r"""
+    Count the occurrences of each element in `lst`
+    """
+    return Counter(lst)
+
+def list_intersection(lst1, lst2):
+    r"""
+    Return the intersection of `lst1` and `lst2`
+    """
+    return list(set(lst1) & set(lst2))
+
 
 ### For integer representation
 
@@ -84,10 +111,14 @@ def remove_vertex_from_mapping(mapping, index, graph_size):
 ### For integer representation in colourful case
 
 def encode_clr_list(clr_list, base):
-    """Converts a list of integers to an integer in base-k representation."""
+    r"""
+    Converts a list of integers to an integer in base-k representation.
+    """
     return sum(val * base**idx for idx, val in enumerate(clr_list))
 
 def decode_clr_int(num, base, nth):
-    """Retrieve the nth element from the base-k representation."""
+    r"""
+    Retrieve the nth element from the base-k representation.
+    """
     num //= base ** nth
     return num % base
