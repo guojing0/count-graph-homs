@@ -119,6 +119,13 @@ def _add_leaf_node_best(DP_table, node):
     DP_table[node_index] = [1]
 
 def _add_intro_node_best(DP_table, node, graph_TD, graph, target_graph, node_changes_dict, density_threshold, graph_clr=None, target_clr=None, colourful=False):
+    r"""
+    Add the intro node to the DP table and update it accordingly.
+
+    INPUT:
+
+    """
+    print("\n{}".format(node))
     # Basic setup
     node_index, node_vertices = node
     node_vtx_tuple = tuple(node_vertices)
@@ -127,7 +134,21 @@ def _add_intro_node_best(DP_table, node, graph_TD, graph, target_graph, node_cha
     child_node_vtx_tuple = tuple(child_node_vtx)
 
     target_graph_size = len(target_graph)
-    mappings_length_range = range(target_graph_size ** len(node_vtx_tuple))
+
+    # If `colourful` is True, we can reduce the size of each DP table entry,
+    # since we only need to consider colour partitions: Each vertex with some
+    # colour in G should only map to its colour partition class in H.
+    if colourful:
+        node_clr_counter = count_occurrences([graph_clr[i] for i in node_vtx_tuple])
+        target_clr_counter = count_occurrences(target_clr)
+        clr_intersection = list_intersection(node_clr_counter, target_clr) # relevant colours
+
+        mappings_length = sum(target_clr_counter[i] ** node_clr_counter[i] for i in clr_intersection)
+        print("Mappings length: ", mappings_length)
+    else:
+        mappings_length = target_graph_size ** len(node_vtx_tuple)
+
+    mappings_length_range = range(mappings_length)
     mappings_count = [0 for _ in mappings_length_range]
 
     target_density = target_graph.density()
@@ -161,6 +182,7 @@ def _add_intro_node_best(DP_table, node, graph_TD, graph, target_graph, node_cha
     for mapped in range(len(child_DP_entry)):
         # Neighborhood of the mapped vertex of intro vertex in the target graph
         mapped_nbhs_in_target = [extract_bag_vertex(mapped, nbh, target_graph_size) for nbh in node_nbhs_in_bag]
+        print("Mapped: ", mapped)
 
         mapping = add_vertex_into_mapping(0, mapped, intro_vtx_index, target_graph_size)
 
@@ -174,14 +196,21 @@ def _add_intro_node_best(DP_table, node, graph_TD, graph, target_graph, node_cha
                 if intro_vtx_clr != target_vtx_clr:
                     continue
 
+            print("Colour-perserving target vertex: ", target_vtx)
+
             if is_valid_mapping(target_vtx, mapped_nbhs_in_target, target):
                 mappings_count[mapping] = child_DP_entry[mapped]
 
+            print("Mapping count: ", mappings_count)
             mapping += target_graph_size ** intro_vtx_index
 
     DP_table[node_index] = mappings_count
+    print("DP table: ", DP_table)
 
 def _add_forget_node_best(DP_table, node, graph_TD, graph, target_graph, node_changes_dict):
+    r"""
+    Add the forget node to the DP table and update it accordingly.
+    """
     # Basic setup
     node_index, node_vertices = node
     node_vtx_tuple = tuple(node_vertices)
@@ -212,6 +241,16 @@ def _add_forget_node_best(DP_table, node, graph_TD, graph, target_graph, node_ch
     DP_table[node_index] = mappings_count
 
 def _add_join_node_best(DP_table, node, graph_TD):
+    r"""
+    Add the join node to the DP table and update it accordingly.
+
+    INPUT:
+
+    - `DP_table` -- the DP table
+    - `node` -- the join node
+    - `graph_TD` -- the labelled tree decomposition
+
+    """
     node_index, node_vertices = node
     left_child, right_child  = [vtx for vtx in graph_TD.neighbors_out(node)
                                     if get_node_content(vtx) == node_vertices]
@@ -222,12 +261,3 @@ def _add_join_node_best(DP_table, node, graph_TD):
                         in zip(DP_table[left_child_index], DP_table[right_child_index])]
 
     DP_table[node_index] = mappings_count
-
-### Helper functions
-
-def is_valid_mapping(mapped_vtx, mapped_nbhrs, target_graph):
-    if isinstance(target_graph, Graph):
-        return all(target_graph.has_edge(mapped_vtx, vtx) for vtx in mapped_nbhrs)
-    else:
-        # Assume that `target_graph` is the adjacency matrix
-        return all(target_graph[mapped_vtx, vtx] for vtx in mapped_nbhrs)
