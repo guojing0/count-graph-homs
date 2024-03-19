@@ -108,7 +108,7 @@ class GraphHomomorphismCounter:
         # computed first, so we can safely go bottom-up.
         for node in reversed(self.dir_labelled_TD.vertices()):
             node_type = self.dir_labelled_TD.get_vertex(node)
-            print("Node: ", node)
+            print("\nNode: ", node)
 
             match node_type:
                 case 'intro':
