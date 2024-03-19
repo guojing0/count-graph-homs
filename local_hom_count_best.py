@@ -1,3 +1,5 @@
+from math import prod
+
 from sage.graphs.graph import Graph
 
 from local_tree_decomp import *
@@ -142,8 +144,9 @@ def _add_intro_node_best(DP_table, node, graph_TD, graph, target_graph, node_cha
         node_clr_counter = count_occurrences([graph_clr[i] for i in node_vtx_tuple])
         target_clr_counter = count_occurrences(target_clr)
         clr_intersection = list_intersection(node_clr_counter, target_clr) # relevant colours
+        print(node_clr_counter, target_clr_counter, clr_intersection)
 
-        mappings_length = sum(target_clr_counter[i] ** node_clr_counter[i] for i in clr_intersection)
+        mappings_length = prod(target_clr_counter[i] ** node_clr_counter[i] for i in clr_intersection)
         print("Mappings length: ", mappings_length)
     else:
         mappings_length = target_graph_size ** len(node_vtx_tuple)
@@ -183,8 +186,12 @@ def _add_intro_node_best(DP_table, node, graph_TD, graph, target_graph, node_cha
         # Neighborhood of the mapped vertex of intro vertex in the target graph
         mapped_nbhs_in_target = [extract_bag_vertex(mapped, nbh, target_graph_size) for nbh in node_nbhs_in_bag]
         print("Mapped: ", mapped)
+        print("Mapped nbhs in target: ", mapped_nbhs_in_target)
 
         mapping = add_vertex_into_mapping(0, mapped, intro_vtx_index, target_graph_size)
+        if colourful:
+            mapping %= mappings_length
+        print("mapping: ", mapping)
 
         for target_vtx in target_graph:
             if colourful:
