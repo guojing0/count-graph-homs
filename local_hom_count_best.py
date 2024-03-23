@@ -108,7 +108,7 @@ class GraphHomomorphismCounter:
         # computed first, so we can safely go bottom-up.
         for node in reversed(self.dir_labelled_TD.vertices()):
             node_type = self.dir_labelled_TD.get_vertex(node)
-            print("\nNode: ", node)
+            print("\nNode: ", node, node_type)
 
             match node_type:
                 case 'intro':
@@ -197,7 +197,6 @@ class GraphHomomorphismCounter:
             print("Mapped nbhs in target: ", mapped_nbhs_in_target)
 
             mapping = add_vertex_into_mapping(0, mapped, intro_vtx_index, target_graph_size)
-            print("mapping: ", mapping)
 
             for target_vtx in self.target_graph:
                 if self.colourful:
@@ -212,13 +211,18 @@ class GraphHomomorphismCounter:
                 print("target vertex: ", target_vtx)
 
                 if is_valid_mapping(target_vtx, mapped_nbhs_in_target, target):
+                    print("mapping: ", mapping)
                     mappings_count[mapping] = child_DP_entry[mapped]
 
-                print("Mapping count: ", mappings_count)
-                mapping += target_graph_size ** intro_vtx_index
+                if self.colourful:
+                    max_colour_size = max(max(node_clr_counter[i], target_clr_counter[i]) for i in clr_intersection)
+                    mapping += target_graph_size ** max_colour_size
+                    ## |induced subgraph of target graph| ** intro vtx index
+                else:
+                    mapping += target_graph_size ** intro_vtx_index
+                print("DP table entry: {}\n".format(mappings_count))
 
         self.DP_table[node_index] = mappings_count
-        print("DP table: ", self.DP_table)
 
     def _add_forget_node_best(self, node):
         r"""
