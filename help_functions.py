@@ -83,7 +83,7 @@ def list_intersection(lst1, lst2):
 
 def extract_bag_vertex(mapping, index, graph_size):
     r"""
-    Extract the bag vertex of `index` from `mapping`
+    Extract the bag vertex at `index` from `mapping`
     """
     # Equivalent to taking the floor
     return mapping // (graph_size ** index) % graph_size
