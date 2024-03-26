@@ -150,23 +150,25 @@ class GraphHomomorphismCounter:
         # If `colourful` is True, we can reduce the size of each DP table entry,
         # since we only need to consider colour partitions: Each vertex with some
         # colour in G should only map to its colour partition class in H.
-        if self.colourful:
-            node_clr_counter = count_occurrences([self.graph_clr[i] for i in node_vtx_tuple])
-            target_clr_counter = count_occurrences(self.target_clr)
-            clr_intersection = list_intersection(node_clr_counter, self.target_clr) # relevant colours
-            print("Colours: ", node_clr_counter, target_clr_counter, clr_intersection)
+        # if self.colourful:
+        #     node_clr_counter = count_occurrences([self.graph_clr[i] for i in node_vtx_tuple])
+        #     target_clr_counter = count_occurrences(self.target_clr)
+        #     clr_intersection = list_intersection(node_clr_counter, self.target_clr) # relevant colours
+        #     print("Colours: ", node_clr_counter, target_clr_counter, clr_intersection)
 
-            # Actual vertices with relevent colours in target graph that we need to consider
-            target_vertices_to_keep = [v for v in self.target_graph.vertices() if self.target_clr[v] in clr_intersection]
-            self.actual_target_graph = self.target_graph.subgraph(target_vertices_to_keep)
-            print("actual target graph: ", self.actual_target_graph.vertices())
+        #     # Filter target vertices based on colour intersection and create subgraph
+        #     target_vertices_to_keep = [v for v in self.target_graph.vertices() if self.target_clr[v] in clr_intersection]
+        #     self.actual_target_graph = self.target_graph.subgraph(target_vertices_to_keep)
+        #     print("actual target graph: ", self.actual_target_graph.edges())
 
-            self.actual_target_size = len(self.actual_target_graph)
+        #     self.actual_target_size = len(self.actual_target_graph)
+        #     print("actual target size: ", self.actual_target_size)
 
-            mappings_length = self.actual_target_size ** len(node_vtx_tuple)
-            # mappings_length = prod(target_clr_counter[i] ** node_clr_counter[i] for i in clr_intersection)
-        else:
-            mappings_length = self.actual_target_size ** len(node_vtx_tuple)
+        #     mappings_length = prod(target_clr_counter[i] ** node_clr_counter[i] for i in clr_intersection)
+        #     # mappings_length = len(self.target_graph) ** len(node_vtx_tuple)
+        # else:
+        mappings_length = self.actual_target_size ** len(node_vtx_tuple)
+        print("target size", self.actual_target_size)
         print("mappings length: ", mappings_length)
 
         mappings_count = [0 for _ in range(mappings_length)]
@@ -177,11 +179,12 @@ class GraphHomomorphismCounter:
 
         # Intro node specifically
         intro_vertex = self.node_changes_dict[node_index]
-        intro_vtx_index = node_vtx_tuple.index(intro_vertex)
+        intro_vtx_index = node_vtx_tuple.index(intro_vertex) # Index of the intro vertex in the node/bag
         print("intro vertex {} and its index {} in bag".format(intro_vertex, intro_vtx_index))
 
         if self.colourful:
             intro_vtx_clr = self.graph_clr[intro_vertex]
+            print("intro vtx clr", intro_vtx_clr)
 
         # Neighborhood of intro vertex in the bag
         intro_vtx_nbhs = [child_node_vtx_tuple.index(vtx) for vtx in child_node_vtx_tuple if self.graph.has_edge(intro_vertex, vtx)]
@@ -190,9 +193,10 @@ class GraphHomomorphismCounter:
 
         child_DP_entry = self.DP_table[child_node_index]
         print("INTRO child DP entry: ", child_DP_entry)
+        print("\n")
 
         for mapped in range(len(child_DP_entry)):
-            # Neighborhood of the mapped vertex of intro vertex in the target graph
+            # Neighborhood of the mapped vertices of intro vertex in the target graph
             mapped_intro_nbhs = [extract_bag_vertex(mapped, vtx, self.actual_target_size) for vtx in intro_vtx_nbhs]
             print("mapped: ", mapped)
             print("mapped nbhs in target: ", mapped_intro_nbhs)
@@ -202,20 +206,19 @@ class GraphHomomorphismCounter:
             for target_vtx in self.actual_target_graph:
                 print("target vertex: ", target_vtx)
 
-                print("CURR with mapping: ", mapping)
-
                 # If the colours do not match, skip current iteration and
                 # move on to the next vertex
                 if self.colourful:
-                    # target_vtx_index = tuple(actual_target_graph).index(target_vtx)
                     target_vtx_clr = self.target_clr[target_vtx]
                     print("intro color: {}, target color: {}".format(intro_vtx_clr, target_vtx_clr))
                     if intro_vtx_clr != target_vtx_clr:
-                        print("INVALID!")
+                        mapping += self.actual_target_size ** intro_vtx_index
                         continue
 
+                print("current mapping", mapping)
                 if is_valid_mapping(target_vtx, mapped_intro_nbhs, target):
-                    mappings_count[mapping] = child_DP_entry[mapped]
+                    print("VALID!")
+                    mappings_count[mapping % mappings_length] = child_DP_entry[mapped]
 
                 mapping += self.actual_target_size ** intro_vtx_index
                 print("TEMP entry: {}\n".format(mappings_count))
