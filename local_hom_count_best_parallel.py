@@ -1,3 +1,7 @@
+from concurrent.futures import ProcessPoolExecutor, as_completed
+from multiprocessing import Manager
+import time
+
 from math import prod
 
 from sage.graphs.graph import Graph
@@ -81,51 +85,109 @@ class GraphHomomorphismCounter:
         #   ((4, 2), (5, 1)): 60}, {}, ...]
         self.DP_table = [{} for _ in range(len(self.dir_labelled_TD))]
 
+        # Initialize dependency tracking
+        manager = Manager()
+        self.num_dependency = manager.list([len(self.dir_labelled_TD.neighbors_out(node)) for node in self.dir_labelled_TD.vertices()])
+        self.lock = manager.Lock()  # A multiprocessing lock for managing shared access to num_dependency
+
+
+    def process_node(self, node):
+        node_index = get_node_index(node)
+
+        # Wait until dependencies are resolved
+        while True:
+            with self.lock:
+                if self.num_dependency[node_index] == 0:
+                    break
+            time.sleep(0.01)  # Sleep to reduce busy waiting impact
+
+        # Compute the node after dependencies are met
+        node_type = self.dir_labelled_TD.get_vertex(node)
+        result = None
+        print("Node: ", node_index, node_type)
+        match node_type:
+            case 'intro':
+                result = self._add_intro_node_parallel(node)
+            case 'forget':
+                result = self._add_forget_node_parallel(node)
+            case 'join':
+                result = self._add_join_node_parallel(node)
+            case _:
+                result = self._add_leaf_node_parallel(node)
+
+        # Directly access the single parent of the node
+        if self.dir_labelled_TD.neighbors_in(node):
+            parent = self.dir_labelled_TD.neighbors_in(node)[0]
+            parent_index = get_node_index(parent)
+            print("Parent: ", parent_index)
+
+            # Thread-safe decrement of the dependency counter
+            with self.lock:
+                self.num_dependency[parent_index] -= 1
+
+        return node_index, result
 
     def count_homomorphisms_parallel(self):
-        r"""
-        Return the number of homomorphisms from the graph `G` to the graph `H`.
+        print(self.num_dependency)
+        with ProcessPoolExecutor(max_workers=2) as executor:
+            futures = {executor.submit(self.process_node, node): node for node in reversed(self.dir_labelled_TD.vertices())}
 
-        A homomorphism from a graph `G` to a graph `H` is a function
-        `\varphi : V(G) \mapsto V(H)`, such that for any edge `uv \in E(G)` the
-        pair `\varphi(u) \varphi(v)` is an edge of `H`.
-
-        For more information, see the :wikipedia:`Graph_homomorphism`.
-
-        ALGORITHM:
-
-        This is an implementation based on the proof of Prop. 1.6 in [CDM2017]_.
-
-        OUTPUT:
-
-        - an integer, the number of homomorphisms from `graph` to `target_graph`
-
-        EXAMPLES::
-
-            sage: graph = graphs.CompleteBipartiteGraph(1, 4)
-            sage: target_graph = graphs.CompleteGraph(4)
-            sage: from sage.graphs.hom_count_parallel import count_homomorphisms_parallel
-            sage: count_homomorphisms_parallel(graph, target_graph)
-            324
-        """
-        # Whether it's BFS or DFS, every node below join node(s) would be
-        # computed first, so we can safely go bottom-up.
-        for node in reversed(self.dir_labelled_TD.vertices()):
-            node_type = self.dir_labelled_TD.get_vertex(node)
-            # print("\nNode: ", node, node_type)
-
-            match node_type:
-                case 'intro':
-                    self._add_intro_node_parallel(node)
-                case 'forget':
-                    self._add_forget_node_parallel(node)
-                case 'join':
-                    self._add_join_node_parallel(node)
-
-                case _: 
-                    self._add_leaf_node_parallel(node)
+            for future in as_completed(futures):
+                try:
+                    print("Future: ", future)
+                    node_index, result = future.result()
+                    print("node index: {}, node result: {}".format(node_index, result))
+                    self.DP_table[node_index] = result
+                except Exception as e:
+                    print("Exception: ", e)
 
         return self.DP_table[0][0]
+
+
+    # def count_homomorphisms_parallel(self):
+    #     r"""
+    #     Return the number of homomorphisms from the graph `G` to the graph `H`.
+
+    #     A homomorphism from a graph `G` to a graph `H` is a function
+    #     `\varphi : V(G) \mapsto V(H)`, such that for any edge `uv \in E(G)` the
+    #     pair `\varphi(u) \varphi(v)` is an edge of `H`.
+
+    #     For more information, see the :wikipedia:`Graph_homomorphism`.
+
+    #     ALGORITHM:
+
+    #     This is an implementation based on the proof of Prop. 1.6 in [CDM2017]_.
+
+    #     OUTPUT:
+
+    #     - an integer, the number of homomorphisms from `graph` to `target_graph`
+
+    #     EXAMPLES::
+
+    #         sage: graph = graphs.CompleteBipartiteGraph(1, 4)
+    #         sage: target_graph = graphs.CompleteGraph(4)
+    #         sage: from sage.graphs.hom_count_parallel import count_homomorphisms_parallel
+    #         sage: count_homomorphisms_parallel(graph, target_graph)
+    #         324
+    #     """
+    #     # Whether it's BFS or DFS, every node below join node(s) would be
+    #     # computed first, so we can safely go bottom-up.
+    #     for node in reversed(self.dir_labelled_TD.vertices()):
+    #         node_type = self.dir_labelled_TD.get_vertex(node)
+    #         # print("\nNode: ", node, node_type)
+
+    #         match node_type:
+    #             case 'intro':
+    #                 self._add_intro_node_parallel(node)
+    #             case 'forget':
+    #                 self._add_forget_node_parallel(node)
+    #             case 'join':
+    #                 self._add_join_node_parallel(node)
+
+    #             case _: 
+    #                 self._add_leaf_node_parallel(node)
+
+    #     return self.DP_table[0][0]
 
     ### Main adding functions
 
@@ -134,7 +196,7 @@ class GraphHomomorphismCounter:
         Add the leaf node to the DP table and update it accordingly.
         """
         node_index = get_node_index(node)
-        self.DP_table[node_index] = [1]
+        return [1]
 
     def _add_intro_node_parallel(self, node):
         r"""
@@ -223,7 +285,7 @@ class GraphHomomorphismCounter:
                 mapping += self.actual_target_size ** intro_vtx_index
                 # print("TEMP entry: {}\n".format(mappings_count))
 
-        self.DP_table[node_index] = mappings_count
+        return mappings_count
         # print("DP table: ", self.DP_table)
 
     def _add_forget_node_parallel(self, node):
@@ -262,7 +324,7 @@ class GraphHomomorphismCounter:
             mappings_count[mapping] = sum
 
         # print("FORGET mappings count: ", mappings_count)
-        self.DP_table[node_index] = mappings_count
+        return mappings_count
 
     def _add_join_node_parallel(self, node):
         r"""
@@ -277,4 +339,5 @@ class GraphHomomorphismCounter:
         mappings_count = [left_count * right_count for left_count, right_count
                             in zip(self.DP_table[left_child_index], self.DP_table[right_child_index])]
 
-        self.DP_table[node_index] = mappings_count
+        # self.DP_table[node_index] = mappings_count
+        return mappings_count
