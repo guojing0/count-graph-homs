@@ -1,3 +1,6 @@
+import dask
+from dask import delayed, compute
+
 from concurrent.futures import ProcessPoolExecutor, as_completed, wait
 
 from math import prod
@@ -84,15 +87,8 @@ class ParallelGraphHomomorphismCounter:
         self.DP_table = [{} for _ in range(len(self.dir_labelled_TD))]
 
 
-    def process_node(self, node):        
-        # Ensure all child node computations are completed before processing this node
-        child_nodes = self.dir_labelled_TD.neighbors_out(node)
-        child_futures = [self.futures[child] for child in child_nodes if child in self.futures]
-
-        # Wait for all child node computations to complete
-        if child_futures:
-            done, _ = wait(child_futures, return_when='ALL_COMPLETED')
-
+    # @delayed
+    def process_node(self, node):
         node_type = self.dir_labelled_TD.get_vertex(node)
         match node_type:
             case 'intro':
@@ -105,32 +101,74 @@ class ParallelGraphHomomorphismCounter:
                 result = self._add_leaf_node_parallel(node)
 
         node_index = get_node_index(node)
-        print(f"Node {node_index} result: {result}")
-        return node_index, result
+        self.DP_table[node_index] = result # Assuming result is ready to be directly assigned
+        return result
 
     def count_homomorphisms_parallel(self):
-        with ProcessPoolExecutor(max_workers=2) as executor:
-            self.futures = {}
-            for node in reversed(self.dir_labelled_TD.vertices()):
-                self.futures[node] = executor.submit(self.process_node, node)
+        # Dictionary to store all futures
+        self.futures = {}
+        for node in reversed(self.dir_labelled_TD.vertices()):
+            # Delaying each node process and storing in futures
+            self.futures[node] = self.process_node(node)
 
-            print("Finsh submitting")
-            print(self.futures)
+        print("Futures: ", self.futures)
 
-            # Collect results as they are completed
-            for future in as_completed(self.futures.values()):
-                try:
-                    print(node, future)
-                    node_index, result = future.result()
-                    print(f"In future: Node {node_index} result: {result}")
-                    self.DP_table[node_index] = result
-                except Exception as e:
-                    print(f"Exception: {e}")
-
+        # Compute all results, respecting the inherent dependencies among them
+        results = dask.compute(*self.futures.values())
+        print("Results: ", [f.compute() for f in results])
+        # Since the results are integrated into the DP_table in each process_node call,
+        # you can simply access the final result:
         return self.DP_table[0][0]
+
+
+    # def process_node(self, node):        
+    #     # Ensure all child node computations are completed before processing this node
+    #     # child_nodes = self.dir_labelled_TD.neighbors_out(node)
+    #     # child_futures = [self.futures[child] for child in child_nodes if child in self.futures]
+
+    #     # Wait for all child node computations to complete
+    #     # if child_futures:
+    #     #     done, _ = wait(child_futures, return_when='ALL_COMPLETED')
+
+    #     node_type = self.dir_labelled_TD.get_vertex(node)
+    #     match node_type:
+    #         case 'intro':
+    #             result = self._add_intro_node_parallel(node)
+    #         case 'forget':
+    #             result = self._add_forget_node_parallel(node)
+    #         case 'join':
+    #             result = self._add_join_node_parallel(node)
+    #         case _:
+    #             result = self._add_leaf_node_parallel(node)
+
+    #     node_index = get_node_index(node)
+    #     # print(f"Node {node_index} result: {result}")
+    #     return node_index, result
+
+    # def count_homomorphisms_parallel(self):
+    #     # Create a dictionary of delayed computations
+    #     self.futures = {}
+    #     for node in reversed(self.dir_labelled_TD.vertices()):
+    #         self.futures[node] = dask.delayed(self.process_node)(node)
+
+    #     # print("Futures: ", self.futures)
+
+    #     # Compute results as they are needed
+    #     for node, future in self.futures.items():
+    #         try:
+    #             result = future.compute()
+    #             node_index, result = result
+    #             # print(f"In future: Node {node_index} result: {result}")
+    #             self.DP_table[node_index] = result
+    #         except Exception as e:
+    #             print(f"Exception: {e}")
+
+    #     return self.DP_table[0][0]
+
 
     ### Main adding functions
 
+    @delayed
     def _add_leaf_node_parallel(self, node):
         r"""
         Add the leaf node to the DP table and update it accordingly.
@@ -138,6 +176,7 @@ class ParallelGraphHomomorphismCounter:
         node_index = get_node_index(node)
         return [1]
 
+    @delayed
     def _add_intro_node_parallel(self, node):
         r"""
         Add the intro node to the DP table and update it accordingly.
@@ -228,6 +267,7 @@ class ParallelGraphHomomorphismCounter:
         return mappings_count
         # print("DP table: ", self.DP_table)
 
+    @delayed
     def _add_forget_node_parallel(self, node):
         r"""
         Add the forget node to the DP table and update it accordingly.
@@ -266,6 +306,7 @@ class ParallelGraphHomomorphismCounter:
         # print("FORGET mappings count: ", mappings_count)
         return mappings_count
 
+    @delayed
     def _add_join_node_parallel(self, node):
         r"""
         Add the join node to the DP table and update it accordingly.
