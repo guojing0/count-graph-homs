@@ -1,8 +1,6 @@
 import dask
 from dask import delayed, compute
 
-from concurrent.futures import ProcessPoolExecutor, as_completed, wait
-
 from math import prod
 
 from sage.graphs.graph import Graph
@@ -72,103 +70,70 @@ class ParallelGraphHomomorphismCounter:
         # forgotten vertices in a nice tree decomposition
         self.node_changes_dict = node_changes(self.dir_labelled_TD)
 
-        # `DP_table` is a vector/list of dictionaries
-        # Each element (dict) corresponds to the (induced) hom's of a tree node.
-        # For each pair inside a dict, the key is the hom, and the value is the number of hom's:
-        #
-        # An example of K2 to K3, the values are arbitrary for demo purpose:
-        #
-        # [{((4, 0), (5, 1)): 10,
-        #   ((4, 0), (5, 2)): 20,
-        #   ((4, 1), (5, 0)): 30,
-        #   ((4, 1), (5, 2)): 40,
-        #   ((4, 2), (5, 0)): 50,
-        #   ((4, 2), (5, 1)): 60}, {}, ...]
-        self.DP_table = [{} for _ in range(len(self.dir_labelled_TD))]
-
-
-    # @delayed
-    def process_node(self, node):
-        node_type = self.dir_labelled_TD.get_vertex(node)
-        match node_type:
-            case 'intro':
-                result = self._add_intro_node_parallel(node)
-            case 'forget':
-                result = self._add_forget_node_parallel(node)
-            case 'join':
-                result = self._add_join_node_parallel(node)
-            case _:
-                result = self._add_leaf_node_parallel(node)
-
-        node_index = get_node_index(node)
-        self.DP_table[node_index] = result # Assuming result is ready to be directly assigned
-        return result
-
-    def count_homomorphisms_parallel(self):
-        # Dictionary to store all futures
-        self.futures = {}
-        for node in reversed(self.dir_labelled_TD.vertices()):
-            # Delaying each node process and storing in futures
-            self.futures[node] = self.process_node(node)
-
-        print("Futures: ", self.futures)
-
-        # Compute all results, respecting the inherent dependencies among them
-        results = dask.compute(*self.futures.values())
-        print("Results: ", [f.compute() for f in results])
-        # Since the results are integrated into the DP_table in each process_node call,
-        # you can simply access the final result:
-        return self.DP_table[0][0]
-
-
-    # def process_node(self, node):        
-    #     # Ensure all child node computations are completed before processing this node
-    #     # child_nodes = self.dir_labelled_TD.neighbors_out(node)
-    #     # child_futures = [self.futures[child] for child in child_nodes if child in self.futures]
-
-    #     # Wait for all child node computations to complete
-    #     # if child_futures:
-    #     #     done, _ = wait(child_futures, return_when='ALL_COMPLETED')
-
-    #     node_type = self.dir_labelled_TD.get_vertex(node)
-    #     match node_type:
-    #         case 'intro':
-    #             result = self._add_intro_node_parallel(node)
-    #         case 'forget':
-    #             result = self._add_forget_node_parallel(node)
-    #         case 'join':
-    #             result = self._add_join_node_parallel(node)
-    #         case _:
-    #             result = self._add_leaf_node_parallel(node)
-
-    #     node_index = get_node_index(node)
-    #     # print(f"Node {node_index} result: {result}")
-    #     return node_index, result
 
     # def count_homomorphisms_parallel(self):
-    #     # Create a dictionary of delayed computations
-    #     self.futures = {}
-    #     for node in reversed(self.dir_labelled_TD.vertices()):
-    #         self.futures[node] = dask.delayed(self.process_node)(node)
+    #     from collections import deque
+    #     # Using a deque to manage our stack of nodes to process
+    #     stack = deque([self.root])
+    #     # Dictionary to store the delayed objects representing results for each node
+    #     delayed_results = {}
 
-    #     # print("Futures: ", self.futures)
+    #     while stack:
+    #         node = stack.pop()
+    #         node_type = self.dir_labelled_TD.get_vertex(node)
+    #         children = list(self.dir_labelled_TD.neighbors_out(node))
+            
+    #         # Check if all children results are available to process this node
+    #         if all(child in delayed_results for child in children):
+    #             # Collecting results from children
+    #             children_results = [delayed_results[child] for child in children]
+                
+    #             # Delay the processing based on node type
+    #             if node_type == 'intro':
+    #                 delayed_results[node] = delayed(self._add_intro_node_parallel)(node, children_results[0])
+    #             elif node_type == 'forget':
+    #                 delayed_results[node] = delayed(self._add_forget_node_parallel)(node, children_results[0])
+    #             elif node_type == 'join':
+    #                 delayed_results[node] = delayed(self._add_join_node_parallel)(children_results[0], children_results[1])
+    #             else:
+    #                 delayed_results[node] = delayed(self._add_leaf_node_parallel)(node)
+    #         else:
+    #             # If not all children results are ready, re-add the node to the stack
+    #             stack.appendleft(node)
+    #             # Ensure children are added to the stack
+    #             for child in children:
+    #                 if child not in delayed_results:
+    #                     stack.append(child)
 
-    #     # Compute results as they are needed
-    #     for node, future in self.futures.items():
-    #         try:
-    #             result = future.compute()
-    #             node_index, result = result
-    #             # print(f"In future: Node {node_index} result: {result}")
-    #             self.DP_table[node_index] = result
-    #         except Exception as e:
-    #             print(f"Exception: {e}")
+    #     # At the end, compute the result for the root node
+    #     final_result = compute(delayed_results[self.root])
+    #     return final_result
 
-    #     return self.DP_table[0][0]
 
+    def count_homomorphisms_parallel(self, node=None):
+        # We start from the root if unspecified
+        if node is None:
+            node = self.root
+
+        children_results = []
+
+        for child in self.dir_labelled_TD.neighbors_out(node):
+            children_results.append(self.count_homomorphisms_parallel(child))
+
+        node_type = self.dir_labelled_TD.get_vertex(node)
+
+        match node_type:
+            case 'intro':
+                return delayed(self._add_intro_node_parallel)(node, children_results[0])
+            case 'forget':
+                return delayed(self._add_forget_node_parallel)(node, children_results[0])
+            case 'join':
+                return delayed(self._add_join_node_parallel)(children_results[0], children_results[1])
+            case _:
+                return delayed(self._add_leaf_node_parallel)(node)
 
     ### Main adding functions
 
-    @delayed
     def _add_leaf_node_parallel(self, node):
         r"""
         Add the leaf node to the DP table and update it accordingly.
@@ -176,8 +141,7 @@ class ParallelGraphHomomorphismCounter:
         node_index = get_node_index(node)
         return [1]
 
-    @delayed
-    def _add_intro_node_parallel(self, node):
+    def _add_intro_node_parallel(self, node, child_result):
         r"""
         Add the intro node to the DP table and update it accordingly.
         """
@@ -232,11 +196,11 @@ class ParallelGraphHomomorphismCounter:
         # intro_vtx_nbhs = [self.graph.index(vtx) for vtx in child_node_vtx_tuple if self.graph.has_edge(intro_vertex, vtx)]
         # print("intro node nbhs in bag: ", intro_vtx_nbhs)
 
-        child_DP_entry = self.DP_table[child_node_index]
+        # child_DP_entry = self.DP_table[child_node_index]
         # print("INTRO child DP entry: ", child_DP_entry)
         # print("\n")
 
-        for mapped in range(len(child_DP_entry)):
+        for mapped in range(len(child_result)):
             # Neighborhood of the mapped vertices of intro vertex in the target graph
             mapped_intro_nbhs = [extract_bag_vertex(mapped, vtx, self.actual_target_size) for vtx in intro_vtx_nbhs]
             # print("mapped: ", mapped)
@@ -259,16 +223,14 @@ class ParallelGraphHomomorphismCounter:
                 # print("current mapping", mapping)
                 if is_valid_mapping(target_vtx, mapped_intro_nbhs, target):
                     # print("VALID!")
-                    mappings_count[mapping] = child_DP_entry[mapped]
+                    mappings_count[mapping] = child_result[mapped]
 
                 mapping += self.actual_target_size ** intro_vtx_index
                 # print("TEMP entry: {}\n".format(mappings_count))
 
         return mappings_count
-        # print("DP table: ", self.DP_table)
 
-    @delayed
-    def _add_forget_node_parallel(self, node):
+    def _add_forget_node_parallel(self, node, child_result):
         r"""
         Add the forget node to the DP table and update it accordingly.
         """
@@ -288,8 +250,6 @@ class ParallelGraphHomomorphismCounter:
         forgotten_vtx = self.node_changes_dict[node_index]
         forgotten_vtx_index = child_node_vtx_tuple.index(forgotten_vtx)
 
-        child_DP_entry = self.DP_table[child_node_index]
-
         for mapping in mappings_length_range:
             sum = 0
             # extended_mapping = add_vertex_into_mapping(0, mapping, forgotten_vtx_index, target_graph_size)
@@ -298,27 +258,18 @@ class ParallelGraphHomomorphismCounter:
             for target_vtx in self.target_graph:
             # for target_vtx in self.actual_target_graph:
                 # print("FORGET extended mapping: ", extended_mapping)
-                sum += child_DP_entry[extended_mapping]
+                sum += child_result[extended_mapping]
                 extended_mapping += self.actual_target_size ** forgotten_vtx_index
 
             mappings_count[mapping] = sum
 
-        # print("FORGET mappings count: ", mappings_count)
         return mappings_count
 
-    @delayed
-    def _add_join_node_parallel(self, node):
-        r"""
-        Add the join node to the DP table and update it accordingly.
+    def _add_join_node_parallel(self, left_child_result, right_child_result):
         """
-        node_index, node_vertices = node
-        left_child, right_child  = [vtx for vtx in self.dir_labelled_TD.neighbors_out(node)
-                                        if get_node_content(vtx) == node_vertices]
-        left_child_index = get_node_index(left_child)
-        right_child_index = get_node_index(right_child)
-
-        mappings_count = [left_count * right_count for left_count, right_count
-                            in zip(self.DP_table[left_child_index], self.DP_table[right_child_index])]
-
-        # self.DP_table[node_index] = mappings_count
+        Add the join node to the DP table and update it accordingly.
+        Assumes left_child_result and right_child_result are the computed results
+        from the two child nodes.
+        """
+        mappings_count = [left * right for left, right in zip(left_child_result, right_child_result)]
         return mappings_count
