@@ -1,5 +1,7 @@
 import dask
 from dask import delayed, compute
+import numpy as np
+import dask.array as da
 
 from math import prod
 
@@ -265,11 +267,46 @@ class ParallelGraphHomomorphismCounter:
 
         return mappings_count
 
+    # def _add_join_node_parallel(self, left_child_result, right_child_result):
+    #     """
+    #     Add the join node to the DP table and update it accordingly.
+    #     Assumes left_child_result and right_child_result are the computed results
+    #     from the two child nodes.
+    #     """
+    #     mappings_count = [left * right for left, right in zip(left_child_result, right_child_result)]
+    #     print("Left length: ", len(left_child_result))
+    #     print("Right length: ", len(right_child_result))
+    #     return mappings_count
+
+
+
+
+
     def _add_join_node_parallel(self, left_child_result, right_child_result):
         """
         Add the join node to the DP table and update it accordingly.
         Assumes left_child_result and right_child_result are the computed results
-        from the two child nodes.
+        from the two child nodes, provided as Python lists.
         """
-        mappings_count = [left * right for left, right in zip(left_child_result, right_child_result)]
-        return mappings_count
+        # Convert the Python lists to NumPy arrays
+        np_left = np.array(left_child_result)
+        np_right = np.array(right_child_result)
+
+        # Create Dask arrays from NumPy arrays
+        # You can adjust the chunk sizes to optimize performance
+        dask_left = da.from_array(np_left, chunks=(5000))
+        dask_right = da.from_array(np_right, chunks=(5000))
+
+        # Perform element-wise multiplication using Dask
+        result_dask = dask_left * dask_right
+
+        # Compute the result to get a NumPy array back
+        # Note: compute() triggers actual computation and should be used judiciously
+        result_np = result_dask.compute()
+
+        # Optionally, convert the result back to a Python list if needed
+        result_list = result_np.tolist()
+
+        return result_list
+
+
