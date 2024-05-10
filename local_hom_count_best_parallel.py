@@ -1,7 +1,5 @@
-import dask
-from dask import delayed, compute
-import numpy as np
 import dask.array as da
+from dask import delayed, compute
 
 from math import prod
 
@@ -9,6 +7,10 @@ from sage.graphs.graph import Graph
 
 from local_tree_decomp import *
 from help_functions import *
+
+from numba import jit
+import numpy as np
+
 
 # In integer rep, the DP table is of the following form:
 # { node_index: [1, 2, 3, 4, 5],
@@ -267,46 +269,30 @@ class ParallelGraphHomomorphismCounter:
 
         return mappings_count
 
-    # def _add_join_node_parallel(self, left_child_result, right_child_result):
-    #     """
-    #     Add the join node to the DP table and update it accordingly.
-    #     Assumes left_child_result and right_child_result are the computed results
-    #     from the two child nodes.
-    #     """
-    #     mappings_count = [left * right for left, right in zip(left_child_result, right_child_result)]
-    #     print("Left length: ", len(left_child_result))
-    #     print("Right length: ", len(right_child_result))
-    #     return mappings_count
-
-
-
-
 
     def _add_join_node_parallel(self, left_child_result, right_child_result):
         """
         Add the join node to the DP table and update it accordingly.
         Assumes left_child_result and right_child_result are the computed results
-        from the two child nodes, provided as Python lists.
+        from the two child nodes.
         """
-        # Convert the Python lists to NumPy arrays
-        np_left = np.array(left_child_result)
-        np_right = np.array(right_child_result)
+        # chunk_size = len(left_child_result) // 10
+        # dask_left = da.from_array(left_child_result, chunks=chunk_size)
+        # dask_right = da.from_array(right_child_result, chunks=chunk_size)
 
-        # Create Dask arrays from NumPy arrays
-        # You can adjust the chunk sizes to optimize performance
-        dask_left = da.from_array(np_left, chunks=(5000))
-        dask_right = da.from_array(np_right, chunks=(5000))
+        # mappings_count = dask_left * dask_right
 
-        # Perform element-wise multiplication using Dask
-        result_dask = dask_left * dask_right
+        # # mappings_count = [left * right for left, right in zip(left_child_result, right_child_result)]
+        # # print("Left length: ", len(left_child_result))
+        # # print("Right length: ", len(right_child_result))
+        # return mappings_count.compute()
 
-        # Compute the result to get a NumPy array back
-        # Note: compute() triggers actual computation and should be used judiciously
-        result_np = result_dask.compute()
+        @jit(nopython=True, parallel=True)
+        def multiply_elements(left, right):
+            return left * right
 
-        # Optionally, convert the result back to a Python list if needed
-        result_list = result_np.tolist()
+        left_array = np.array(left_child_result)
+        right_array = np.array(right_child_result)
+        results = multiply_elements(left_array, right_array)
 
-        return result_list
-
-
+        return results
