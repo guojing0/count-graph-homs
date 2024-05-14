@@ -75,45 +75,6 @@ class ParallelGraphHomomorphismCounter:
         self.node_changes_dict = node_changes(self.dir_labelled_TD)
 
 
-    # def count_homomorphisms_parallel(self):
-    #     from collections import deque
-    #     # Using a deque to manage our stack of nodes to process
-    #     stack = deque([self.root])
-    #     # Dictionary to store the delayed objects representing results for each node
-    #     delayed_results = {}
-
-    #     while stack:
-    #         node = stack.pop()
-    #         node_type = self.dir_labelled_TD.get_vertex(node)
-    #         children = list(self.dir_labelled_TD.neighbors_out(node))
-            
-    #         # Check if all children results are available to process this node
-    #         if all(child in delayed_results for child in children):
-    #             # Collecting results from children
-    #             children_results = [delayed_results[child] for child in children]
-                
-    #             # Delay the processing based on node type
-    #             if node_type == 'intro':
-    #                 delayed_results[node] = delayed(self._add_intro_node_parallel)(node, children_results[0])
-    #             elif node_type == 'forget':
-    #                 delayed_results[node] = delayed(self._add_forget_node_parallel)(node, children_results[0])
-    #             elif node_type == 'join':
-    #                 delayed_results[node] = delayed(self._add_join_node_parallel)(children_results[0], children_results[1])
-    #             else:
-    #                 delayed_results[node] = delayed(self._add_leaf_node_parallel)(node)
-    #         else:
-    #             # If not all children results are ready, re-add the node to the stack
-    #             stack.appendleft(node)
-    #             # Ensure children are added to the stack
-    #             for child in children:
-    #                 if child not in delayed_results:
-    #                     stack.append(child)
-
-    #     # At the end, compute the result for the root node
-    #     final_result = compute(delayed_results[self.root])
-    #     return final_result
-
-
     def count_homomorphisms_parallel(self, node=None):
         # We start from the root if unspecified
         if node is None:
