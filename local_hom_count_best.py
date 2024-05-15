@@ -171,7 +171,7 @@ class GraphHomomorphismCounter:
         # print("target size", self.actual_target_size)
         # print("mappings length: ", mappings_length)
 
-        mappings_count = [0 for _ in range(mappings_length)]
+        mappings_count = [0] * mappings_length
 
         # Use the adjacency matrix when dense, otherwise use the graph itself
         target_density = self.actual_target_graph.density()
@@ -237,9 +237,9 @@ class GraphHomomorphismCounter:
         child_node_index, child_node_vtx = self.dir_labelled_TD.neighbors_out(node)[0]
         child_node_vtx_tuple = tuple(child_node_vtx)
 
-        # target_graph_size = len(self.target_graph)
+        target_graph_size = len(self.target_graph)
         mappings_length_range = range(self.actual_target_size ** len(node_vtx_tuple))
-        mappings_count = [0 for _ in mappings_length_range]
+        mappings_count = [0 for _ in mappings_length_range] # TODO [0] * something_length directly
         # print("FORGET DP table length: ", mappings_length_range)
 
         # Forget node specifically
@@ -253,7 +253,7 @@ class GraphHomomorphismCounter:
             # extended_mapping = add_vertex_into_mapping(0, mapping, forgotten_vtx_index, target_graph_size)
             extended_mapping = add_vertex_into_mapping(0, mapping, forgotten_vtx_index, self.actual_target_size)
 
-            for target_vtx in self.target_graph:
+            for _ in range(target_graph_size):
             # for target_vtx in self.actual_target_graph:
                 # print("FORGET extended mapping: ", extended_mapping)
                 sum += child_DP_entry[extended_mapping]
