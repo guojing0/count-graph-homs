@@ -1,9 +1,7 @@
-from math import prod
-
 from sage.graphs.graph import Graph
 
-from local_tree_decomp import *
-from help_functions import *
+from lib.nice_tree_decomp import *
+from lib.help_functions import *
 
 # In integer rep, the DP table is of the following form:
 # { node_index: [1, 2, 3, 4, 5],
@@ -82,7 +80,7 @@ class GraphHomomorphismCounter:
         self.DP_table = [{} for _ in range(len(self.dir_labelled_TD))]
 
 
-    def count_homomorphisms_best(self):
+    def count_homomorphisms(self):
         r"""
         Return the number of homomorphisms from the graph `G` to the graph `H`.
 
@@ -104,8 +102,8 @@ class GraphHomomorphismCounter:
 
             sage: graph = graphs.CompleteBipartiteGraph(1, 4)
             sage: target_graph = graphs.CompleteGraph(4)
-            sage: from sage.graphs.hom_count_best import count_homomorphisms_best
-            sage: count_homomorphisms_best(graph, target_graph)
+            sage: from sage.graphs.hom_count_best import count_homomorphisms
+            sage: count_homomorphisms(graph, target_graph)
             324
         """
         # Whether it's BFS or DFS, every node below join node(s) would be
