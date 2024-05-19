@@ -1,7 +1,7 @@
 from sage.graphs.graph import Graph
 
-from lib.nice_tree_decomp import *
-from lib.help_functions import *
+from helpers.nice_tree_decomp import *
+from helpers.help_functions import *
 
 # In integer rep, the DP table is of the following form:
 # { node_index: [1, 2, 3, 4, 5],
