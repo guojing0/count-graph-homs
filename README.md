@@ -2,7 +2,7 @@
 
 ![Count!](logo.png)
 
-Caption: DALL-E is not good at spelling...
+**Caption**: DALL-E is not good at spelling...
 
 The `count-graph-hom` library is the first implementation of the homomorphism counting algorithm from "[Homomorphisms Are a Good Basis for Counting Small Subgraphs](https://arxiv.org/abs/1705.01595)" by Radu Curticapean, Holger Dell, and Dániel Marx that is 100% compatible with [SageMath](https://www.sagemath.org/).
 
@@ -12,7 +12,7 @@ For people who are curious about *graph homomorphisms*, you are invited to read 
 
 ### Installation
 
-The developer is working towards merging the code into the SageMath codebase, so that users could use it dierctly in SageMath.
+The developer is working towards merging the code into the SageMath codebase, so that users could use it in SageMath directly.
 
 The current recommended way to use `count-graph-hom` is from source:
 
@@ -22,7 +22,11 @@ cd count-graph-homs
 sage -n
 ```
 
-After running the above commands, you should see a SageMath (Jupyter) notebook open in your browser. Please see [tutorial.ipynb](/tutorial.ipynb) for future steps to get started.
+After running the above commands, you should see a SageMath (Jupyter) notebook open in your browser. Please see [tutorial.ipynb](/tutorial.ipynb) for next steps to get started.
+
+### Structure
+
+
 
 ### Relevant work
 
@@ -34,7 +38,7 @@ After running the above commands, you should see a SageMath (Jupyter) notebook o
 
 ### Contributing
 
-We welcome contributions to this project! If you have found a bug or have any suggestions for improvement, please open an issue or submit a pull request.
+We welcome contributions to this project! If you have found a bug or have any suggestions for improvement, please[ open an issue](https://github.com/guojing0/count-graph-homs/issues/new) or [submit a pull request](https://github.com/guojing0/count-graph-homs/compare).
 
 ### License
 
