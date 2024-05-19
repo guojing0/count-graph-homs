@@ -1,5 +1,7 @@
 # count-graph-hom: Yes we count!
 
+![Count!](logo.png)
+
 The `count-graph-hom` library is the first implementation of the homomorphism counting algorithm from "[Homomorphisms Are a Good Basis for Counting Small Subgraphs](https://arxiv.org/abs/1705.01595)" by Radu Curticapean, Holger Dell, and Dániel Marx that is 100% compatible with [SageMath](https://www.sagemath.org/).
 
 The library is designed to be efficient, accurate, and user-friendly, making it ideal for students and researchers who want to incorporate graph homomorphism counting into their work. The code is commented and documented, so that it is potentially useful for educational purposes.
