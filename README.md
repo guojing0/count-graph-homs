@@ -4,7 +4,7 @@
 
 **Caption**: DALL-E is not good at spelling...
 
-The `count-graph-hom` library is the first ever :tm: 100%-[SageMath](https://www.sagemath.org/)-compatible implementation of the homomorphism counting algorithm from "[Homomorphisms Are a Good Basis for Counting Small Subgraphs](https://arxiv.org/abs/1705.01595)" by Radu Curticapean, Holger Dell, and Dániel Marx.
+The `count-graph-hom` library is the first ever:tm: 100%-[SageMath](https://www.sagemath.org/)-compatible implementation of the homomorphism counting algorithm from "[Homomorphisms Are a Good Basis for Counting Small Subgraphs](https://arxiv.org/abs/1705.01595)" by Radu Curticapean, Holger Dell, and Dániel Marx.
 
 The library is designed to be efficient, accurate, and user-friendly, making it ideal for students and researchers who want to incorporate graph homomorphism counting into their work. The code is well documented, so that it is potentially useful for educational purposes.
 
