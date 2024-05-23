@@ -4,11 +4,20 @@
 
 **Caption**: DALL-E is not good at spelling...
 
-The `count-graph-hom` library is the first ever:tm: 100%-[SageMath](https://www.sagemath.org/)-compatible implementation of the homomorphism counting algorithm from "[Homomorphisms Are a Good Basis for Counting Small Subgraphs](https://arxiv.org/abs/1705.01595)" by Radu Curticapean, Holger Dell, and Dániel Marx.
+The `count-graph-hom` library is the first ever :tm: 100%-[SageMath](https://www.sagemath.org/)-compatible implementation of the homomorphism counting algorithm from "[Homomorphisms Are a Good Basis for Counting Small Subgraphs](https://arxiv.org/abs/1705.01595)" by Radu Curticapean, Holger Dell, and Dániel Marx.
 
 The library is designed to be efficient, accurate, and user-friendly, making it ideal for students and researchers who want to incorporate graph homomorphism counting into their work. The code is well documented, so that it is potentially useful for educational purposes.
 
 For people who are curious about *graph homomorphisms*, you are invited to read [Wikipedia](https://en.wikipedia.org/wiki/Graph_homomorphism) to get started!
+
+- [count-graph-hom: Yes we count!](#count-graph-hom-yes-we-count)
+    - [Installation](#installation)
+    - [Structure](#structure)
+    - [API documentation](#api-documentation)
+    - [Relevant work](#relevant-work)
+    - [Acknowledgements](#acknowledgements)
+    - [Contributing](#contributing)
+    - [License](#license)
 
 ### Installation
 
@@ -41,9 +50,24 @@ For more details on the usage of the library, please see [tutorial.ipynb](/tutor
 
 ### Structure
 
+- **tutorial.ipynb**: A Jupyter notebook file for tutorials.
+- **standard_hom_count.py**: Sequential implementation of the homomorphism counting algorithm (will be in Sage).
+- **concurrent_hom_count.py**: Concurrent implementation using Dask, Numba, and Numpy.
+- **helpers/**: A directory of helper functions and utilities.
+  - **help_functions.py**
+  - **nice_tree_decomp.py**
+- **deprecated/**: Deprecated codes for educational purposes only.
+  - **hom_count_basic.py**
+  - **hom_count_int.py**
+  - **hom_count_int_dict.py**
+
+### API documentation
+
 
 
 ### Relevant work
+
+
 
 <!-- copenhagen impls
 
@@ -53,7 +77,9 @@ blair sullivan team -->
 
 ### Acknowledgements
 
+The developer first would like to thank Radu Curticapean for his guidance and support.
 
+This work was supported by the research grant from the European Union (ERC, CountHom, 101077083). Views and opinions expressed are those of the authors only and do not necessarily reflect those of the European Union or the European Research Council Executive Agency. Neither the European Union nor the granting authority can be held responsible for them.
 
 ### Contributing
 
