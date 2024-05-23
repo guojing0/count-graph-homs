@@ -103,17 +103,19 @@ For more details on the usage of the library, please see [tutorial.ipynb](/tutor
 
 ### Relevant Work
 
+1. Master thesis of Christian Janos Lebeda and Jonas Mortensen: *HomSub: Counting small subgraphs via homomorphisms*
 
+2. Master thesis of Emil Ruhwald Nielsen, Otto Stadel Clausen, and Elisabeth Terp Reeve: *Counting subgraph patterns in large graphs*
 
-<!-- copenhagen impls
+3. Emily Jin, Michael Bronstein, Ismail Ilkan Ceylan, and Matthias Lanzinger: [Homomorphisms Counts for Graph Neural Networks: All About That Basis](https://github.com/ejin700/hombasis-gnn/tree/main)
 
-rust one
+Near the completion of this project, the developer also learned of the following Rust implementation:
 
-blair sullivan team -->
+- Julian Mende: [Count Homomorphisms in Rust](https://github.com/julian0804/Counting_Homomorphisms_in_Rust)
 
 ### Acknowledgements
 
-The developer first would like to thank Radu Curticapean for his guidance and support.
+The developer (Jing Guo) first would like to thank Radu Curticapean for his guidance and support. He also takes inspiration from works and implementations of the authors of the two Master theses mentioned above.
 
 This work was supported by the research grant from the European Union (ERC, CountHom, 101077083). Views and opinions expressed are those of the authors only and do not necessarily reflect those of the European Union or the European Research Council Executive Agency. Neither the European Union nor the granting authority can be held responsible for them.
 
