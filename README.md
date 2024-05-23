@@ -4,7 +4,7 @@
 
 **Caption**: DALL-E is not good at spelling...
 
-The `count-graph-homs` library is the first ever :tm: 100%-[SageMath](https://www.sagemath.org/)-compatible implementation of the homomorphism counting algorithm from "[Homomorphisms Are a Good Basis for Counting Small Subgraphs](https://arxiv.org/abs/1705.01595)" by Radu Curticapean, Holger Dell, and Dániel Marx.
+The `count-graph-homs` library is the first ever :tm: 100%-[SageMath](https://www.sagemath.org/)-compatible implementation of the homomorphism counting algorithm (Prop. 1.6) from "[Homomorphisms Are a Good Basis for Counting Small Subgraphs](https://arxiv.org/abs/1705.01595)" by Radu Curticapean, Holger Dell, and Dániel Marx.
 
 The library is designed to be efficient, accurate, and user-friendly, making it ideal for students and researchers who want to incorporate graph homomorphism counting into their work. The code is well documented, so that it is potentially useful for educational purposes.
 
@@ -13,8 +13,10 @@ For people who are curious about *graph homomorphisms*, you are invited to read 
 - [count-graph-homs: Yes we count!](#count-graph-homs-yes-we-count)
     - [Installation](#installation)
     - [Structure](#structure)
-    - [API documentation](#api-documentation)
-    - [Relevant work](#relevant-work)
+    - [API Documentation](#api-documentation)
+      - [Module: `standard_hom_count.py`](#module-standard_hom_countpy)
+      - [Module: `concurrent_hom_count.py`](#module-concurrent_hom_countpy)
+    - [Relevant Work](#relevant-work)
     - [Acknowledgements](#acknowledgements)
     - [Contributing](#contributing)
     - [License](#license)
@@ -61,11 +63,45 @@ For more details on the usage of the library, please see [tutorial.ipynb](/tutor
   - **hom_count_int.py**
   - **hom_count_int_dict.py**
 
-### API documentation
+### API Documentation
 
+#### Module: `standard_hom_count.py`
 
+**Class: GraphHomomorphismCounter**
 
-### Relevant work
+- **Constructor:**
+  - `__init__(self, graph, target_graph, density_threshold=0.5, graph_clr=None, target_clr=None, colourful=False)`
+    - **Parameters:**
+      - `graph`: A Sage graph representing the source graph.
+      - `target_graph`: A Sage graph representing the target graph.
+      - `density_threshold` (default: 0.5): The density threshold for the target graph representation.
+      - `graph_clr` (default: None): A list of integers representing the colors of the vertices of the source graph.
+      - `target_clr` (default: None): A list of integers representing the colors of the vertices of the target graph.
+      - `colourful` (default: False): A boolean indicating whether or not counting the number of color-preserving homomorphisms.
+
+- **Methods:**
+  - `count_homomorphisms(self)`: Return the number of homomorphisms.
+
+---
+
+#### Module: `concurrent_hom_count.py`
+
+**Class: ParallelGraphHomomorphismCounter**
+
+- **Constructor:**
+  - `__init__(self, graph, target_graph, density_threshold=0.5, graph_clr=None, target_clr=None, colourful=False)`
+    - **Parameters:**
+      - `graph`: A Sage graph representing the source graph.
+      - `target_graph`: A Sage graph representing the target graph.
+      - `density_threshold` (default: 0.5): The density threshold for the target graph representation.
+      - `graph_clr` (default: None): A list of integers representing the colors of the vertices of the source graph.
+      - `target_clr` (default: None): A list of integers representing the colors of the vertices of the target graph.
+      - `colourful` (default: False): A boolean indicating whether or not counting the number of color-preserving homomorphisms.
+
+- **Methods:**
+  - `count_homomorphisms_parallel(self, node=None)`: Return the number of homomorphisms with concurrent computation.
+
+### Relevant Work
 
 
 
