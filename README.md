@@ -1,6 +1,6 @@
 # count-graph-homs: Yes we count!
 
-![Count!](logo.png)
+![Count!](/images/logo.png)
 
 **Caption**: DALL-E is not good at spelling...
 
