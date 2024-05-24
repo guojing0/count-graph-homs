@@ -1,12 +1,9 @@
-import dask.array as da
-from dask import delayed, compute
-
-from math import prod
+from dask import delayed
 
 from sage.graphs.graph import Graph
 
-from local_tree_decomp import *
-from help_functions import *
+from helpers.nice_tree_decomp import *
+from helpers.help_functions import *
 
 from numba import jit
 import numpy as np
@@ -103,7 +100,6 @@ class ParallelGraphHomomorphismCounter:
         r"""
         Add the leaf node to the DP table and update it accordingly.
         """
-        node_index = get_node_index(node)
         return [1]
 
     def _add_intro_node_parallel(self, node, child_result):
