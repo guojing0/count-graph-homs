@@ -15,7 +15,7 @@ For people who are curious about *graph homomorphisms*, you are invited to read 
     - [Structure](#structure)
     - [API Documentation](#api-documentation)
       - [Module: `standard_hom_count.py`](#module-standard_hom_countpy)
-      - [Module: `concurrent_hom_count.py`](#module-concurrent_hom_countpy)
+      - [Module: `parallel_hom_count.py`](#module-parallel_hom_countpy)
     - [Relevant Work](#relevant-work)
     - [Acknowledgements](#acknowledgements)
     - [Contributing](#contributing)
@@ -54,7 +54,7 @@ For more details on the usage of the library, please see [tutorial.ipynb](/tutor
 
 - **tutorial.ipynb**: A Jupyter notebook file for tutorials.
 - **standard_hom_count.py**: Sequential implementation of the homomorphism counting algorithm (will be in Sage).
-- **concurrent_hom_count.py**: Concurrent implementation using Dask, Numba, and Numpy (optional Sage package).
+- **parallel_hom_count.py**: parallel implementation using Dask, Numba, and Numpy (optional Sage package).
 - **helpers/**: A directory of helper functions and utilities.
   - **help_functions.py**
   - **nice_tree_decomp.py**
@@ -84,7 +84,7 @@ For more details on the usage of the library, please see [tutorial.ipynb](/tutor
 
 ---
 
-#### Module: `concurrent_hom_count.py`
+#### Module: `parallel_hom_count.py`
 
 **Class: ParallelGraphHomomorphismCounter**
 
@@ -99,7 +99,7 @@ For more details on the usage of the library, please see [tutorial.ipynb](/tutor
       - `colourful` (default: False): A boolean indicating whether or not counting the number of color-preserving homomorphisms.
 
 - **Methods:**
-  - `count_homomorphisms_parallel(self, node=None)`: Return the number of homomorphisms with concurrent computation.
+  - `count_homomorphisms_parallel(self, node=None)`: Return the number of homomorphisms with parallel computation.
 
 ### Relevant Work
 
