@@ -10,7 +10,12 @@ The library is designed to be efficient, accurate, and user-friendly, making it 
 
 For people who are curious about *graph homomorphisms*, you are invited to read [Wikipedia](https://en.wikipedia.org/wiki/Graph_homomorphism) to get started!
 
+---
+
+### Table of Contents
+
 - [count-graph-homs: Yes we count!](#count-graph-homs-yes-we-count)
+    - [Table of Contents](#table-of-contents)
     - [Installation](#installation)
     - [Structure](#structure)
     - [API Documentation](#api-documentation)
@@ -20,6 +25,8 @@ For people who are curious about *graph homomorphisms*, you are invited to read 
     - [Acknowledgements](#acknowledgements)
     - [Contributing](#contributing)
     - [License](#license)
+
+---
 
 ### Installation
 
