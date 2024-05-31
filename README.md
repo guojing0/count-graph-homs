@@ -1,9 +1,5 @@
 # count-graph-homs: Yes we count!
 
-![Count!](/images/logo.png)
-
-**Caption**: DALL-E is not good at spelling...
-
 [![DOI](https://zenodo.org/badge/729969405.svg)](https://zenodo.org/doi/10.5281/zenodo.11282297)
 
 The `count-graph-homs` library is the first ever :tm: 100%-[SageMath](https://www.sagemath.org/)-compatible implementation of the homomorphism counting algorithm (Prop. 1.6) from "[Homomorphisms Are a Good Basis for Counting Small Subgraphs](https://arxiv.org/abs/1705.01595)" by Radu Curticapean, Holger Dell, and Dániel Marx.
